@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# **ΣΦΗΜΜΥ 2025 Website**
 
-## Getting Started
+Welcome to the **ΣΦΗΜΜΥ 2025 Website**, the official platform for the Greek Electrical and Computer Engineering Student Conference. This web application serves as a hub for conference attendees, providing information about speakers, workshops, schedules, and much more.
 
-First, run the development server:
+## **About the Project**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The **ΣΦΗΜΜΥ 2025 Website** is designed to streamline the conference experience for attendees and organizers. Built with **Next.js**, the website leverages modern web technologies to provide a dynamic and engaging user experience.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Key features include:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Smooth animations for a visually appealing UI.
+- Dark and light mode themes.
+- Detailed pages for speakers, workshops, and members.
+- Registration and authentication capabilities (integration pending backend support).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## **Features**
 
-To learn more about Next.js, take a look at the following resources:
+- **Dynamic Pages**: Information on speakers, workshops, and members presented dynamically.
+- **Animations**: Meteor animations and hover effects enhance interactivity.
+- **Theme Support**: Dark and light modes to suit user preferences.
+- **Registration System**: Users can register and sign in to access workshops and exclusive content.
+- **Responsive Design**: Optimized for mobile, tablet, and desktop devices.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## **Technologies Used**
 
-## Deploy on Vercel
+- **Frontend**:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  - [React](https://reactjs.org/)
+  - [Next.js](https://nextjs.org/)
+  - [Tailwind CSS](https://tailwindcss.com/)
+  - [Framer Motion](https://www.framer.com/motion/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Other Tools**:
+  - [TypeScript](https://www.typescriptlang.org/)
+  - [PostCSS](https://postcss.org/)
+  - [Next.js Image Optimization](https://nextjs.org/docs/basic-features/image-optimization)
+
+---
