@@ -60,7 +60,7 @@ const Workshops = () => {
                 {/* Workshop image */}
                 <div className="ml-4">
                   <Image
-                    src={`/images/${workshop.image}`} // Adjust image path based on location
+                    src={`${workshop.image}`} // Adjust image path based on location
                     alt={workshop.name}
                     width={96} // Set exact dimensions for optimization
                     height={96}

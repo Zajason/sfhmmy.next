@@ -102,14 +102,22 @@ const Members = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <Image
-                onMouseMove={handleMouseMove}
-                src={`/images/${item.image}`} // Adjust path if images are inside public folder
-                alt={item.name}
-                width={160} // Adjust width for optimization
-                height={160} // Adjust height for optimization
-                className={`object-cover rounded-full border-2 ${cardBorderColor} group-hover:scale-105 group-hover:z-30 relative transition duration-500`}
-              />
+              <div
+                className="relative h-40 w-40 overflow-hidden rounded-full border-2 group-hover:scale-105 group-hover:z-30 transition duration-500"
+                style={{
+                  aspectRatio: "1 / 1", // Ensures the container is a perfect square
+                  borderColor: cardBorderColor, // Dynamic border color
+                }}
+              >
+                <Image
+                  onMouseMove={handleMouseMove}
+                  src={`${item.image}`} // Ensure the correct path
+                  alt={item.name}
+                  layout="fill" // Makes the image fill the container
+                  objectFit="cover" // Ensures the image covers the container proportionally
+                  objectPosition="center" // Centers the image within the container
+                />
+              </div>
             </div>
           ))}
         </div>
