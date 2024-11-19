@@ -67,6 +67,10 @@ Before starting, make sure you have the following installed:
 
 2. Move into the project directory
 
+```bash
+cd project-name
+```
+
 3.Install all dependencies:
 
 ```bash
