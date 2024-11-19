@@ -61,15 +61,26 @@ Before starting, make sure you have the following installed:
 
 1. Open your terminal and run the following command to clone the repository:
 
-   ```bash
+   ```
    git clone https://github.com/username/project-name.git
    ```
 
 2. Move into the project directory
 
 3.Install all dependencies:
+
+```bash
 npm install
+```
+
 4.Start the application locally:
+
+```bash
 npm run dev
+```
+
 5.Open your browser and navigate to
+
+```bash
 http://localhost:3000
+```
