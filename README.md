@@ -40,3 +40,36 @@ Key features include:
   - [Next.js Image Optimization](https://nextjs.org/docs/basic-features/image-optimization)
 
 ---
+
+# Instructions to Clone and Run the Project
+
+This guide will help you clone the repository and run the project locally on your computer to review the UI and provide feedback.
+
+---
+
+## **1. Prerequisites**
+
+Before starting, make sure you have the following installed:
+
+- **Git**: [Download Git](https://git-scm.com/)
+- **Node.js** (Version 16 or later): [Download Node.js](https://nodejs.org/)
+- **Code Editor** (e.g., Visual Studio Code): [Download VS Code](https://code.visualstudio.com/)
+
+---
+
+## **2. Steps to Clone and Run the Project**
+
+1. Open your terminal and run the following command to clone the repository:
+
+   ```bash
+   git clone https://github.com/username/project-name.git
+   ```
+
+2. Move into the project directory
+
+3.Install all dependencies:
+npm install
+4.Start the application locally:
+npm run dev
+5.Open your browser and navigate to
+http://localhost:3000
