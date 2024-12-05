@@ -62,13 +62,13 @@ Before starting, make sure you have the following installed:
 1. Open your terminal and run the following command to clone the repository:
 
    ```
-   git clone https://github.com/username/project-name.git
+   git clone https://github.com/Zajason/sfhmmy.next.git
    ```
 
 2. Move into the project directory
 
 ```bash
-cd project-name
+cd sfhmmy.next
 ```
 
 3.Install all dependencies:
