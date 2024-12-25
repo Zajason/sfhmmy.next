@@ -14,7 +14,7 @@ const WelcomePageWithBeams = () => {
     "«Το Συνέδριο Φοιτητών Ηλεκτρολόγων Μηχανικών και Μηχανικών Υπολογιστών αποτελεί την αιχμή του δόρατος για την καινοτομία και τη γνώση στον τομέα της τεχνολογίας. Εδώ γεννιούνται ιδέες που αλλάζουν τον κόσμο.»";
 
   // Determine styles and image based on the theme
-  const backgroundColor = theme === "dark" ? "bg-gray-900" : "bg-white";
+  const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const textColor = theme === "dark" ? "text-gray-300" : "text-blue-900";
   const secondaryTextColor =
     theme === "dark" ? "text-gray-400" : "text-blue-700";
@@ -29,7 +29,7 @@ const WelcomePageWithBeams = () => {
       className={`relative w-full h-screen ${backgroundColor} overflow-hidden`}
     >
       {/* Navbar */}
-      <div className="fixed top-0 left-0 w-full bg-gray-900 text-white shadow-md z-50">
+      <div className="fixed top-0 left-0 w-full bg-black text-white shadow-md z-50">
         <div className="flex items-center justify-between px-8 py-2">
           {" "}
           {/* Adjusted padding */}

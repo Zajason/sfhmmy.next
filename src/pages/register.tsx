@@ -37,9 +37,9 @@ const ConditionalPage: React.FC = () => {
   };
 
   // Determine theme-based styles
-  const backgroundColor = theme === "dark" ? "bg-gray-900" : "bg-white";
+  const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
-  const formBackground = theme === "dark" ? "bg-gray-800" : "bg-gray-200";
+  const formBackground = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
   const inputBackground = theme === "dark" ? "bg-gray-700" : "bg-gray-300";
   const subTextColor = theme === "dark" ? "text-gray-300" : "text-gray-700";
   const italicTextColor = theme === "dark" ? "text-gray-400" : "text-gray-600";

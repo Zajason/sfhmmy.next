@@ -14,7 +14,7 @@ const SpeakersLite = () => {
   };
 
   // Determine styles based on the theme
-  const backgroundColor = theme === "dark" ? "bg-gray-900" : "bg-white";
+  const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const textColor = theme === "dark" ? "text-blue-400" : "text-blue-600";
 
   return (

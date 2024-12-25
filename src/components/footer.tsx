@@ -15,7 +15,7 @@ const Footer = () => {
 
   // Choose logo based on theme
   const logo = theme === "dark" ? logoDark : logoLight;
-  const backgroundColor = theme === "dark" ? "bg-gray-800" : "bg-gray-200";
+  const backgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
   const textColor = theme === "dark" ? "text-gray-400" : "text-gray-700";
   const contactTextColor = theme === "dark" ? "text-gray-300" : "text-gray-600";
 
