@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link as ScrollLink, Element } from "react-scroll";
 import { useRouter } from "next/router";
 import WelcomePage from "../components/welcome";
+import WelcomePage2 from "../components/welcome2";
 import WelcomePageMobile from "../components/MobileWelcome";
 import SpeakersLite from "../components/speakerCarousel";
 import Agenda from "../components/agenda";
@@ -238,7 +239,7 @@ const ScrollableHome: React.FC<ScrollableHomeProps> = ({ registered }) => {
       {/* Smooth Scrollable Sections */}
       <div style={{ marginTop: "60px" }}>
         <Element name="welcomeSection" className="welcomeSection">
-          {isMobile ? <WelcomePageMobile /> : <WelcomePage />}
+          {isMobile ? <WelcomePageMobile /> : <WelcomePage2 />}
         </Element>
 
         <Element name="speakersSection" className="section">
