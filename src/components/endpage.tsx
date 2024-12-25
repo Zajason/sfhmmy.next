@@ -65,8 +65,8 @@ const EngPage = () => {
                   <Link href="/members">
                     <span className="block px-4 py-2 hover:bg-gray-700">Οργανωτική Επιτροπή</span>
                   </Link>
-                  <Link href="/scientific-committee">
-                    <span className="block px-4 py-2 hover:bg-gray-700">Scientific Committee</span>
+                  <Link href="/speakersFull">
+                    <span className="block px-4 py-2 hover:bg-gray-700">Επιστημονική Επιτροπή</span>
                   </Link>
                 </div>
               </div>

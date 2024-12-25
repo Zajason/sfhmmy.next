@@ -1,105 +1,193 @@
 import React from "react";
-import { useTheme } from "../utils/ThemeContext"; // Assuming you have a ThemeContext
-// Import images
-const logoDark = "/images/others/Official Logo ΣΦΗΜΜΥ 16 for dark.png";
-const logoLight = "/images/others/Official Logo ΣΦΗΜΜΥ 16 for white.png";
-const facebookIcon = "/images/socials/facebook.png";
-const instagramIcon = "/images/socials/instagram.png";
-const linkedInIcon = "/images/socials/linked.png";
-const discordIcon = "/images/socials/discord.png";
-const youtubeIcon = "/images/socials/youtube.png";
-const tiktokIcon = "/images/socials/tiktok.png";
 
 const Footer = () => {
-  const { theme } = useTheme(); // Get the current theme
-
-  // Choose logo based on theme
-  const logo = theme === "dark" ? logoDark : logoLight;
-  const backgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
-  const textColor = theme === "dark" ? "text-gray-400" : "text-gray-700";
-  const contactTextColor = theme === "dark" ? "text-gray-300" : "text-gray-600";
-
   return (
-    <div
-      className={`w-full ${backgroundColor} text-white py-8 flex flex-col items-center`}
-    >
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-        {/* Left section: Logo and details */}
-        <div className="flex flex-col items-center md:items-start mb-6 md:mb-0">
-          <img src={logo} alt="ΣΦΗΜΜΥ Logo" className="w-32 h-32 mb-4" />
-          <p className={`${textColor} text-center md:text-left`}>
-            © 2025 Electrical and Computer Engineering Conference (ECESCON)
-          </p>
-          <p className={`${textColor} text-center md:text-left`}>
-            ΣΦΗΜΜΥ 16 | 19-21 Απριλίου 2025
-          </p>
-          <p className={`${textColor} text-center md:text-left`}>
-            Τμήμα Ηλεκτρολόγων Μηχανικών και Μηχανικών Υπολογιστών, Αριστοτελειο
-            Πανεπιστημιο, Θεσσαλονίκη
-          </p>
+    <footer className="bg-black text-white py-10">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          {/* Logo and Social Media */}
+          <div className="flex flex-col items-center md:items-start">
+            <img
+              src="images/others/Official Logo ΣΦΗΜΜΥ 16 for dark.png"
+              alt="Logo"
+              className="w-40 mb-4"
+            />
+            
+            <div className="flex mt-4 space-x-4">
+              <a
+                href="https://www.facebook.comhttps://www.facebook.com/sfhmmy/?locale=el_GR"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-400"
+              >
+                <img
+                  src="images/socials/facebook.png"
+                  alt="Facebook"
+                  className="w-8"
+                />
+              </a>
+              <a
+                href="https://www.instagram.com/sfhmmy/?hl=el"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-400"
+              >
+                <img
+                  src="images/socials/instagram.png"
+                  alt="Instagram"
+                  className="w-8"
+                />
+              </a>
+              <a
+                href="https://gr.linkedin.com/company/ecescon"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-400"
+              >
+                <img
+                  src="images/socials/linkedin.png"
+                  alt="LinkedIn"
+                  className="w-8"
+                />
+              </a>
+              <a
+                href="https://www.twitter.comhttps://x.com/i/flow/login?redirect_after_login=%2Fsfhmmy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-400"
+              >
+                <img
+                  src="images/socials/twitter.png"
+                  alt="Twitter"
+                  className="w-8"
+                />
+              </a>
+              <a
+                href="https://www.youtube.com/@ecescon"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-400"
+              >
+                <img
+                  src="images/socials/youtube.png"
+                  alt="YouTube"
+                  className="w-8"
+                />
+              </a>
+            </div>
+          </div>
+
+          {/* Useful Links */}
+          <div className="mt-8 md:mt-0">
+            <h3 className="text-lg font-semibold mb-4">Χρήσιμοι Σύνδεσμοι</h3>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li>
+                <a href="/network-protections" className="hover:text-blue-400">
+                  Network Protections
+                </a>
+              </li>
+              <li>
+                <a href="/server-protections" className="hover:text-blue-400">
+                  Server Protections
+                </a>
+              </li>
+              <li>
+                <a href="/vulnerability-assessment" className="hover:text-blue-400">
+                  Vulnerability Assessment
+                </a>
+              </li>
+              <li>
+                <a href="/spam-protections" className="hover:text-blue-400">
+                  SPAM Protections
+                </a>
+              </li>
+              <li>
+                <a href="/secure-transactions" className="hover:text-blue-400">
+                  Secure Transactions
+                </a>
+              </li>
+              <li>
+                <a href="/antivirus" className="hover:text-blue-400">
+                  Antivirus
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Support Links */}
+          <div className="mt-8 md:mt-0">
+            <h3 className="text-lg font-semibold mb-4">Support</h3>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li>
+                <a href="/help-center" className="hover:text-blue-400">
+                  Help Center
+                </a>
+              </li>
+              <li>
+                <a href="/ticket-support" className="hover:text-blue-400">
+                  Ticket Support
+                </a>
+              </li>
+              <li>
+                <a href="/my-account" className="hover:text-blue-400">
+                  My Account
+                </a>
+              </li>
+              <li>
+                <a href="/faq" className="hover:text-blue-400">
+                  FAQ
+                </a>
+              </li>
+              <li>
+                <a href="/forum-community" className="hover:text-blue-400">
+                  Forum Community
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Company Links */}
+          <div className="mt-8 md:mt-0">
+            <h3 className="text-lg font-semibold mb-4">Company</h3>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li>
+                <a href="/about-us" className="hover:text-blue-400">
+                  About Us
+                </a>
+              </li>
+              <li>
+                <a href="/leadership" className="hover:text-blue-400">
+                  Leadership
+                </a>
+              </li>
+              <li>
+                <a href="/investors" className="hover:text-blue-400">
+                  Investors
+                </a>
+              </li>
+              <li>
+                <a href="/careers" className="hover:text-blue-400">
+                  Careers
+                </a>
+              </li>
+              <li>
+                <a href="/articles-news" className="hover:text-blue-400">
+                  Article & News
+                </a>
+              </li>
+              <li>
+                <a href="/legal-notices" className="hover:text-blue-400">
+                  Legal Notices
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-
-        {/* Right section: Contact info & Social Media */}
-        <div className="flex flex-col items-center md:items-center">
-          {/* Contact Info */}
-          <div className="flex flex-col items-center mb-4">
-            <div className="flex items-center mb-2">
-              <span className={`${contactTextColor}`}>sfhmmy16@gmail.com</span>
-            </div>
-            <div className="flex items-center">
-              <span className={`${contactTextColor}`}>19-21 Απριλίου 2025</span>
-            </div>
-          </div>
-
-          {/* Social Media Links */}
-          <h4 className={`${textColor} mb-4`}>Βρείτε μας στα Social Media</h4>
-          <div className="flex space-x-4 items-center justify-center">
-            <a
-              href="https://www.facebook.com/sfhmmy/?locale=el_GR"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={facebookIcon} alt="Facebook" className="w-6 h-6" />
-            </a>
-            <a
-              href="https://www.instagram.com/sfhmmy/?hl=el"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={instagramIcon} alt="Instagram" className="w-6 h-6" />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/ecescon/?originalSubdomain=gr"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={linkedInIcon} alt="LinkedIn" className="w-6 h-6" />
-            </a>
-            <a
-              href="https://discord.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={discordIcon} alt="Discord" className="w-6 h-6" />
-            </a>
-            <a
-              href="https://www.youtube.com/@ecescon"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={youtubeIcon} alt="YouTube" className="w-6 h-6" />
-            </a>
-            <a
-              href="https://tiktok.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={tiktokIcon} alt="TikTok" className="w-6 h-6" />
-            </a>
-          </div>
+        <div className="mt-10 text-center text-gray-500 text-sm">
+          Copyright © 2024 ΣΦΗΜΜΥ16. All rights reserved.
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 
