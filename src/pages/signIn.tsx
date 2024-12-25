@@ -8,8 +8,8 @@ const SignIn = () => {
   const { theme } = useTheme();
 
   // Set colors based on the theme
-  const backgroundColor = theme === "dark" ? "bg-gray-900" : "bg-white";
-  const cardBackgroundColor = theme === "dark" ? "bg-gray-800" : "bg-gray-200";
+  const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
+  const cardBackgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
   const inputBackgroundColor = theme === "dark" ? "bg-gray-700" : "bg-gray-300";
   const buttonBackgroundColor =

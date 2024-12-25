@@ -7,8 +7,8 @@ import { useTheme } from "../utils/ThemeContext";
 const Sponsors = () => {
   const { theme } = useTheme();
 
-  const backgroundColor = theme === "dark" ? "bg-gray-900" : "bg-white";
-  const cardBackgroundColor = theme === "dark" ? "bg-gray-800" : "bg-gray-200";
+  const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
+  const cardBackgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
 
   return (

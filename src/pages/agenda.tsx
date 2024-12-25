@@ -55,7 +55,7 @@ export const Schedule = () => {
 
   // Determine background colors based on the theme
   const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
-  const cardBackgroundColor = theme === "dark" ? "bg-gray-800" : "bg-gray-200";
+  const cardBackgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
   const headingColor = theme === "dark" ? "text-white" : "text-blue-900";
 
   return (
