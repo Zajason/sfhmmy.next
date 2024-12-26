@@ -6,6 +6,10 @@ import Agenda from "../components/agenda";
 import Register from "./register";
 import Footer from "../components/footer";
 import { useTheme } from "../utils/ThemeContext";
+import SubjectsSection from "@/components/subjectSection";
+
+
+
 
 const ScrollableHome: React.FC = () => {
   const { theme } = useTheme();
@@ -84,8 +88,12 @@ const ScrollableHome: React.FC = () => {
           <EngPage />
         </Element>
 
-        <Element name="middleSection" className="welcomeSection">
+        <Element name="middleSection" className="section">
           <Middle />
+        </Element>
+
+        <Element name="subjectSection" className="section">
+          <SubjectsSection />
         </Element>
 
         <Element name="speakersSection" className="section">
