@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link as ScrollLink, Element } from "react-scroll";
-import EngPage from "@/components/endpage";
+import EngPage from "@/components/startPage";
 import SpeakersLite from "../components/speakerCarousel";
 import Agenda from "../components/agenda";
 import Register from "./register";

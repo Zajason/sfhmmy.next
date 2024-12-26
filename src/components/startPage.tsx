@@ -52,21 +52,21 @@ const EngPage = () => {
                     />
                   </svg>
                 </span>
-                <div className="absolute left-0 mt-2 py-2 w-48 bg-gray-800 rounded-md shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <div className="absolute left-0 mt-2 py-2 w-48 bg-gray-900 rounded-md shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   <Link href="/agenda">
-                    <span className="block px-4 py-2 hover:bg-gray-700">Πρόγραμμα</span>
+                    <span className="block px-4 py-2 hover:bg-gray-800">Πρόγραμμα</span>
                   </Link>
                   <Link href="/papers">
-                    <span className="block px-4 py-2 hover:bg-gray-700">Εργασίες</span>
+                    <span className="block px-4 py-2 hover:bg-gray-800">Εργασίες</span>
                   </Link>
                   <Link href="/sponsors">
-                    <span className="block px-4 py-2 hover:bg-gray-700">Χορηγοί</span>
+                    <span className="block px-4 py-2 hover:bg-gray-800">Χορηγοί</span>
                   </Link>
                   <Link href="/members">
-                    <span className="block px-4 py-2 hover:bg-gray-700">Οργανωτική Επιτροπή</span>
+                    <span className="block px-4 py-2 hover:bg-gray-800">Οργανωτική Επιτροπή</span>
                   </Link>
                   <Link href="/speakersFull">
-                    <span className="block px-4 py-2 hover:bg-gray-700">Επιστημονική Επιτροπή</span>
+                    <span className="block px-4 py-2 hover:bg-gray-800">Επιστημονική Επιτροπή</span>
                   </Link>
                 </div>
               </div>
@@ -87,15 +87,15 @@ const EngPage = () => {
                     />
                   </svg>
                 </span>
-                <div className="absolute left-0 mt-2 py-2 w-48 bg-gray-800 rounded-md shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <div className="absolute left-0 mt-2 py-2 w-48 bg-gray-900 rounded-md shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   <Link href="/workshops">
-                    <span className="block px-4 py-2 hover:bg-gray-700">Workshops</span>
+                    <span className="block px-4 py-2 hover:bg-gray-800">Workshops</span>
                   </Link>
                   <Link href="/pre-sfhmmy">
-                    <span className="block px-4 py-2 hover:bg-gray-700">PreΣΦΗΜΜΥ</span>
+                    <span className="block px-4 py-2 hover:bg-gray-800">PreΣΦΗΜΜΥ</span>
                   </Link>
                   <Link href="/career">
-                    <span className="block px-4 py-2 hover:bg-gray-700">Career@ΣΦΗΜΜΥ</span>
+                    <span className="block px-4 py-2 hover:bg-gray-800">Career@ΣΦΗΜΜΥ</span>
                   </Link>
                 </div>
               </div>

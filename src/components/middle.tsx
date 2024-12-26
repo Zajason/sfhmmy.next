@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router"; // Import useRouter
 
 const Midle = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const router = useRouter(); // Initialize useRouter
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,7 +62,10 @@ const Midle = () => {
             την Ελλάδα, οι οποίοι μοιράζονται το πάθος τους για την ηλεκτρολογία και τη
             Μηχανική Υπολογιστών και επιθυμούν να καλύψουν την πρόσφατη ανάπτυξη!
           </p>
-          <button className="bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600">
+          <button
+            className="bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600"
+            onClick={() => router.push("/about")} // Navigate to the /about page
+          >
             Περισσότερα
           </button>
         </div>
