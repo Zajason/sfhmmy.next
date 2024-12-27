@@ -7,7 +7,7 @@ const NavbarWithBack = () => {
   const { theme, toggleTheme } = useTheme();
 
   // Set colors based on the current theme
-  const backgroundColor = theme === "dark" ? "bg-gray-900" : "bg-white";
+  const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
 
   return (

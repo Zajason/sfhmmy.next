@@ -19,7 +19,7 @@ const Members = () => {
   const { theme } = useTheme();
 
   // Set colors based on the theme
-  const backgroundColor = theme === "dark" ? "bg-gray-900" : "bg-white";
+  const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
   const cardBorderColor = theme === "dark" ? "border-white" : "border-gray-800";
   const tooltipBackgroundColor = theme === "dark" ? "bg-black" : "bg-gray-200";

@@ -11,7 +11,7 @@ const SpeakerDetail = () => {
   const speaker = speakersData.find((s) => s.name === name);
 
   // Set colors based on the theme
-  const backgroundColor = theme === "dark" ? "bg-gray-900" : "bg-white";
+  const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
   const secondaryTextColor =
     theme === "dark" ? "text-gray-400" : "text-gray-600";

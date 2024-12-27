@@ -7,7 +7,7 @@ const ProfileView = () => {
   const { theme } = useTheme();
 
   // Set background and text color based on the theme
-  const backgroundColor = theme === "dark" ? "bg-gray-900" : "bg-white";
+  const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
   const cardBackgroundColor = theme === "dark" ? "bg-gray-800" : "bg-gray-200";
 

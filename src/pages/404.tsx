@@ -5,7 +5,7 @@ import { Meteors } from "../components/meteorAnimation.tsx";
 
 const NotFoundPage = () => {
   return (
-    <div className="relative w-full h-screen bg-gray-900 flex flex-col justify-center items-center">
+    <div className="relative w-full h-screen bg-black flex flex-col justify-center items-center">
       {/* Meteor animation */}
       <div className="absolute inset-0 z-0">
         <Meteors number={50} />

@@ -6,13 +6,14 @@ const config: Config = {
     "./src/components/**/*.{ts,tsx}",
     "./src/app/**/*.{ts,tsx}",
   ],
-  
+
   darkMode: "class",
   theme: {
     extend: {
       animation: {
         "meteor-effect": "meteor 5s linear infinite",
         scroll: "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        "transform-to-zero": "transform-to-zero 1s ease-out forwards", // Add this
       },
       keyframes: {
         meteor: {
@@ -26,6 +27,14 @@ const config: Config = {
         scroll: {
           to: {
             transform: "translate(calc(-50% - 0.5rem))",
+          },
+        },
+        "transform-to-zero": { // Add this keyframe
+          "0%": {
+            transform: "translateX(-100%)",
+          },
+          "100%": {
+            transform: "translateX(0)",
           },
         },
       },
