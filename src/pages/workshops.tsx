@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import RegisterButton from "../components/button";
 import { workshopsData } from "../data/WorkshopsData"; // Adjust path if necessary
-import NavbarWithBack from "../components/navbar"; // Ensure NavbarWithBack is updated for Next.js
+import NavbarWithBack from "../components/navbar/navbar"; // Ensure NavbarWithBack is updated for Next.js
 import { useTheme } from "../utils/ThemeContext"; // Ensure the path to ThemeContext is correct
 import { useMockAuth } from "../context/mockAuthContext"; // Import global authentication context
 import Image from "next/image"; // Import Next.js Image for optimized images

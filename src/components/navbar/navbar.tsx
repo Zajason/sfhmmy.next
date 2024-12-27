@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { useTheme } from "../utils/ThemeContext"; // Ensure the path to your ThemeContext is correct
+import { useTheme } from "../../utils/ThemeContext"; // Ensure the path to your ThemeContext is correct
 import Image from "next/image";
 
 const NavbarWithBack = () => {

@@ -6,7 +6,7 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
-import NavbarWithBack from "../components/navbar"; // Ensure path is correct
+import NavbarWithBack from "../components/navbar/navbar"; // Ensure path is correct
 import { membersData } from "../data/MembersData"; // Adjust path if necessary
 import { useTheme } from "../utils/ThemeContext"; // Ensure path to ThemeContext is correct
 import Image from "next/image"; // Import Next.js Image for optimized images

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router"; // Replace useNavigate with useRouter
-import { useTheme } from "../utils/ThemeContext"; // Ensure the path to ThemeContext is correct
+import { useTheme } from "../../utils/ThemeContext"; // Ensure the path to ThemeContext is correct
 
 const NavbarWithBack = () => {
   const router = useRouter(); // Use useRouter instead of useNavigate

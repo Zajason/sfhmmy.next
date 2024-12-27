@@ -1,7 +1,7 @@
 import React from "react";
 import { sponsorsData } from "../data/SponsorsData";
 import { Meteors } from "../components/meteorAnimation";
-import NavbarWithBack from "../components/navbar";
+import NavbarWithBack from "../components/navbar/navbar";
 import { useTheme } from "../utils/ThemeContext";
 
 const Sponsors = () => {

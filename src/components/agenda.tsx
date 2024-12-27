@@ -1,93 +1,122 @@
-// Agenda view incorporated in the scroll view
-
 import React from "react";
-import { eventsData } from "../data/AgendaData.ts";
-import { useTheme } from "../utils/ThemeContext"; // Import the theme context
+import { motion } from "framer-motion";
+import { eventsData } from "../data/AgendaData";
+import { useTheme } from "../utils/ThemeContext";
+import { FaCircle, FaArrowRight } from "react-icons/fa";
 
 export const Schedule = () => {
-  const { theme } = useTheme(); // Get the current theme
+  const { theme } = useTheme();
 
-  // Manually group events into three days
-  const day1Events = eventsData.slice(0, 5); // First 5 events
-  const day2Events = eventsData.slice(5, 10); // Next 5 events
-  const day3Events = eventsData.slice(10, 15); // Last 5 events
+  const day1Events = eventsData.slice(0, 5);
+  const day2Events = eventsData.slice(5, 10);
+  const day3Events = eventsData.slice(10, 15);
 
-  // Helper function to render events for each day
   const renderEvents = (events: any[]) => {
     return events.map((event, index) => (
-      <div
+      <motion.div
         key={index}
-        className={`border-b py-4 ${
-          theme === "dark" ? "border-gray-300" : "border-gray-400"
-        }`}
+        className="flex items-start space-x-4 mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
       >
-        <h3
-          className={`text-xl font-semibold ${
-            theme === "dark" ? "text-white" : "text-blue-900"
+        {/* Icon */}
+        <FaCircle className="text-blue-500 mt-1" size={10} />
+
+        {/* Event Details */}
+        <div
+          className={`border-l-4 pl-4 ${
+            theme === "dark" ? "border-blue-500" : "border-blue-900"
           }`}
         >
-          {event.name}
-        </h3>
-        <p
-          className={`text-sm ${
-            theme === "dark" ? "text-gray-400" : "text-gray-600"
-          }`}
-        >
-          <strong>Type:</strong> {event.type}
-        </p>
-        <p
-          className={`text-sm ${
-            theme === "dark" ? "text-gray-400" : "text-gray-600"
-          }`}
-        >
-          <strong>Place:</strong> {event.place}
-        </p>
-        <p
-          className={`text-sm ${
-            theme === "dark" ? "text-gray-400" : "text-gray-600"
-          }`}
-        >
-          <strong>Time:</strong> {event.time}
-        </p>
-      </div>
+          <h3
+            className={`text-lg font-semibold ${
+              theme === "dark" ? "text-white" : "text-blue-900"
+            }`}
+          >
+            {event.name}
+          </h3>
+          <p
+            className={`text-sm ${
+              theme === "dark" ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
+            <strong>Type:</strong> {event.type}
+          </p>
+          <p
+            className={`text-sm ${
+              theme === "dark" ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
+            <strong>Place:</strong> {event.place}
+          </p>
+          <p
+            className={`text-sm ${
+              theme === "dark" ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
+            <strong>Time:</strong> {event.time}
+          </p>
+        </div>
+      </motion.div>
     ));
   };
 
-  // Determine background colors based on the theme
   const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const cardBackgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
   const headingColor = theme === "dark" ? "text-white" : "text-blue-900";
 
   return (
-    <div
-      className={`flex flex-col items-center min-h-screen ${backgroundColor} py-8`}
-    >
-      <h1 className={`text-4xl font-bold mb-8 ${headingColor}`}>
+    <div className={`min-h-screen ${backgroundColor} py-12`}>
+      <motion.h1
+        className={`text-4xl font-bold text-center mb-12 ${headingColor}`}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         Event Schedule
-      </h1>
+      </motion.h1>
 
-      {/* Schedule for Day 1 */}
-      <div className="w-full max-w-4xl px-4">
-        <h2 className={`text-2xl font-bold mb-4 ${headingColor}`}>Day 1</h2>
-        <div className={`${cardBackgroundColor} p-4 rounded-md`}>
-          {renderEvents(day1Events)}
-        </div>
-      </div>
+      <div className="container mx-auto max-w-3xl space-y-12 px-6">
+        {/* Day Sections */}
+        {[{ day: "Day 1", events: day1Events }, { day: "Day 2", events: day2Events }, { day: "Day 3", events: day3Events }].map((dayData, dayIndex) => (
+          <motion.div
+            key={dayIndex}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: dayIndex * 0.2 }}
+          >
+            {/* Day Heading */}
+            <h2 className={`text-3xl font-bold mb-6 ${headingColor}`}>
+              {dayData.day}
+            </h2>
 
-      {/* Schedule for Day 2 */}
-      <div className="w-full max-w-4xl px-4 mt-8">
-        <h2 className={`text-2xl font-bold mb-4 ${headingColor}`}>Day 2</h2>
-        <div className={`${cardBackgroundColor} p-4 rounded-md`}>
-          {renderEvents(day2Events)}
-        </div>
-      </div>
+            {/* Day Events */}
+            <div
+              className={`${cardBackgroundColor} p-6 rounded-lg shadow-lg relative`}
+            >
+              {/* Decorative Line */}
+              <div className="absolute top-0 left-4 h-full border-l-2 border-dashed border-blue-500"></div>
+              {renderEvents(dayData.events)}
+            </div>
+          </motion.div>
+        ))}
 
-      {/* Schedule for Day 3 */}
-      <div className="w-full max-w-4xl px-4 mt-8">
-        <h2 className={`text-2xl font-bold mb-4 ${headingColor}`}>Day 3</h2>
-        <div className={`${cardBackgroundColor} p-4 rounded-md`}>
-          {renderEvents(day3Events)}
-        </div>
+        {/* Call to Action */}
+        <motion.div
+          className="text-center mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
+        >
+          <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md flex items-center justify-center mx-auto space-x-2">
+            <span>View Full Agenda</span>
+            <FaArrowRight />
+          </button>
+        </motion.div>
       </div>
     </div>
   );

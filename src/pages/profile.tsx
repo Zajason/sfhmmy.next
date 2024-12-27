@@ -1,6 +1,6 @@
 import React from "react";
 import { Meteors } from "../components/meteorAnimation"; // Import Meteors animation component
-import NavbarWithBack from "../components/navbar";
+import NavbarWithBack from "../components/navbar/navbar";
 import { useTheme } from "../utils/ThemeContext"; // Adjust the path to where your useTheme hook is located
 
 const ProfileView = () => {
