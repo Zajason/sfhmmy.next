@@ -1,8 +1,8 @@
 import { cn } from "../lib/utils.ts";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "../utils/ThemeContext"; // Import the useTheme hook
 
-//TODO: animation looks weird when changing to light mode and also goes through borders somehow fix the old animation to get light mode
+// This component simulates meteors with trails based on the current theme.
 export const Meteors = ({
   number,
   className,
@@ -11,12 +11,22 @@ export const Meteors = ({
   className?: string;
 }) => {
   const { theme } = useTheme(); // Get the current theme
+  const [mounted, setMounted] = useState(false); // State to check if the component has mounted
 
   // Set the meteor and trail colors based on the theme
   const meteorColor = theme === "dark" ? "bg-white" : "bg-blue-900"; // Meteor color
   const trailColor = theme === "dark" ? "from-white" : "from-blue-700"; // Trail color changes based on the theme
 
   const meteors = new Array(number || 20).fill(true); // Generates an array of meteor elements
+
+  // On mount, update mounted state to trigger a re-render and avoid SSR issues
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Only render meteors after the component has mounted (to avoid hydration issues)
+  if (!mounted) return null;
+
   return (
     <>
       {meteors.map((el, idx) => (
@@ -31,10 +41,11 @@ export const Meteors = ({
             className
           )}
           style={{
-            top: Math.floor(Math.random() * 100) + "vh", // Randomly position vertically within the viewport height
-            left: Math.floor(Math.random() * 100) + "vw", // Randomly position horizontally within the viewport width
+            top: Math.floor(Math.random() * 100) + "vh", // Ensure meteors stay within the viewport (90% of the height)
+            left: Math.floor(Math.random() * 100) + "vw", // Ensure meteors stay within the viewport (90% of the width)
             animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s", // Random delay for each animation
-            animationDuration: Math.floor(Math.random() * (10 - 2) + 2) + "s", // Random duration for each animation
+            animationDuration: Math.floor(Math.random() * (10 - 3) + 3) + "s", // Random duration for each animation (between 3 and 10 seconds)
+            transition: "opacity 0.5s ease", // Fade effect to improve theme change transition
           }}
         ></span>
       ))}

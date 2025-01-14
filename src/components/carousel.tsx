@@ -111,7 +111,7 @@ export const InfiniteMovingCards = ({
       >
         {items.map((item, idx) => (
           <li
-            key={item.name}
+            key={`${item.name}-${idx}`}
             className={`cursor-pointer w-[350px] max-w-full relative rounded-2xl border border-slate-700 p-4 md:w-[450px] ${textColor}`}
             onClick={() => onClick?.(item.name)} // Handle click event
             style={{

@@ -1,8 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router"; // Import Next.js router
-import { InfiniteMovingCards } from "../components/carousel"; // Adjust path as needed
-import { speakersData } from "../data/speakersData";
-import { useTheme } from "../utils/ThemeContext";
+import { InfiniteMovingCards } from "../carousel"; // Adjust path as needed
+import { speakersData } from "../../data/speakersData";
+import { useTheme } from "../../utils/ThemeContext";
 
 const SpeakersLite = () => {
   const router = useRouter();

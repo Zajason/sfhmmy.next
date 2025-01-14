@@ -6,7 +6,6 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
-import NavbarWithBack from "../components/navbar/navbar"; // Ensure path is correct
 import { membersData } from "../data/MembersData"; // Adjust path if necessary
 import { useTheme } from "../utils/ThemeContext"; // Ensure path to ThemeContext is correct
 import Image from "next/image"; // Import Next.js Image for optimized images
@@ -42,7 +41,20 @@ const Members = () => {
     x.set(event.nativeEvent.offsetX - halfWidth);
   };
 
-  // Map the membersData to match the structure required by the component
+  // Animation variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 },
+    },
+  };
+
   const items = membersData.map((member, index) => ({
     id: index,
     name: member.name,
@@ -52,20 +64,29 @@ const Members = () => {
 
   return (
     <div className={`min-h-screen ${backgroundColor}`}>
-      <NavbarWithBack />
-      <div
+      <motion.div
         className={`flex flex-col justify-center items-center min-h-screen ${backgroundColor} pt-20`}
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
       >
-        <h1 className={`${textColor} text-4xl font-bold mb-8`}>
+        <motion.h1
+          variants={fadeInUp}
+          className={`${textColor} text-4xl font-bold mb-8`}
+        >
           Meet Our Members
-        </h1>
+        </motion.h1>
 
-        {/* CSS Grid for Members with responsive columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-8">
+        {/* Grid for Members */}
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-8"
+          variants={staggerContainer}
+        >
           {items.map((item) => (
-            <div
+            <motion.div
+              key={item.id}
               className="relative group"
-              key={item.name}
+              variants={fadeInUp}
               onMouseEnter={() => setHoveredIndex(item.id)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
@@ -102,26 +123,29 @@ const Members = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <div
+
+              {/* Profile Image */}
+              <motion.div
                 className="relative h-40 w-40 overflow-hidden rounded-full border-2 group-hover:scale-105 group-hover:z-30 transition duration-500"
                 style={{
-                  aspectRatio: "1 / 1", // Ensures the container is a perfect square
-                  borderColor: cardBorderColor, // Dynamic border color
+                  aspectRatio: "1 / 1",
+                  borderColor: cardBorderColor,
                 }}
+                whileHover={{ scale: 1.1 }}
               >
                 <Image
                   onMouseMove={handleMouseMove}
-                  src={`${item.image}`} // Ensure the correct path
+                  src={`${item.image}`}
                   alt={item.name}
-                  layout="fill" // Makes the image fill the container
-                  objectFit="cover" // Ensures the image covers the container proportionally
-                  objectPosition="center" // Centers the image within the container
+                  layout="fill"
+                  objectFit="cover"
+                  objectPosition="center"
                 />
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

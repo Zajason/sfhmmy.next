@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link as ScrollLink, Element } from "react-scroll";
 import { useRouter } from "next/router";
 import WelcomePage from "../components/welcome";
-import SpeakersLite from "../components/speakerCarousel";
+import SpeakersLite from "../components/index/speakerCarousel";
 import Footer from "../components/footer";
 import { useTheme } from "../utils/ThemeContext";
 import Image from "next/image";

@@ -1,10 +1,13 @@
 import React from "react";
 
 const Footer = () => {
+  // Get the current year
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-black text-white py-10">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-center md:justify-between items-center text-center md:text-left">
           {/* Logo and Social Media */}
           <div className="flex flex-col items-center md:items-start">
             <img
@@ -12,8 +15,8 @@ const Footer = () => {
               alt="Logo"
               className="w-40 mb-4"
             />
-            
-            <div className="flex mt-4 space-x-4">
+
+            <div className="flex mt-4 space-x-4 justify-center md:justify-start">
               <a
                 href="https://www.facebook.comhttps://www.facebook.com/sfhmmy/?locale=el_GR"
                 target="_blank"
@@ -92,7 +95,10 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/vulnerability-assessment" className="hover:text-blue-400">
+                <a
+                  href="/vulnerability-assessment"
+                  className="hover:text-blue-400"
+                >
                   Vulnerability Assessment
                 </a>
               </li>
@@ -184,7 +190,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-10 text-center text-gray-500 text-sm">
-          Copyright © 2024 ΣΦΗΜΜΥ16. All rights reserved.
+          Copyright © {currentYear} ΣΦΗΜΜΥ16. All rights reserved.
         </div>
       </div>
     </footer>

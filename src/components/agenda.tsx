@@ -3,9 +3,11 @@ import { motion } from "framer-motion";
 import { eventsData } from "../data/AgendaData";
 import { useTheme } from "../utils/ThemeContext";
 import { FaCircle, FaArrowRight } from "react-icons/fa";
+import { useRouter } from "next/router"; // Import useRouter from next/router
 
 export const Schedule = () => {
   const { theme } = useTheme();
+  const router = useRouter(); // Get the Next.js router
 
   const day1Events = eventsData.slice(0, 5);
   const day2Events = eventsData.slice(5, 10);
@@ -22,7 +24,7 @@ export const Schedule = () => {
         transition={{ duration: 0.5, delay: index * 0.1 }}
       >
         {/* Icon */}
-        <FaCircle className="text-blue-500 mt-1" size={10} />
+        <FaCircle className="text-blue-500 mt-10" size={10} />
 
         {/* Event Details */}
         <div
@@ -67,6 +69,9 @@ export const Schedule = () => {
   const cardBackgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
   const headingColor = theme === "dark" ? "text-white" : "text-blue-900";
 
+  // Check if the current page is not /agenda
+  const isNotAgendaPage = router.pathname !== "/agenda";
+
   return (
     <div className={`min-h-screen ${backgroundColor} py-12`}>
       <motion.h1
@@ -104,19 +109,21 @@ export const Schedule = () => {
           </motion.div>
         ))}
 
-        {/* Call to Action */}
-        <motion.div
-          className="text-center mt-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5 }}
-        >
-          <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md flex items-center justify-center mx-auto space-x-2">
-            <span>View Full Agenda</span>
-            <FaArrowRight />
-          </button>
-        </motion.div>
+        {/* Conditionally render the "View Full Agenda" button if not on the /agenda page */}
+        {isNotAgendaPage && (
+          <motion.div
+            className="text-center mt-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5 }}
+          >
+            <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md flex items-center justify-center mx-auto space-x-2">
+              <span>View Full Agenda</span>
+              <FaArrowRight />
+            </button>
+          </motion.div>
+        )}
       </div>
     </div>
   );

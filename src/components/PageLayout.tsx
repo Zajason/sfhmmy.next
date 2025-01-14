@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
-import Navbar from "../components/navbar/navbar_main";
+import Navbar from "./navbar/navbar_main";
+import Footer from "./footer";
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -11,6 +12,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({ children, isLoggedIn }) => {
     <>
       <Navbar isLoggedIn={isLoggedIn} />
       <main>{children}</main>
+      <Footer/>
     </>
   );
 };

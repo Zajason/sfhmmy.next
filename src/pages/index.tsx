@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link as ScrollLink, Element } from "react-scroll";
-import HeroSection from "@/components/HeroSection";
-import SpeakersLite from "../components/speakerCarousel";
-import AboutUs from "../components/section_about_us";
-import PageLayout from "../components/PageLayout";
+import HeroSection from "@/components/index/HeroSection";
+import SpeakersLite from "../components/index/speakerCarousel";
+import AboutUs from "../components/index/section_about_us";
 import Agenda from "../components/agenda";
 import Register from "./register";
-import Footer from "../components/footer";
 import { useTheme } from "../utils/ThemeContext";
-import SubjectsSection from "@/components/subjectSection";
+import SubjectsSection from "@/components/index/subjectSection";
 
 
 
@@ -33,7 +31,7 @@ const ScrollableHome: React.FC = () => {
   }, []);
 
   return (
-      <PageLayout isLoggedIn={false}>
+    <>
         <Element name="welcomeSection" className="welcomeSection">
           <HeroSection />
         </Element>
@@ -57,9 +55,7 @@ const ScrollableHome: React.FC = () => {
         <Element name="registerSection" className="section">
           <Register />
         </Element>
-
-        <Footer />
-      </PageLayout>
+        </>
   );
 };
 

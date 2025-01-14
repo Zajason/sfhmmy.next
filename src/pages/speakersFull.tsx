@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { speakersData } from "../data/speakersData"; // Adjust the path as necessary
 import { useTheme } from "../utils/ThemeContext"; // Ensure ThemeContext is correctly implemented
 import Image from "next/image"; // Import Next.js Image component for optimized images
+import { motion } from "framer-motion"; // Import framer-motion for animations
 
 const SpeakersFull = () => {
   const router = useRouter();
@@ -20,10 +21,14 @@ const SpeakersFull = () => {
       <h1 className={`text-3xl ${textColor} mb-8`}>All Speakers</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {speakersData.map((speaker, idx) => (
-          <div
+          <motion.div
             key={idx}
             className={`p-4 ${cardBackgroundColor} rounded-lg shadow-lg text-center cursor-pointer`}
             onClick={() => router.push(`/speakers/${speaker.name}`)} // Use router.push for navigation
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: idx * 0.1 }} // Delay to stagger animation
+            whileTap={{ scale: 0.95 }} // Scale down on tap for interaction
           >
             {/* Speaker Image */}
             <Image
@@ -42,7 +47,7 @@ const SpeakersFull = () => {
             <blockquote className={`mt-4 ${secondaryTextColor}`}>
               {speaker.quote}
             </blockquote>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
