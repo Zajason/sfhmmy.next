@@ -1,11 +1,19 @@
-import React from "react";
-import { useRouter } from "next/router"; // Use Next.js router
-import { Meteors } from "../components/meteorAnimation"; // Adjust the path as needed
-import { useTheme } from "../utils/ThemeContext"; // Ensure the path is correct
+import React, { useState } from "react"; // Add useState
+import { useRouter } from "next/router";
+import { Meteors } from "../components/meteorAnimation";
+import { useTheme } from "../utils/ThemeContext";
+import { loginUser } from "../apis/AuthApi";
+import { useMockAuth } from "../context/mockAuthContext"; // Add mockAuth context
 
 const SignIn = () => {
   const router = useRouter();
   const { theme } = useTheme();
+  const { setSignedIn } = useMockAuth(); // Get setSignedIn from context
+  
+  // Add state for form fields
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   // Set colors based on the theme
   const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
@@ -17,13 +25,21 @@ const SignIn = () => {
   const buttonHoverColor =
     theme === "dark" ? "hover:bg-blue-600" : "hover:bg-blue-700";
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Sign-in logic goes here
-
-    // Navigate to the main page after successful sign-in
-    router.push("/");
+    setError(""); // Clear any previous errors
+    
+    try {
+      // Use the mock login function (replace with real API when ready)
+      await loginUser({ email, password });
+      setSignedIn(true); // Update auth context state
+      router.push('/'); // Redirect home
+    } catch (error) {
+      setError("Invalid username or password"); // Show error message
+    }
   };
+
+  
 
   return (
     <div
@@ -40,19 +56,27 @@ const SignIn = () => {
       >
         <h2 className={`${textColor} text-2xl mb-6`}>Sign In</h2>
 
+        {/* Display error message if any */}
+        {error && (
+          <div className="mb-4 text-red-500 text-sm">{error}</div>
+        )}
+
         <form className="w-64" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               className={`block ${textColor} text-sm font-bold mb-2`}
-              htmlFor="name"
+              htmlFor="email"
             >
-              Username
+              Email
             </label>
             <input
-              id="name"
-              type="text"
-              placeholder="Enter your username"
+              id="email"
+              type="email" // Changed to email type
+              placeholder="Enter your email"
+              value={email} // Connect to state
+              onChange={(e) => setEmail(e.target.value)} // Update state
               className={`w-full px-3 py-2 ${inputBackgroundColor} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              required
             />
           </div>
 
@@ -67,7 +91,10 @@ const SignIn = () => {
               id="password"
               type="password"
               placeholder="Enter your password"
+              value={password} // Connect to state
+              onChange={(e) => setPassword(e.target.value)} // Update state
               className={`w-full px-3 py-2 ${inputBackgroundColor} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              required
             />
           </div>
 
@@ -79,13 +106,7 @@ const SignIn = () => {
           </button>
         </form>
 
-        {/* Not yet registered button -> navigate to register */}
-        <button
-          onClick={() => router.push("/register")}
-          className="mt-4 text-blue-400 underline hover:text-blue-500"
-        >
-          Not yet registered?
-        </button>
+        {/* Rest of the component remains the same */}
       </div>
     </div>
   );

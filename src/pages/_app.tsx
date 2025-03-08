@@ -1,16 +1,23 @@
 import "../styles/global.css";
 import type { AppProps } from "next/app";
-import { MockAuthProvider } from "../context/mockAuthContext"; // Adjust path if necessary
-import { ThemeProvider } from "../utils/ThemeContext"; // Adjust path if necessary
+import { MockAuthProvider } from "../context/mockAuthContext";
+import { ThemeProvider } from "../utils/ThemeContext";
 import PageLayout from "../components/PageLayout";
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+function MyAppContent({ Component, pageProps }: AppProps) {
+  
+  return (
+    <PageLayout>
+      <Component {...pageProps} />
+    </PageLayout>
+  )
+}
+
+export default function MyApp({ Component, pageProps, router }: AppProps) {
   return (
     <ThemeProvider>
       <MockAuthProvider>
-      <PageLayout isLoggedIn={false}>
-        <Component {...pageProps} />
-        </PageLayout>
+        <MyAppContent Component={Component} pageProps={pageProps} router={router} />
       </MockAuthProvider>
     </ThemeProvider>
   );

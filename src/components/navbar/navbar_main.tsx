@@ -1,21 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "../../utils/ThemeContext";
-import { motion, AnimatePresence } from "framer-motion"; // Import AnimatePresence for exit animations
+import { motion, AnimatePresence } from "framer-motion";
+import { useMockAuth } from "../../context/mockAuthContext";
+
+
 
 interface NavbarProps {
-  isLoggedIn: boolean;
+  userName?: string;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
+const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
   const { theme } = useTheme();
   const router = useRouter();
+  const { signedIn, setSignedIn } = useMockAuth();
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Track the mobile menu state
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null); // Track the hovered main menu item for desktop
-  const [openIndex, setOpenIndex] = useState<number | null>(null); // Track the opened submenu in mobile
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+
+  // Close menu when route changes
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsMenuOpen(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router]);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      // Disable scrolling on the body when menu is open
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Re-enable scrolling when menu is closed
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Cleanup function to ensure scrolling is re-enabled when component unmounts
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isMenuOpen]);
 
   const logoSrc =
     theme === "dark"
@@ -49,113 +83,167 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
 
   const isActive = (href: string) => router.pathname === href;
 
-  // Function to handle hover start on desktop
   const handleHoverStart = (index: number) => {
-    setHoveredIndex(index); // Show the submenu when hovering over the main item
+    setHoveredIndex(index);
   };
 
-  // Function to handle hover end on desktop
   const handleHoverEnd = () => {
-    setHoveredIndex(null); // Hide the submenu when not hovering over the main item or submenu
+    setHoveredIndex(null);
   };
 
-  // Function to handle toggle on mobile
   const handleToggle = (index: number) => {
     if (openIndex === index) {
-      setOpenIndex(null); // Close submenu if it's already open
+      setOpenIndex(null);
     } else {
-      setOpenIndex(index); // Open the clicked submenu
+      setOpenIndex(index);
     }
+  };
+
+  const handleLogout = () => {
+    setSignedIn(false);
+    router.push('/');
+  };
+
+  const handleLogin = () => {
+    router.push('/signIn');
+  };
+
+  const handleRegister = () => {
+    router.push('/register');
   };
 
   return (
     <div className="fixed top-0 left-0 w-full bg-black bg-opacity-50 text-white shadow-md z-50">
-      <div className="container mx-auto px-36">
-        <div className="flex items-center justify-between">
-          <Link href="/">
-            <Image
-              src={logoSrc}
-              alt="Logo"
-              width={80}
-              height={80}
-              className="cursor-pointer"
-            />
-          </Link>
+      {/* Navigation content */}
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo on Left */}
+          <div className="flex-shrink-0">
+            <Link href="/">
+              <Image
+                src={logoSrc}
+                alt="Logo"
+                width={90}
+                height={90}
+                className="cursor-pointer"
+              />
+            </Link>
+          </div>
 
-          {/* Desktop Navbar */}
-          <div className="hidden md:flex flex-1 ml-8">
-            <div className="w-full flex justify-evenly items-center">
-              {navItems.map((item, index) =>
-                item.subItems ? (
-                  <div
-                    key={index}
-                    className="relative"
-                    onMouseEnter={() => handleHoverStart(index)} // Show submenu on hover
-                    onMouseLeave={handleHoverEnd} // Hide submenu on mouse leave
+          {/* Navigation Links in Center */}
+          <div className="hidden md:flex justify-center flex-1 space-x-6">
+            {navItems.map((item, index) =>
+              item.subItems ? (
+                <div
+                  key={index}
+                  className="relative"
+                  onMouseEnter={() => handleHoverStart(index)}
+                  onMouseLeave={handleHoverEnd}
+                >
+                  <motion.span
+                    className="cursor-pointer flex items-center"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <motion.span
-                      className="cursor-pointer flex items-center"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.2 }}
+                    {item.label}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 ml-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                     >
-                      {item.label}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 ml-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </motion.span>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </motion.span>
 
-                    {/* Submenu */}
-                    <AnimatePresence>
-                      {hoveredIndex === index && (
-                        <motion.div
-                          className="absolute left-0 top-full mt-2 py-2 w-48 bg-gray-900 rounded-md shadow-xl z-50"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          transition={{ duration: 0.2 }}
-                          onMouseEnter={() => setHoveredIndex(index)} // Keep submenu open on hover
-                          onMouseLeave={handleHoverEnd} // Hide submenu on mouse leave
-                        >
-                          {item.subItems.map((subItem, subIndex) => (
-                            <Link key={subIndex} href={subItem.href}>
-                              <span
-                                className={`block px-4 py-2 hover:bg-gray-800 ${
-                                  isActive(subItem.href) ? "text-blue-400" : ""
-                                }`}
-                              >
-                                {subItem.label}
-                              </span>
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <Link key={index} href={item.href}>
-                    <motion.span
-                      className={`hover:text-blue-400 cursor-pointer ${
-                        isActive(item.href) ? "text-blue-400" : ""
-                      }`}
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      {item.label}
-                    </motion.span>
+                  <AnimatePresence>
+                    {hoveredIndex === index && (
+                      <motion.div
+                        className="absolute left-0 top-full mt-2 py-2 w-48 bg-gray-900 rounded-md shadow-xl z-50"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2 }}
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseLeave={handleHoverEnd}
+                      >
+                        {item.subItems.map((subItem, subIndex) => (
+                          <Link key={subIndex} href={subItem.href}>
+                            <span
+                              className={`block px-4 py-2 hover:bg-gray-800 ${
+                                isActive(subItem.href) ? "text-blue-400" : ""
+                              }`}
+                            >
+                              {subItem.label}
+                            </span>
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <Link key={index} href={item.href}>
+                  <motion.span
+                    className={`hover:text-blue-400 cursor-pointer ${
+                      isActive(item.href) ? "text-blue-400" : ""
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {item.label}
+                  </motion.span>
+                </Link>
+              )
+            )}
+          </div>
+
+          {/* Auth Buttons on Right */}
+          <div className="hidden md:flex items-center space-x-4">
+            {signedIn ? (
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <Link href="/profile">
+                    <div className="flex items-center space-x-2 cursor-pointer">
+                      <Image
+                        src="/images/others/default.jpg"
+                        alt="Profile"
+                        width={30}
+                        height={30}
+                        className="rounded-full"
+                      />
+                      <span className="text-white text-sm">{userName}</span>
+                    </div>
                   </Link>
-                )
-              )}
-            </div>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-600 hover:bg-red-700 text-white text-sm py-1 px-3 rounded-md transition duration-300"
+                >
+                  Log Out
+                </button>
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={handleLogin}
+                  className="bg-transparent hover:bg-blue-500 text-white border border-white hover:border-transparent py-1 px-3 rounded-md transition duration-300"
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={handleRegister}
+                  className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-3 rounded-md transition duration-300"
+                >
+                  Sign Up
+                </button>
+              </>
+            )}
           </div>
 
           {/* Hamburger Menu for Mobile */}
@@ -183,57 +271,84 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="md:hidden bg-black bg-opacity-80 text-white w-full fixed top-0 left-0 z-50"
+            className="md:hidden bg-black bg-opacity-90 text-white w-full fixed top-0 left-0 z-50 flex flex-col h-screen"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "100vh", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="flex flex-col p-4">
+            {/* Close button at the top */}
+            <div className="p-4 flex justify-end">
+              <button
+                className="text-white"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Navigation Items with scroll - taking up most of the space */}
+            <div className="flex-grow overflow-y-auto px-8 py-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900">
               {navItems.map((item, index) =>
                 item.subItems ? (
-                  <div key={index} className="relative">
-                    <motion.span
-                      className="cursor-pointer flex items-center mb-2"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.2 }}
-                      onClick={() => handleToggle(index)} // Toggle submenu on click
+                  <div key={index} className="mb-6 w-full">
+                    <motion.div
+                      className="cursor-pointer flex items-center justify-between text-xl font-medium bg-gray-800 bg-opacity-50 p-3 rounded-md"
+                      onClick={() => handleToggle(index)}
+                      whileHover={{ backgroundColor: 'rgba(75, 85, 99, 0.7)' }}
                     >
-                      {item.label}
-                      <svg
+                      <span>{item.label}</span>
+                      <motion.svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 ml-1"
+                        className="h-5 w-5"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        animate={{ rotate: openIndex === index ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
                       >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           d="M19 9l-7 7-7-7"
                         />
-                      </svg>
-                    </motion.span>
+                      </motion.svg>
+                    </motion.div>
 
                     {/* Submenu for Mobile */}
                     <AnimatePresence>
                       {openIndex === index && (
                         <motion.div
-                          className="py-2 pl-4 bg-gray-900 rounded-md shadow-xl"
+                          className="bg-gray-800 rounded-md shadow-xl mt-1 border-l-2 border-blue-400 overflow-hidden"
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
                         >
                           {item.subItems.map((subItem, subIndex) => (
                             <Link key={subIndex} href={subItem.href}>
-                              <span
-                                className={`block px-4 py-2 hover:bg-gray-800 ${
-                                  isActive(subItem.href) ? "text-blue-400" : ""
+                              <motion.div
+                                className={`px-4 py-3 hover:bg-gray-700 transition-colors ${
+                                  isActive(subItem.href) ? "text-blue-400 font-medium" : ""
                                 }`}
+                                whileHover={{ x: 4 }}
+                                transition={{ duration: 0.2 }}
                               >
                                 {subItem.label}
-                              </span>
+                              </motion.div>
                             </Link>
                           ))}
                         </motion.div>
@@ -241,27 +356,60 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <Link key={index} href={item.href}>
-                    <motion.span
-                      className={`hover:text-blue-400 cursor-pointer mb-2 ${
-                        isActive(item.href) ? "text-blue-400" : ""
+                  <Link key={index} href={item.href} className="block mb-6 w-full">
+                    <motion.div
+                      className={`text-xl font-medium hover:text-blue-400 transition-colors bg-gray-800 bg-opacity-50 p-3 rounded-md ${
+                        isActive(item.href) ? "text-blue-400 border-l-2 border-blue-400 pl-2" : ""
                       }`}
-                      whileHover={{ scale: 1.05 }}
+                      whileHover={{ x: 4, backgroundColor: 'rgba(75, 85, 99, 0.7)' }}
                       transition={{ duration: 0.2 }}
                     >
                       {item.label}
-                    </motion.span>
+                    </motion.div>
                   </Link>
                 )
               )}
+            </div>
 
-              {/* Close button for mobile menu */}
-              <button
-                className="mt-4 text-white"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Close Menu
-              </button>
+            {/* Auth Buttons at the Bottom with improved styling */}
+            <div className="p-6 w-full bg-gray-900">
+              {signedIn ? (
+                <div className="flex flex-col items-center space-y-4">
+                  <Link href="/profile">
+                    <div className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
+                      <Image
+                        src="/images/others/default.jpg"
+                        alt="Profile"
+                        width={50}
+                        height={50}
+                        className="rounded-full border-2 border-blue-400"
+                      />
+                      <span className="text-white text-lg font-medium">{userName}</span>
+                    </div>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-md transition duration-300 w-full font-medium mt-4"
+                  >
+                    Log Out
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col space-y-4 w-full">
+                  <button
+                    onClick={handleLogin}
+                    className="bg-transparent hover:bg-blue-500 text-white border-2 border-white hover:border-transparent py-3 px-4 rounded-md transition duration-300 w-full font-medium"
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={handleRegister}
+                    className="bg-blue-500 hover:bg-blue-700 text-white py-3 px-4 rounded-md transition duration-300 w-full font-medium"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
@@ -271,7 +419,7 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="md:hidden bg-black bg-opacity-80 fixed top-0 left-0 w-full h-full z-40"
+            className="md:hidden bg-black bg-opacity-50 fixed top-0 left-0 w-full h-full z-40"
             onClick={() => setIsMenuOpen(false)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.5 }}

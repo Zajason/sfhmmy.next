@@ -1,19 +1,16 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import Navbar from "./navbar/navbar_main";
 import Footer from "./footer";
+import { useMockAuth } from "../context/mockAuthContext";
 
-interface PageLayoutProps {
-  children: ReactNode;
-  isLoggedIn: boolean;
-}
-
-const PageLayout: React.FC<PageLayoutProps> = ({ children, isLoggedIn }) => {
+const PageLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  
   return (
-    <>
-      <Navbar isLoggedIn={isLoggedIn} />
-      <main>{children}</main>
-      <Footer/>
-    </>
+    <div className="flex flex-col min-h-screen">
+      <Navbar userName="User" />
+      <main className="flex-grow">{children}</main>
+      <Footer />
+    </div>
   );
 };
 
