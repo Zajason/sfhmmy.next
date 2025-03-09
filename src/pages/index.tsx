@@ -8,9 +8,6 @@ import Register from "./register";
 import { useTheme } from "../utils/ThemeContext";
 import SubjectsSection from "@/components/index/subjectSection";
 
-
-
-
 const ScrollableHome: React.FC = () => {
   const { theme } = useTheme();
   const [isMiddleVisible, setIsMiddleVisible] = useState(false);
@@ -32,30 +29,26 @@ const ScrollableHome: React.FC = () => {
 
   return (
     <>
-        <Element name="welcomeSection" className="welcomeSection">
-          <HeroSection />
-        </Element>
+      <Element name="welcomeSection" className="welcomeSection">
+        <HeroSection />
+      </Element>
 
-        <Element name="middleSection" className="section">
-          <AboutUs />
-        </Element>
+      <Element name="middleSection" className="section">
+        <AboutUs />
+      </Element>
 
-        <Element name="subjectSection" className="section">
-          <SubjectsSection />
-        </Element>
+      <Element name="subjectSection" className="section">
+        <SubjectsSection />
+      </Element>
 
-        <Element name="speakersSection" className="section">
-          <SpeakersLite />
-        </Element>
+      <Element name="speakersSection" className="section">
+        <SpeakersLite />
+      </Element>
 
-        <Element name="agendaSection" className="section">
-          <Agenda />
-        </Element>
-
-        <Element name="registerSection" className="section">
-          <Register />
-        </Element>
-        </>
+      <Element name="agendaSection" className="section">
+        <Agenda />
+      </Element>
+    </>
   );
 };
 

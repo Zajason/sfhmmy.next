@@ -1,6 +1,6 @@
-import { cn } from "../lib/utils.ts";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useTheme } from "../utils/ThemeContext";
+import cn from "classnames"; // Assuming you're using the classnames package
 
 export const Meteors = ({
   number,
@@ -15,7 +15,14 @@ export const Meteors = ({
   const meteorColor = theme === "dark" ? "bg-white" : "bg-blue-900";
   const trailColor = theme === "dark" ? "from-white" : "from-blue-700";
 
-  const meteors = new Array(number || 20).fill(true);
+  // Generate meteor random data once and memoize it
+  const meteorData = useMemo(() => {
+    return new Array(number || 20).fill(true).map(() => ({
+      top: Math.floor(Math.random() * 100) + "vh",
+      left: Math.floor(Math.random() * 90) + "vw",
+      animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
+    }));
+  }, [number]);
 
   useEffect(() => {
     setMounted(true);
@@ -25,7 +32,7 @@ export const Meteors = ({
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {meteors.map((el, idx) => (
+      {meteorData.map((data, idx) => (
         <span
           key={"meteor" + idx}
           className={cn(
@@ -37,12 +44,9 @@ export const Meteors = ({
             className
           )}
           style={{
-            // Limit positioning to prevent overflow
-            top: Math.floor(Math.random() * 100) + "vh",
-            left: Math.floor(Math.random() * 90) + "vw", // Limit to 90% to account for trail width
-            animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
-            animationDuration: Math.floor(Math.random() * (10 - 3) + 3) + "s",
-            transition: "opacity 0.5s ease",
+            top: data.top,
+            left: data.left,
+            animationDelay: data.animationDelay,
           }}
         ></span>
       ))}

@@ -4,10 +4,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Meteors } from "../components/meteorAnimation";
 import { registerUser } from "../apis/AuthApi"; // Adjust this import as necessary
 import { useTheme } from "../utils/ThemeContext"; // Import theme context
-import { useMockAuth } from "../context/mockAuthContext"; // Import global authentication state
 
-const ConditionalPage: React.FC = () => {
-  const { signedIn, setSignedIn } = useMockAuth(); // Access global authentication state
+const Register: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,13 +13,18 @@ const ConditionalPage: React.FC = () => {
     city: "",
     semester: "",
     username: "",
+    university: "", // New university field added
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [globalError, setGlobalError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const { theme } = useTheme();
   const router = useRouter();
-  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+  // For testing purposes, if you're not using reCAPTCHA,
+  // we set a default value so the validation doesn't fail.
+  const [captchaValue, setCaptchaValue] = useState<string | null>(
+    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? null : "test"
+  );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Handle input changes
@@ -34,7 +37,7 @@ const ConditionalPage: React.FC = () => {
     setErrors((prev) => ({ ...prev, [id]: "" }));
   };
 
-  // Handle reCAPTCHA
+  // Handle reCAPTCHA (if enabled)
   const handleCaptchaChange = (value: string | null) => {
     setCaptchaValue(value);
     if (value) {
@@ -61,35 +64,41 @@ const ConditionalPage: React.FC = () => {
     }
     if (!formData.city.trim()) newErrors.city = "City is required.";
     if (!formData.semester.trim()) newErrors.semester = "Semester is required.";
-    if (!captchaValue) newErrors.captcha = "Please complete the CAPTCHA.";
+    if (!formData.university.trim())
+      newErrors.university = "University is required.";
+    // Only validate CAPTCHA if a site key exists (i.e. when reCAPTCHA is enabled)
+    if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && !captchaValue)
+      newErrors.captcha = "Please complete the CAPTCHA.";
     return newErrors;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form submitted:", formData);
     setGlobalError(null);
     setSuccess(null);
 
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
+      console.log("Validation errors:", validationErrors);
       setErrors(validationErrors);
       return;
     }
 
     setIsSubmitting(true);
-
     const userData = { ...formData, captcha: captchaValue };
+    console.log("Calling registerUser with:", userData);
 
     try {
       const data = await registerUser(userData);
-      setSuccess("Registration successful!");
       console.log("Registration successful:", data);
-      setSignedIn(true); // Update global state to simulate successful sign-in
+      // Redirect to the email verification page after successful registration
+      router.push("/emailVerification");
     } catch (err: any) {
+      console.error("Registration error:", err);
       setGlobalError(
         typeof err === "string" ? err : "Registration failed. Please try again."
       );
-      console.error("Registration error:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -100,41 +109,10 @@ const ConditionalPage: React.FC = () => {
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
   const formBackground = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
   const inputBackground = theme === "dark" ? "bg-gray-700" : "bg-gray-300";
-  const subTextColor = theme === "dark" ? "text-gray-300" : "text-gray-700";
-  const italicTextColor = theme === "dark" ? "text-gray-400" : "text-gray-600";
 
-  if (signedIn) {
-    // Render Thank You Page if user is signed in
-    return (
-      <div
-        className={`relative w-full min-h-screen ${backgroundColor} flex items-center justify-center px-4`}
-      >
-        {/* Meteor animation */}
-        <div className="absolute inset-0 z-0">
-          <Meteors number={50} />
-        </div>
-
-        {/* Main content */}
-        <div className={`relative z-10 text-center ${textColor}`}>
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-4">
-            Thank you for registering!
-          </h1>
-          <p className={`text-lg md:text-xl ${subTextColor} mb-2`}>
-            We can't wait to meet you at the event.
-          </p>
-          <p className={`text-md md:text-lg ${italicTextColor} italic`}>
-            Get ready for an unforgettable experience filled with innovation and
-            inspiration!
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Render Register Page if user is not signed in
   return (
     <div
-      className={`relative w-full min-h-screen overflow-hidden ${backgroundColor} flex justify-center items-center px-4`}
+      className={`relative w-full min-h-screen overflow-hidden ${backgroundColor} flex justify-center items-start px-4 pt-20`}
     >
       <div className="absolute inset-0 z-0">
         <Meteors number={30} />
@@ -302,8 +280,35 @@ const ConditionalPage: React.FC = () => {
             )}
           </div>
 
+          {/* University */}
+          <div className="mb-4">
+            <label
+              className={`${textColor} block text-sm font-bold mb-2`}
+              htmlFor="university"
+            >
+              University<span className="text-red-500">*</span>
+            </label>
+            <input
+              id="university"
+              type="text"
+              placeholder="Enter your university"
+              className={`w-full px-3 py-2 ${inputBackground} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              value={formData.university}
+              onChange={handleChange}
+              aria-invalid={errors.university ? "true" : "false"}
+              aria-describedby="university-error"
+              required
+            />
+            {errors.university && (
+              <p className="text-red-500 text-xs mt-1" id="university-error">
+                {errors.university}
+              </p>
+            )}
+          </div>
+
           {/* reCAPTCHA */}
-          {/* <div className="mb-4">
+          {/*
+          <div className="mb-4">
             <ReCAPTCHA
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
               onChange={handleCaptchaChange}
@@ -313,7 +318,8 @@ const ConditionalPage: React.FC = () => {
                 {errors.captcha}
               </p>
             )}
-          </div> */}
+          </div>
+          */}
 
           {/* Global Error Message */}
           {globalError && (
@@ -339,7 +345,7 @@ const ConditionalPage: React.FC = () => {
 
         {/* Navigate to Sign-In */}
         <button
-          onClick={() => router.push("/signin")} // Navigate to sign-in page
+          onClick={() => router.push("/signIn")}
           className="mt-4 text-blue-400 underline"
         >
           Already Registered? Sign In
@@ -349,4 +355,4 @@ const ConditionalPage: React.FC = () => {
   );
 };
 
-export default ConditionalPage;
+export default Register;

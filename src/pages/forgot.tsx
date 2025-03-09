@@ -1,19 +1,16 @@
-import React, { useState } from "react"; // Add useState
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Meteors } from "../components/meteorAnimation";
 import { useTheme } from "../utils/ThemeContext";
-import { loginUser } from "../apis/AuthApi";
-import { useMockAuth } from "../context/mockAuthContext"; // Add mockAuth context
 
-const SignIn = () => {
+const ForgotPassword = () => {
   const router = useRouter();
   const { theme } = useTheme();
-  const { setSignedIn } = useMockAuth(); // Get setSignedIn from context
 
-  // Add state for form fields
+  // State for the email, error message, and success message
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   // Set colors based on the theme
   const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
@@ -27,15 +24,21 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear any previous errors
+    setError("");
+    setMessage("");
 
     try {
-      // Use the mock login function (replace with real API when ready)
-      await loginUser({ email, password });
-      setSignedIn(true); // Update auth context state
-      router.push("/"); // Redirect home
-    } catch (error) {
-      setError("Invalid username or password"); // Show error message
+      // Here you would normally call your API for password reset,
+      // e.g., await forgotPassword({ email });
+      // For now, we simulate success:
+      setMessage("Password reset link has been sent to your email.");
+
+      // Redirect back to the sign in page after 3 seconds
+      setTimeout(() => {
+        router.push("/"); // Adjust this route if your sign in page is different
+      }, 3000);
+    } catch (err) {
+      setError("An error occurred. Please try again.");
     }
   };
 
@@ -43,19 +46,22 @@ const SignIn = () => {
     <div
       className={`relative w-full h-screen overflow-hidden ${backgroundColor} flex justify-center items-center`}
     >
-      {/* Meteor Animation */}
+      {/* Background Meteor Animation */}
       <div className="absolute inset-0 z-0">
         <Meteors number={30} />
       </div>
 
-      {/* Sign-In Form Card */}
+      {/* Forgot Password Form Card */}
       <div
         className={`relative z-10 ${cardBackgroundColor} p-8 rounded-lg shadow-lg flex flex-col items-center`}
       >
-        <h2 className={`${textColor} text-2xl mb-6`}>Sign In</h2>
+        <h2 className={`${textColor} text-2xl mb-6`}>Forgot Password</h2>
 
-        {/* Display error message if any */}
         {error && <div className="mb-4 text-red-500 text-sm">{error}</div>}
+
+        {message && (
+          <div className="mb-4 text-green-500 text-sm">{message}</div>
+        )}
 
         <form className="w-64" onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -67,54 +73,24 @@ const SignIn = () => {
             </label>
             <input
               id="email"
-              type="email" // Changed to email type
+              type="email"
               placeholder="Enter your email"
-              value={email} // Connect to state
-              onChange={(e) => setEmail(e.target.value)} // Update state
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className={`w-full px-3 py-2 ${inputBackgroundColor} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               required
             />
           </div>
-
-          <div className="mb-6">
-            <label
-              className={`block ${textColor} text-sm font-bold mb-2`}
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Enter your password"
-              value={password} // Connect to state
-              onChange={(e) => setPassword(e.target.value)} // Update state
-              className={`w-full px-3 py-2 ${inputBackgroundColor} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              required
-            />
-          </div>
-
           <button
             type="submit"
             className={`w-full ${buttonBackgroundColor} ${textColor} font-bold py-2 px-4 rounded-lg ${buttonHoverColor}`}
           >
-            Sign In
+            Reset Password
           </button>
         </form>
-
-        {/* Forgot Password Button */}
-        <div className="mt-4">
-          <button
-            type="button"
-            onClick={() => router.push("/forgot")}
-            className={`text-sm underline ${textColor} hover:text-blue-400`}
-          >
-            Forgot Password?
-          </button>
-        </div>
       </div>
     </div>
   );
 };
 
-export default SignIn;
+export default ForgotPassword;
