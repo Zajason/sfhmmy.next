@@ -11,9 +11,10 @@ const Register: React.FC = () => {
     email: "",
     password: "",
     city: "",
-    semester: "",
-    username: "",
+    year: "12",
     university: "", // New university field added
+    school:"test",
+    
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [globalError, setGlobalError] = useState<string | null>(null);
@@ -56,7 +57,7 @@ const Register: React.FC = () => {
     ) {
       newErrors.email = "Invalid email address.";
     }
-    if (!formData.username.trim()) newErrors.username = "Username is required.";
+    
     if (!formData.password) {
       newErrors.password = "Password is required.";
     } else if (formData.password.length < 6) {
@@ -176,31 +177,7 @@ const Register: React.FC = () => {
             )}
           </div>
 
-          {/* Username */}
-          <div className="mb-4">
-            <label
-              className={`${textColor} block text-sm font-bold mb-2`}
-              htmlFor="username"
-            >
-              Username<span className="text-red-500">*</span>
-            </label>
-            <input
-              id="username"
-              type="text"
-              placeholder="Enter your username"
-              className={`w-full px-3 py-2 ${inputBackground} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              value={formData.username}
-              onChange={handleChange}
-              aria-invalid={errors.username ? "true" : "false"}
-              aria-describedby="username-error"
-              required
-            />
-            {errors.username && (
-              <p className="text-red-500 text-xs mt-1" id="username-error">
-                {errors.username}
-              </p>
-            )}
-          </div>
+         
 
           {/* Password */}
           <div className="mb-4">
