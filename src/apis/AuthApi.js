@@ -9,15 +9,15 @@ export const registerUser = async (userData) => {
   }
 };
 
-
-
-
 export const loginUser = async (loginData) => {
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/login', loginData);
     console.log('Login successful:', response.data);
-    // You can store the token or perform additional actions here
+    const token = response.data.token; // Assuming the token is in response.data.token
+    localStorage.setItem('authToken', token); // Store the token in local storage
+    return token;
   } catch (error) {
     console.error('Error during login:', error.response ? error.response.data : error.message);
+    throw error;
   }
 };

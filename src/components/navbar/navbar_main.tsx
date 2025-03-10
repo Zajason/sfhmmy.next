@@ -4,9 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "../../utils/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { useMockAuth } from "../../context/mockAuthContext";
-
-
+import { useAuth } from "../../context/authContext";
 
 interface NavbarProps {
   userName?: string;
@@ -15,39 +13,39 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
   const { theme } = useTheme();
   const router = useRouter();
-  const { signedIn, setSignedIn } = useMockAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { isSignedIn, setIsSignedIn } = useAuth();
 
-
+  
   // Close menu when route changes
   useEffect(() => {
     const handleRouteChange = () => {
       setIsMenuOpen(false);
     };
 
-    router.events.on('routeChangeStart', handleRouteChange);
+    router.events.on("routeChangeStart", handleRouteChange);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      router.events.off('routeChangeStart', handleRouteChange);
+      router.events.off("routeChangeStart", handleRouteChange);
     };
   }, [router]);
 
   useEffect(() => {
     if (isMenuOpen) {
       // Disable scrolling on the body when menu is open
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
       // Re-enable scrolling when menu is closed
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     }
-    
+
     // Cleanup function to ensure scrolling is re-enabled when component unmounts
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [isMenuOpen]);
 
@@ -100,16 +98,17 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
   };
 
   const handleLogout = () => {
-    setSignedIn(false);
-    router.push('/');
+    localStorage.removeItem("authToken");
+    setIsSignedIn(false);
+    router.push("/");
   };
 
   const handleLogin = () => {
-    router.push('/signIn');
+    router.push("/signIn");
   };
 
   const handleRegister = () => {
-    router.push('/register');
+    router.push("/register");
   };
 
   return (
@@ -205,7 +204,7 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
 
           {/* Auth Buttons on Right */}
           <div className="hidden md:flex items-center space-x-4">
-            {signedIn ? (
+            {isSignedIn ? (
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
                   <Link href="/profile">
@@ -299,7 +298,7 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
                 </svg>
               </button>
             </div>
-            
+
             {/* Navigation Items with scroll - taking up most of the space */}
             <div className="flex-grow overflow-y-auto px-8 py-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900">
               {navItems.map((item, index) =>
@@ -308,7 +307,7 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
                     <motion.div
                       className="cursor-pointer flex items-center justify-between text-xl font-medium bg-gray-800 bg-opacity-50 p-3 rounded-md"
                       onClick={() => handleToggle(index)}
-                      whileHover={{ backgroundColor: 'rgba(75, 85, 99, 0.7)' }}
+                      whileHover={{ backgroundColor: "rgba(75, 85, 99, 0.7)" }}
                     >
                       <span>{item.label}</span>
                       <motion.svg
@@ -342,7 +341,9 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
                             <Link key={subIndex} href={subItem.href}>
                               <motion.div
                                 className={`px-4 py-3 hover:bg-gray-700 transition-colors ${
-                                  isActive(subItem.href) ? "text-blue-400 font-medium" : ""
+                                  isActive(subItem.href)
+                                    ? "text-blue-400 font-medium"
+                                    : ""
                                 }`}
                                 whileHover={{ x: 4 }}
                                 transition={{ duration: 0.2 }}
@@ -359,9 +360,14 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
                   <Link key={index} href={item.href} className="block mb-6 w-full">
                     <motion.div
                       className={`text-xl font-medium hover:text-blue-400 transition-colors bg-gray-800 bg-opacity-50 p-3 rounded-md ${
-                        isActive(item.href) ? "text-blue-400 border-l-2 border-blue-400 pl-2" : ""
+                        isActive(item.href)
+                          ? "text-blue-400 border-l-2 border-blue-400 pl-2"
+                          : ""
                       }`}
-                      whileHover={{ x: 4, backgroundColor: 'rgba(75, 85, 99, 0.7)' }}
+                      whileHover={{
+                        x: 4,
+                        backgroundColor: "rgba(75, 85, 99, 0.7)",
+                      }}
                       transition={{ duration: 0.2 }}
                     >
                       {item.label}
@@ -384,7 +390,9 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
                         height={50}
                         className="rounded-full border-2 border-blue-400"
                       />
-                      <span className="text-white text-lg font-medium">{userName}</span>
+                      <span className="text-white text-lg font-medium">
+                        {userName}
+                      </span>
                     </div>
                   </Link>
                   <button

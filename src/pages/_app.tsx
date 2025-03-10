@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import { MockAuthProvider } from "../context/mockAuthContext";
 import { ThemeProvider } from "../utils/ThemeContext";
 import PageLayout from "../components/PageLayout";
+import { AuthProvider } from "../context/authContext";
 
 function MyAppContent({ Component, pageProps }: AppProps) {
   
@@ -16,9 +17,9 @@ function MyAppContent({ Component, pageProps }: AppProps) {
 export default function MyApp({ Component, pageProps, router }: AppProps) {
   return (
     <ThemeProvider>
-      <MockAuthProvider>
+      <AuthProvider>
         <MyAppContent Component={Component} pageProps={pageProps} router={router} />
-      </MockAuthProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

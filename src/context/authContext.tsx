@@ -6,42 +6,45 @@ import React, {
   useEffect,
 } from "react";
 
-// Define the structure of the authentication context
 interface AuthContextType {
-  isSignedIn: boolean; // Track if the user is signed in
-  setSignedIn: (signedIn: boolean) => void; // Function to update sign-in state
+  isSignedIn: boolean;
+  login: (token: string) => void;
+  logout: () => void; // Added missing logout function
+  isLoading: boolean; // Add loading state
+  setIsSignedIn: (isSignedIn: boolean) => void; // Added setter function
 }
 
-// Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Provider component to wrap the app
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Added loading state
 
-  // Example: Load initial state from localStorage (optional)
+  // Proper initialization from authToken
   useEffect(() => {
-    const savedState = localStorage.getItem("isSignedIn");
-    if (savedState === "true") {
-      setIsSignedIn(true);
-    }
+    const token = localStorage.getItem("authToken");
+    setIsSignedIn(!!token);
+    setIsLoading(false); // Set loading to false after initialization
+    
   }, []);
 
-  // Save sign-in state to localStorage whenever it changes (optional)
-  useEffect(() => {
-    localStorage.setItem("isSignedIn", isSignedIn.toString());
-  }, [isSignedIn]);
+  const login = (token: string) => {
+    localStorage.setItem("authToken", token);
+    setIsSignedIn(true); // Fixed typo: setSignedIn -> setIsSignedIn
+  };
+
+  const logout = () => {
+    localStorage.removeItem('authToken');
+    setIsSignedIn(false);
+  };
 
   return (
-    <AuthContext.Provider value={{ isSignedIn, setSignedIn }}>
-      {children}
+    <AuthContext.Provider value={{ isSignedIn,setIsSignedIn, isLoading, login, logout }}>
+      {!isLoading && children}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook to use the AuthContext
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

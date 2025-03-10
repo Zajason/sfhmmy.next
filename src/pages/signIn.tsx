@@ -1,21 +1,22 @@
-import React, { useState } from "react"; // Add useState
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Meteors } from "../components/meteorAnimation";
 import { useTheme } from "../utils/ThemeContext";
 import { loginUser } from "../apis/AuthApi";
-import { useMockAuth } from "../context/mockAuthContext"; // Add mockAuth context
+import { useAuth } from "../context/authContext";
 
 const SignIn = () => {
   const router = useRouter();
   const { theme } = useTheme();
-  const { setSignedIn } = useMockAuth(); // Get setSignedIn from context
+  const { login, isLoading } = useAuth();
 
-  // Add state for form fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { isSignedIn } = useAuth();
 
-  // Set colors based on the theme
+  // Theme variables
   const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const cardBackgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
@@ -25,70 +26,74 @@ const SignIn = () => {
   const buttonHoverColor =
     theme === "dark" ? "hover:bg-blue-600" : "hover:bg-blue-700";
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(""); // Clear any previous errors
+    setError("");
+    setIsSubmitting(true);
 
     try {
-      // Use the mock login function (replace with real API when ready)
-      await loginUser({ email, password });
-      setSignedIn(true); // Update auth context state
-      router.push("/"); // Redirect home
+      const { token } = await loginUser({ email, password });
+      login(token);
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+      router.replace("/").then(() => {
+        // Force a state refresh if needed
+        if (!isSignedIn) {
+          window.location.reload();
+          }
+        });
+      
     } catch (error) {
-      setError("Invalid username or password"); // Show error message
+      setError("Invalid username or password");
+      setIsSubmitting(false);
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className={`${backgroundColor} w-full h-screen flex items-center justify-center`}>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`relative w-full h-screen overflow-hidden ${backgroundColor} flex justify-center items-center`}
-    >
-      {/* Meteor Animation */}
+    <div className={`relative w-full h-screen overflow-hidden ${backgroundColor} flex justify-center items-center`}>
       <div className="absolute inset-0 z-0">
         <Meteors number={30} />
       </div>
 
-      {/* Sign-In Form Card */}
-      <div
-        className={`relative z-10 ${cardBackgroundColor} p-8 rounded-lg shadow-lg flex flex-col items-center`}
-      >
+      <div className={`relative z-10 ${cardBackgroundColor} p-8 rounded-lg shadow-lg flex flex-col items-center`}>
         <h2 className={`${textColor} text-2xl mb-6`}>Sign In</h2>
 
-        {/* Display error message if any */}
         {error && <div className="mb-4 text-red-500 text-sm">{error}</div>}
 
         <form className="w-64" onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label
-              className={`block ${textColor} text-sm font-bold mb-2`}
-              htmlFor="email"
-            >
+            <label className={`block ${textColor} text-sm font-bold mb-2`} htmlFor="email">
               Email
             </label>
             <input
               id="email"
-              type="email" // Changed to email type
+              type="email"
               placeholder="Enter your email"
-              value={email} // Connect to state
-              onChange={(e) => setEmail(e.target.value)} // Update state
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className={`w-full px-3 py-2 ${inputBackgroundColor} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               required
             />
           </div>
 
           <div className="mb-6">
-            <label
-              className={`block ${textColor} text-sm font-bold mb-2`}
-              htmlFor="password"
-            >
+            <label className={`block ${textColor} text-sm font-bold mb-2`} htmlFor="password">
               Password
             </label>
             <input
               id="password"
               type="password"
               placeholder="Enter your password"
-              value={password} // Connect to state
-              onChange={(e) => setPassword(e.target.value)} // Update state
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className={`w-full px-3 py-2 ${inputBackgroundColor} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               required
             />
@@ -96,18 +101,30 @@ const SignIn = () => {
 
           <button
             type="submit"
-            className={`w-full ${buttonBackgroundColor} ${textColor} font-bold py-2 px-4 rounded-lg ${buttonHoverColor}`}
+            disabled={isSubmitting}
+            className={`w-full ${buttonBackgroundColor} ${textColor} font-bold py-2 px-4 rounded-lg transition-all ${
+              isSubmitting ? "opacity-75 cursor-not-allowed" : buttonHoverColor
+            }`}
           >
-            Sign In
+            {isSubmitting ? (
+              <div className="flex items-center justify-center space-x-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <span>Signing In...</span>
+              </div>
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
 
-        {/* Forgot Password Button */}
         <div className="mt-4">
           <button
             type="button"
             onClick={() => router.push("/forgot")}
-            className={`text-sm underline ${textColor} hover:text-blue-400`}
+            className={`text-sm underline ${textColor} hover:text-blue-400 ${
+              isSubmitting ? "cursor-not-allowed" : ""
+            }`}
+            disabled={isSubmitting}
           >
             Forgot Password?
           </button>
