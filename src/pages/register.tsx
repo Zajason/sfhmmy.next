@@ -11,10 +11,9 @@ const Register: React.FC = () => {
     email: "",
     password: "",
     city: "",
-    year: "12",
-    university: "", // New university field added
-    school:"test",
-    
+    year: "",
+    university: "",
+    school: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [globalError, setGlobalError] = useState<string | null>(null);
@@ -57,14 +56,14 @@ const Register: React.FC = () => {
     ) {
       newErrors.email = "Invalid email address.";
     }
-    
     if (!formData.password) {
       newErrors.password = "Password is required.";
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters.";
     }
     if (!formData.city.trim()) newErrors.city = "City is required.";
-    if (!formData.semester.trim()) newErrors.semester = "Semester is required.";
+    if (!formData.school.trim()) newErrors.school = "School is required.";
+    if (!formData.year.trim()) newErrors.year = "Year is required.";
     if (!formData.university.trim())
       newErrors.university = "University is required.";
     // Only validate CAPTCHA if a site key exists (i.e. when reCAPTCHA is enabled)
@@ -177,8 +176,6 @@ const Register: React.FC = () => {
             )}
           </div>
 
-         
-
           {/* Password */}
           <div className="mb-4">
             <label
@@ -231,28 +228,54 @@ const Register: React.FC = () => {
             )}
           </div>
 
-          {/* Semester */}
+          {/* School */}
           <div className="mb-4">
             <label
               className={`${textColor} block text-sm font-bold mb-2`}
-              htmlFor="semester"
+              htmlFor="school"
             >
-              Semester<span className="text-red-500">*</span>
+              School<span className="text-red-500">*</span>
             </label>
             <input
-              id="semester"
+              id="school"
               type="text"
-              placeholder="Enter your semester"
+              placeholder="Enter your school"
               className={`w-full px-3 py-2 ${inputBackground} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              value={formData.semester}
+              value={formData.school}
               onChange={handleChange}
-              aria-invalid={errors.semester ? "true" : "false"}
-              aria-describedby="semester-error"
+              aria-invalid={errors.school ? "true" : "false"}
+              aria-describedby="school-error"
               required
             />
-            {errors.semester && (
-              <p className="text-red-500 text-xs mt-1" id="semester-error">
-                {errors.semester}
+            {errors.school && (
+              <p className="text-red-500 text-xs mt-1" id="school-error">
+                {errors.school}
+              </p>
+            )}
+          </div>
+
+          {/* Year */}
+          <div className="mb-4">
+            <label
+              className={`${textColor} block text-sm font-bold mb-2`}
+              htmlFor="year"
+            >
+              Year<span className="text-red-500">*</span>
+            </label>
+            <input
+              id="year"
+              type="text"
+              placeholder="Enter your year"
+              className={`w-full px-3 py-2 ${inputBackground} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              value={formData.year}
+              onChange={handleChange}
+              aria-invalid={errors.year ? "true" : "false"}
+              aria-describedby="year-error"
+              required
+            />
+            {errors.year && (
+              <p className="text-red-500 text-xs mt-1" id="year-error">
+                {errors.year}
               </p>
             )}
           </div>
