@@ -97,10 +97,18 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    
+    
+    // Add delay for visual feedback
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
     localStorage.removeItem("authToken");
     setIsSignedIn(false);
     router.push("/");
+    
+    
+    
   };
 
   const handleLogin = () => {
