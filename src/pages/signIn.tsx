@@ -30,21 +30,32 @@ const SignIn = () => {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
-
+  
     try {
-      const { token } = await loginUser({ email, password });
-      login(token);
+      // Call the login API and get the token
+      const result = await loginUser({ email, password });
+      console.log("Login result:", result);
       
-      await new Promise(resolve => setTimeout(resolve, 100));
-      router.replace("/").then(() => {
-        // Force a state refresh if needed
-        if (!isSignedIn) {
-          window.location.reload();
-          }
-        });
+      // Check if token exists
+      if (!result || !result.token) {
+        throw new Error("No authentication token received");
+      }
       
+      // Store token using the context's login function
+      login(result.token);
+      
+      // Add a small delay to ensure token is stored
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // Log the token from localStorage to verify it was stored
+      console.log("Token in localStorage:", !!localStorage.getItem('authToken'));
+      
+      // Redirect to profile page
+      router.replace("/profile");
     } catch (error) {
-      setError("Invalid username or password");
+      console.error("Login error:", error);
+      setError("Invalid username or password. Please try again.");
+    } finally {
       setIsSubmitting(false);
     }
   };

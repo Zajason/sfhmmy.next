@@ -8,39 +8,45 @@ import React, {
 
 interface AuthContextType {
   isSignedIn: boolean;
+  setIsSignedIn: (isSignedIn: boolean) => void;
   login: (token: string) => void;
-  logout: () => void; // Added missing logout function
-  isLoading: boolean; // Add loading state
-  setIsSignedIn: (isSignedIn: boolean) => void; // Added setter function
+  logout: () => void;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Added loading state
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Proper initialization from authToken
+  // Check for token on initial load
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    setIsSignedIn(!!token);
-    setIsLoading(false); // Set loading to false after initialization
-    
+    const checkAuth = () => {
+      const token = localStorage.getItem("authToken");
+      console.log("Initial auth check, token exists:", !!token);
+      setIsSignedIn(!!token);
+      setIsLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const login = (token: string) => {
+    console.log("Setting token in localStorage");
     localStorage.setItem("authToken", token);
-    setIsSignedIn(true); // Fixed typo: setSignedIn -> setIsSignedIn
+    setIsSignedIn(true);
   };
 
   const logout = () => {
-    localStorage.removeItem('authToken');
+    console.log("Removing token from localStorage");
+    localStorage.removeItem("authToken");
     setIsSignedIn(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isSignedIn,setIsSignedIn, isLoading, login, logout }}>
-      {!isLoading && children}
+    <AuthContext.Provider value={{ isSignedIn, setIsSignedIn, isLoading, login, logout }}>
+      {children}
     </AuthContext.Provider>
   );
 };

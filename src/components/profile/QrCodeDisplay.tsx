@@ -1,36 +1,42 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeColors } from "./types";
+import Image from "next/image";
 
 interface QrCodeDisplayProps {
   themeColors: ThemeColors;
   theme: string;
+  qrCodeUrl?: string | null;
 }
 
-const QrCodeDisplay: React.FC<QrCodeDisplayProps> = ({ themeColors, theme }) => {
+const QrCodeDisplay: React.FC<QrCodeDisplayProps> = ({ themeColors, theme, qrCodeUrl }) => {
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const { textColor } = themeColors;
 
   const toggleQrModal = () => {
     setIsQrModalOpen(!isQrModalOpen);
   };
+  
+  // Default QR code if not provided from API
+  const qrSrc = qrCodeUrl || "/images/others/qr.png";
+
 
   return (
     <>
       <div className="mt-4 flex flex-col items-center">
-        <p className={`${textColor} text-2xl mb-5`}>Entrance QR Code</p>
+        <p className={`${textColor} text-xl font-medium mb-3`}>Event Badge</p>
         <div 
           className={`p-2 ${theme === "dark" ? "bg-white" : "bg-gray-200"} rounded-lg cursor-pointer transition-transform hover:scale-105`}
           onClick={toggleQrModal}
         >
           <img
-            src="/images/others/qr.png"
+            src={qrSrc}
             alt="QR Code"
-            className="w-56 h-56"
+            className="w-44 h-44"
           />
         </div>
-        <p className="text-sm text-center mt-3 text-gray-500">
-          Click on QR code to view in full screen
+        <p className="text-sm text-center mt-2 text-gray-500">
+          Click to expand
         </p>
       </div>
 
@@ -56,7 +62,7 @@ const QrCodeDisplay: React.FC<QrCodeDisplayProps> = ({ themeColors, theme }) => 
                 <h3 className="text-2xl font-bold text-blue-900 mb-4">Your Event Badge</h3>
                 <div className="bg-gray-100 p-4 rounded-lg">
                   <img
-                    src="/images/others/qr.png"
+                    src={qrSrc}
                     alt="QR Code"
                     className="w-full h-auto"
                   />
