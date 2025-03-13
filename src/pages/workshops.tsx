@@ -1,87 +1,73 @@
-// import React, { useEffect } from "react";
-// import { useRouter } from "next/router";
-// import RegisterButton from "../components/button";
-// import { workshopsData } from "../data/WorkshopsData"; // Adjust path if necessary
-// import { useTheme } from "../utils/ThemeContext"; // Ensure the path to ThemeContext is correct
-// import { useMockAuth } from "../context/mockAuthContext"; // Import global authentication context
-// import Image from "next/image"; // Import Next.js Image for optimized images
+// import React, { useState, useEffect } from "react";
+// import { HoverEffect } from "../components/card-hover-effect.tsx"; // Ensure correct path
+// import { workshopsData } from "../data/WorkshopsData";
+// import {
+//   FaBolt,
+//   FaCogs,
+//   FaMicrochip,
+//   FaLaptop,
+//   FaSatelliteDish,
+//   FaBrain,
+// } from "react-icons/fa";
 
-// const Workshops = () => {
-//   const { theme } = useTheme();
-//   const { signedIn } = useMockAuth(); // Access global authentication state
-//   const router = useRouter();
+// const iconMap: Record<string, JSX.Element> = {
+//   FaBolt: <FaBolt className="text-yellow-400 text-4xl mb-4" />,
+//   FaCogs: <FaCogs className="text-gray-400 text-4xl mb-4" />,
+//   FaMicrochip: <FaMicrochip className="text-green-400 text-4xl mb-4" />,
+//   FaLaptop: <FaLaptop className="text-blue-400 text-4xl mb-4" />,
+//   FaSatelliteDish: (
+//     <FaSatelliteDish className="text-purple-400 text-4xl mb-4" />
+//   ),
+//   FaBrain: <FaBrain className="text-pink-400 text-4xl mb-4" />,
+// };
 
-//   // Redirect to SignIn page if not signed in
+// const WorkshopsPage = () => {
+//   const [participants, setParticipants] = useState<{ [key: string]: number }>(
+//     {}
+//   );
+
 //   useEffect(() => {
-//     if (!signedIn) {
-//       router.push("/signIn");
-//     }
-//   }, [signedIn, router]);
-
-//   // Set colors based on the theme
-//   const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
-//   const cardBackgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
-//   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
-//   const mutedTextColor = theme === "dark" ? "text-gray-400" : "text-gray-600";
-
-//   // Render Workshops page only if signed in
-//   if (!signedIn) {
-//     return null; // Avoid rendering content before redirecting
-//   }
+//     const updatedParticipants: { [key: string]: number } = {};
+//     workshopsData.forEach((workshop) => {
+//       updatedParticipants[workshop.name] = Math.floor(
+//         Math.random() * workshop.max_participants
+//       );
+//     });
+//     setParticipants(updatedParticipants);
+//   }, []);
 
 //   return (
-//     <div className={`min-h-screen ${backgroundColor}`}>
-
-//       <div className={`min-h-screen py-8 px-4 mt-10 ${backgroundColor}`}>
-//         <h1 className={`${textColor} text-4xl font-bold mb-8 text-center`}>
-//           Workshops
-//         </h1>
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-//           {workshopsData.map((workshop, index) => (
-//             <div
-//               key={index}
-//               className={`${cardBackgroundColor} p-6 rounded-lg shadow-lg flex flex-col justify-between`}
-//             >
-//               {/* Workshop header: Title, room, and date */}
-//               <div className="flex justify-between items-start">
-//                 <div className={`${textColor}`}>
-//                   <h2 className="text-2xl font-bold">{workshop.name}</h2>
-//                   <p className={`text-sm ${mutedTextColor} mt-1`}>
-//                     <strong>Room:</strong> {workshop.place}
-//                   </p>
-//                   <p className={`text-sm ${mutedTextColor} mt-1`}>
-//                     <strong>Date:</strong> {workshop.time}
-//                   </p>
-//                 </div>
-
-//                 {/* Workshop image */}
-//                 <div className="ml-4">
-//                   <Image
-//                     src={`${workshop.image}`} // Adjust image path based on location
-//                     alt={workshop.name}
-//                     width={96} // Set exact dimensions for optimization
-//                     height={96}
-//                     className="rounded-md"
-//                   />
-//                 </div>
+//     <div className="bg-black min-h-screen text-white py-24 px-10">
+//       {" "}
+//       {/* Adjusted spacing */}
+//       <h1 className="text-4xl font-bold text-center mb-16">Workshops</h1>{" "}
+//       {/* Increased margin-bottom */}
+//       <HoverEffect
+//         className="mt-10" // Moves the grid lower
+//         items={workshopsData.map((workshop) => ({
+//           title: workshop.name, // Keep title as a simple string
+//           description: (
+//             <div>
+//               <div className="flex items-center space-x-4 mb-2">
+//                 {iconMap[workshop.icon]}{" "}
+//                 {/* Display the mapped icon separately */}
+//                 <span className="text-lg font-semibold">{workshop.name}</span>
 //               </div>
-
-//               {/* Workshop description */}
-//               <p className={`${mutedTextColor} mt-4`}>{workshop.description}</p>
-
-//               {/* Register button */}
-//               <div className="mt-6">
-//                 <RegisterButton />
-//               </div>
+//               <p>{workshop.description}</p>
+//               <p className="text-sm text-gray-400">
+//                 Participants: {participants[workshop.name] || 0}/
+//                 {workshop.max_participants}
+//               </p>
 //             </div>
-//           ))}
-//         </div>
-//       </div>
+//           ),
+//           link: `/workshops/${encodeURIComponent(workshop.name)}`, // Ensure safe URL encoding
+//         }))}
+//       />
 //     </div>
 //   );
 // };
 
-// export default Workshops;
+// export default WorkshopsPage;
 import React from "react";
 import { Meteors } from "../components/meteorAnimation";
 import NavbarMain from "../components/navbar/navbar_main";
