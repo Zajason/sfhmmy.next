@@ -5,21 +5,47 @@ import Image from "next/image";
 import { useTheme } from "../../utils/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../context/authContext";
+import { getUserProfile } from "../../apis/AuthApi"; // Import the API function
 
-interface NavbarProps {
-  userName?: string;
-}
+interface NavbarProps {}
 
-const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
+const Navbar: React.FC<NavbarProps> = () => {
   const { theme } = useTheme();
   const router = useRouter();
-
+  const [userName, setUserName] = useState("Loading...");
+  const [userAvatar, setUserAvatar] = useState("/images/others/default.jpg");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const { isSignedIn, setIsSignedIn } = useAuth();
+  const { isSignedIn, logout } = useAuth();
 
+  // Fetch user data when signed in
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (isSignedIn) {
+        try {
+          const profileData = await getUserProfile();
+          // Set the user name from the API response
+          if (profileData?.user?.name) {
+            setUserName(profileData.user.name);
+          }
+          
+          // Set avatar if available
+          if (profileData?.user?.avatar) {
+            setUserAvatar(profileData.user.avatar);
+          }
+        } catch (error) {
+          console.error("Error fetching user profile for navbar:", error);
+          // Keep default values on error
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [isSignedIn]);
   
+  // Rest of your component remains the same...
+
   // Close menu when route changes
   useEffect(() => {
     const handleRouteChange = () => {
@@ -34,6 +60,7 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
     };
   }, [router]);
 
+  // Update scroll behavior based on menu state
   useEffect(() => {
     if (isMenuOpen) {
       // Disable scrolling on the body when menu is open
@@ -71,7 +98,7 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
       label: "Activities",
       subItems: [
         { href: "/workshops", label: "Workshops" },
-        { href: "/pre-sfhmmy", label: "PreΣΦΗΜΜΥ" },
+        { href: "https://presfhmmy.sfhmmy.gr", label: "PreΣΦΗΜΜΥ" },
         { href: "/career", label: "Career@ΣΦΗΜΜΥ" },
       ],
     },
@@ -98,17 +125,11 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
   };
 
   const handleLogout = async () => {
-    
-    
     // Add delay for visual feedback
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    localStorage.removeItem("authToken");
-    setIsSignedIn(false);
+    logout(); // Use the logout function from context
     router.push("/");
-    
-    
-    
   };
 
   const handleLogin = () => {
@@ -218,13 +239,13 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
                   <Link href="/profile">
                     <div className="flex items-center space-x-2 cursor-pointer">
                       <Image
-                        src="/images/others/default.jpg"
+                        src={userAvatar} // Use the dynamic avatar
                         alt="Profile"
                         width={30}
                         height={30}
                         className="rounded-full"
                       />
-                      <span className="text-white text-sm">{userName}</span>
+                      <span className="text-white text-sm">{userName}</span> {/* Use the dynamic name */}
                     </div>
                   </Link>
                 </div>
@@ -387,19 +408,19 @@ const Navbar: React.FC<NavbarProps> = ({ userName = "User" }) => {
 
             {/* Auth Buttons at the Bottom with improved styling */}
             <div className="p-6 w-full bg-gray-900">
-              {signedIn ? (
+              {isSignedIn ? ( // Note: Fixed the variable name from signedIn to isSignedIn
                 <div className="flex flex-col items-center space-y-4">
                   <Link href="/profile">
                     <div className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
                       <Image
-                        src="/images/others/default.jpg"
+                        src={userAvatar} // Use the dynamic avatar
                         alt="Profile"
                         width={50}
                         height={50}
                         className="rounded-full border-2 border-blue-400"
                       />
                       <span className="text-white text-lg font-medium">
-                        {userName}
+                        {userName} {/* Use the dynamic name */}
                       </span>
                     </div>
                   </Link>

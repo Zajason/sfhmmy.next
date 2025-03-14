@@ -10,9 +10,9 @@ export const membersData = [
       role: "Back End Developer"
     },
     {
-      name: "Bob Johnson",
-      image: "/images/members/woman-modified.png",
-      role: "CFO"
+      name: "Χρυσόστομος Κουμίδης",
+      image: "/images/members/chryskoum.jpg",
+      role: "Front End Developer"
     },
     {
       name: "Eleni Papadopoulos",
