@@ -88,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = () => {
       label: "Συνέδριο",
       subItems: [
         { href: "/agenda", label: "Πρόγραμμα" },
-        { href: "/papers", label: "Εργασίες" },
+        { href: "https://papers.sfhmmy.gr", label: "Papers", target: "_blank" },
         { href: "/sponsors", label: "Χορηγοί" },
         { href: "/members", label: "Οργανωτική Επιτροπή" },
         { href: "/speakersFull", label: "Επιστημονική Επιτροπή" },
@@ -98,7 +98,11 @@ const Navbar: React.FC<NavbarProps> = () => {
       label: "Activities",
       subItems: [
         { href: "/workshops", label: "Workshops" },
-        { href: "https://presfhmmy.sfhmmy.gr", label: "PreΣΦΗΜΜΥ" },
+        { 
+          href: "https://presfhmmy.sfhmmy.gr", 
+          label: "PreΣΦΗΜΜΥ", 
+          target: "_blank",
+        },
         { href: "/career", label: "Career@ΣΦΗΜΜΥ" },
       ],
     },
@@ -201,7 +205,12 @@ const Navbar: React.FC<NavbarProps> = () => {
                         onMouseLeave={handleHoverEnd}
                       >
                         {item.subItems.map((subItem, subIndex) => (
-                          <Link key={subIndex} href={subItem.href}>
+                          <Link 
+                            key={subIndex} 
+                            href={subItem.href}
+                            target={subItem.target || "_self"} // Add target attribute here
+                            rel={subItem.target === "_blank" ? "noopener noreferrer" : undefined} // Add security attributes
+                          >
                             <span
                               className={`block px-4 py-2 hover:bg-gray-800 ${
                                 isActive(subItem.href) ? "text-blue-400" : ""
@@ -216,10 +225,15 @@ const Navbar: React.FC<NavbarProps> = () => {
                   </AnimatePresence>
                 </div>
               ) : (
-                <Link key={index} href={item.href}>
+                <Link 
+                  key={index} 
+                  href={item.href!}
+                  target={item.target || "_self"}
+                  rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+                >
                   <motion.span
                     className={`hover:text-blue-400 cursor-pointer ${
-                      isActive(item.href) ? "text-blue-400" : ""
+                      isActive(item.href!) ? "text-blue-400" : ""
                     }`}
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2 }}
@@ -367,7 +381,12 @@ const Navbar: React.FC<NavbarProps> = () => {
                           transition={{ duration: 0.3, ease: "easeInOut" }}
                         >
                           {item.subItems.map((subItem, subIndex) => (
-                            <Link key={subIndex} href={subItem.href}>
+                            <Link 
+                              key={subIndex} 
+                              href={subItem.href}
+                              target={subItem.target || "_self"} // Add target attribute here
+                              rel={subItem.target === "_blank" ? "noopener noreferrer" : undefined} // Add security attributes
+                            >
                               <motion.div
                                 className={`px-4 py-3 hover:bg-gray-700 transition-colors ${
                                   isActive(subItem.href)
@@ -386,7 +405,8 @@ const Navbar: React.FC<NavbarProps> = () => {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <Link key={index} href={item.href} className="block mb-6 w-full">
+                  <Link key={index} href={item.href} className="block mb-6 w-full"  target={item.target || "_self"}
+                  rel={item.target === "_blank" ? "noopener noreferrer" : undefined}>
                     <motion.div
                       className={`text-xl font-medium hover:text-blue-400 transition-colors bg-gray-800 bg-opacity-50 p-3 rounded-md ${
                         isActive(item.href)

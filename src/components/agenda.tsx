@@ -4,6 +4,7 @@ import { eventsData } from "../data/AgendaData";
 import { useTheme } from "../utils/ThemeContext";
 import { FaCircle, FaArrowRight } from "react-icons/fa";
 import { useRouter } from "next/router"; // Import useRouter from next/router
+import Link from "next/link";
 
 export const Schedule = () => {
   const { theme } = useTheme();
@@ -118,10 +119,12 @@ export const Schedule = () => {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5 }}
           >
-            <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md flex items-center justify-center mx-auto space-x-2">
-              <span>View Full Agenda</span>
-              <FaArrowRight />
-            </button>
+            <Link href="/agenda" passHref>
+             <div className="w-56 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md flex items-center justify-center mx-auto space-x-2">
+                <span>View Full Agenda</span>
+                <FaArrowRight />
+              </div>
+            </Link>
           </motion.div>
         )}
       </div>
