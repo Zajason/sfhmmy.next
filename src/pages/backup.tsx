@@ -3,6 +3,7 @@ import { Link as ScrollLink, Element } from "react-scroll";
 import { useRouter } from "next/router";
 import SpeakersLite from "../components/index/speakerCarousel";
 import Footer from "../components/footer";
+import WelcomePage from "../components/welcome2";
 import { useTheme } from "../utils/ThemeContext";
 import Image from "next/image";
 import { motion } from "framer-motion";

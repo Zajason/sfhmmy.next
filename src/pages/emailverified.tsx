@@ -1,20 +1,37 @@
-import React, { useEffect } from "react";
-import { useRouter } from "next/router";
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Meteors } from "../components/meteorAnimation";
 import { useTheme } from "../utils/ThemeContext";
+import { verifyEmail } from "../apis/AuthApi";
 
-
-const EmailVerificationSent = () => {
+const EmailVerificationPage: React.FC = () => {
   const router = useRouter();
   const { theme } = useTheme();
+  const { id, hash } = router.query; // Extract id and hash from the URL
 
-  
-
-  // Determine styling based on theme
   const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const cardBackgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
   const subTextColor = theme === "dark" ? "text-gray-300" : "text-gray-700";
+
+  useEffect(() => {
+    const verifyEmailToken = async () => {
+      if (!id || !hash) return; // Ensure id and hash are present
+
+      try {
+        await verifyEmail(id as string, hash as string);
+        console.log('Email verified successfully!');
+        // Redirect the user or show a success message
+        router.push('/'); // Example: Redirect to a success page
+      } catch (error) {
+        console.error('An error occurred during email verification:', error);
+        // Handle the error, maybe show an error message to the user
+        router.push('/email-verification-failed'); // Example: Redirect to a failure page
+      }
+    };
+
+    verifyEmailToken();
+  }, [id, hash, router]);
 
   return (
     <div
@@ -30,11 +47,10 @@ const EmailVerificationSent = () => {
         className={`relative z-10 ${cardBackgroundColor} p-8 rounded-lg shadow-lg flex flex-col items-center`}
       >
         <h1 className={`text-3xl md:text-4xl font-bold mb-4 ${textColor}`}>
-          Verification Email Sent
+          Congratulations!
         </h1>
         <p className={`mb-6 ${subTextColor}`}>
-          A verification email has been sent to your email address. Please check
-          your inbox and follow the instructions to verify your account.
+          Email successfully verified. You can now sign in to your account.
         </p>
         <button
           onClick={() => router.push("/signIn")}
@@ -47,4 +63,4 @@ const EmailVerificationSent = () => {
   );
 };
 
-export default EmailVerificationSent;
+export default EmailVerificationPage;

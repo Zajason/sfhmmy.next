@@ -1,14 +1,15 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/api';
+const API_URL = 'http://localhost:8000/api';
 
 // Create an axios instance with consistent config
 export const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  }
+    'Accept': 'application/json',
+  },
+  withCredentials: true, // Correct placement
 });
 
 // Set up axios interceptor to add auth token to all requests
@@ -99,6 +100,17 @@ export const updateUserProfile = async (profileData) => {
     return response.data;
   } catch (error) {
     console.error('Error updating profile:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+export const verifyEmail = async (id, hash) => {
+  try {
+    const response = await api.get(`/email/verify/${id}/${hash}`);
+    console.log('Email verified:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error verifying email:', error.response ? error.response.data : error.message);
     throw error;
   }
 };
