@@ -42,21 +42,17 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
 
       // Mock successful upload
       setTimeout(() => {
+        // Update user interface after "upload" completes
         setCvUploaded(true);
-        setIsUploadingCV(false);
         toast.success('CV uploaded successfully!');
+        setIsUploadingCV(false);
       }, 1500);
     } catch (error) {
-      toast.error(`Error uploading CV: ${error.message}`);
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Unknown error occurred';
+      toast.error(`Error uploading CV: ${errorMessage}`);
       setIsUploadingCV(false);
-    }
-  };
-
-  const triggerFileInput = () => {
-    if (fileInputRef.current) {
-      // Reset the value before clicking to fix re-upload issue
-      fileInputRef.current.value = '';
-      fileInputRef.current.click();
     }
   };
 
@@ -78,7 +74,10 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
       
       toast.success('CV removed successfully');
     } catch (error) {
-      toast.error(`Error removing CV: ${error.message}`);
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Unknown error occurred';
+      toast.error(`Error removing CV: ${errorMessage}`);
     }
   };
 

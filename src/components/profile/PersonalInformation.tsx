@@ -10,6 +10,11 @@ interface PersonalInformationProps {
   theme: string;
 }
 
+// Define the field mappings with proper typing
+type FieldMappings = {
+  [key in 'fullName' | 'username' | 'email' | 'city' | 'university' | 'semester']: string;
+};
+
 const PersonalInformation: React.FC<PersonalInformationProps> = ({ 
   userData, 
   setUserData, 
@@ -24,7 +29,10 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
   // Edit field handler - Start editing
   const handleEdit = (field: string) => {
     setEditField(field);
-    setEditValue(userData[field]);
+    // Type check before accessing userData
+    if (field in userData) {
+      setEditValue(userData[field as keyof UserData] as string);
+    }
   };
 
   // Cancel editing
@@ -40,7 +48,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
       
       // Create update payload based on the field being edited
       // Map component field names to API field names
-      const fieldMappings = {
+      const fieldMappings: FieldMappings = {
         'fullName': 'name',
         'username': 'username',
         'email': 'email',
@@ -49,7 +57,10 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
         'semester': 'year'
       };
       
-      const apiField = fieldMappings[field] || field;
+      // Type check the field before accessing mappings
+      const apiField = field in fieldMappings 
+        ? fieldMappings[field as keyof FieldMappings] 
+        : field;
       
       // Create payload with only the updated field
       // Add required fields that the API expects
@@ -65,11 +76,13 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
       // Call the API
       await updateUserProfile(updatePayload);
       
-      // Update local state
-      setUserData({
-        ...userData,
-        [field]: editValue
-      });
+      // Update local state with type checking
+      if (field in userData) {
+        setUserData({
+          ...userData,
+          [field]: editValue
+        });
+      }
       
       // Exit edit mode
       setEditField(null);
@@ -145,7 +158,9 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
             disabled={isUpdating}
           />
         ) : (
-          <p className={`${textColor} font-medium`}>{userData[field]}</p>
+          <p className={`${textColor} font-medium`}>
+            {field in userData ? (userData[field as keyof UserData] as string) : ""}
+          </p>
         )}
       </div>
     );

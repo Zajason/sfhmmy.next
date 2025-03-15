@@ -19,10 +19,10 @@ const ForgotPassword = () => {
   const inputBackgroundColor = theme === "dark" ? "bg-gray-700" : "bg-gray-300";
   const buttonBackgroundColor =
     theme === "dark" ? "bg-blue-500" : "bg-blue-600";
-  const buttonHoverColor =
+  const buttonHoverClass =
     theme === "dark" ? "hover:bg-blue-600" : "hover:bg-blue-700";
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setMessage("");
@@ -37,7 +37,7 @@ const ForgotPassword = () => {
       setTimeout(() => {
         router.push("/"); // Adjust this route if your sign in page is different
       }, 3000);
-    } catch (err) {
+    } catch (error) {
       setError("An error occurred. Please try again.");
     }
   };
@@ -83,7 +83,7 @@ const ForgotPassword = () => {
           </div>
           <button
             type="submit"
-            className={`w-full ${buttonBackgroundColor} ${textColor} font-bold py-2 px-4 rounded-lg ${buttonHoverColor}`}
+            className={`w-full ${buttonBackgroundColor} ${textColor} font-bold py-2 px-4 rounded-lg ${buttonHoverClass}`}
           >
             Reset Password
           </button>

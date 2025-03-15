@@ -9,4 +9,4 @@ const Future: React.FC = () => {
   );
 };
 
-export default CareerPage;
+export default Future;

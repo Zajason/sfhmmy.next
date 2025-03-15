@@ -7,7 +7,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../context/authContext";
 import { getUserProfile } from "../../apis/AuthApi"; // Import the API function
 
-interface NavbarProps {}
+// Define types for navigation items
+interface NavSubItem {
+  href: string;
+  label: string;
+  target?: string;
+}
+
+interface NavItem {
+  href?: string;
+  label: string;
+  subItems?: NavSubItem[];
+  target?: string;
+}
+
+interface NavbarProps {
+  // No props needed but interface is required for component typing
+}
 
 const Navbar: React.FC<NavbarProps> = () => {
   const { theme } = useTheme();
@@ -81,7 +97,7 @@ const Navbar: React.FC<NavbarProps> = () => {
       ? "/images/others/Official Logo ΣΦΗΜΜΥ 16 for dark.png"
       : "/images/others/Official Logo ΣΦΗΜΜΥ 16 for white.png";
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     {
@@ -110,7 +126,11 @@ const Navbar: React.FC<NavbarProps> = () => {
     { href: "/contact", label: "Contact" },
   ];
 
-  const isActive = (href: string) => router.pathname === href;
+  // Function to check if a route is active
+  const isActive = (href: string | undefined): boolean => {
+    if (!href) return false;
+    return router.pathname === href;
+  };
 
   const handleHoverStart = (index: number) => {
     setHoveredIndex(index);
@@ -227,13 +247,13 @@ const Navbar: React.FC<NavbarProps> = () => {
               ) : (
                 <Link 
                   key={index} 
-                  href={item.href!}
+                  href={item.href || '/'}
                   target={item.target || "_self"}
                   rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
                 >
                   <motion.span
                     className={`hover:text-blue-400 cursor-pointer ${
-                      isActive(item.href!) ? "text-blue-400" : ""
+                      isActive(item.href) ? "text-blue-400" : ""
                     }`}
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2 }}
@@ -405,7 +425,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <Link key={index} href={item.href} className="block mb-6 w-full"  target={item.target || "_self"}
+                  <Link key={index} href={item.href || '/'} className="block mb-6 w-full" target={item.target || "_self"}
                   rel={item.target === "_blank" ? "noopener noreferrer" : undefined}>
                     <motion.div
                       className={`text-xl font-medium hover:text-blue-400 transition-colors bg-gray-800 bg-opacity-50 p-3 rounded-md ${

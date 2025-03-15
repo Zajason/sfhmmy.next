@@ -47,7 +47,10 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ userData, setUserData, them
         toast.success('Profile picture updated successfully!');
       }, 1000);
     } catch (error) {
-      toast.error(`Error uploading image: ${error.message}`);
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Unknown error occurred';
+      toast.error(`Error uploading image: ${errorMessage}`);
       setIsUploadingAvatar(false);
     }
   };
@@ -80,7 +83,10 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ userData, setUserData, them
         toast.success('Avatar reset to default successfully!');
       }, 800);
     } catch (error) {
-      toast.error(`Error resetting avatar: ${error.message}`);
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Unknown error occurred';
+      toast.error(`Error resetting avatar: ${errorMessage}`);
       setIsUploadingAvatar(false);
     }
   };
