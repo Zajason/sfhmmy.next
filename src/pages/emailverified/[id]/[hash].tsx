@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+// pages/page/[id]/[hash].tsx
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Meteors } from "../components/meteorAnimation";
-import { useTheme } from "../utils/ThemeContext";
-import { verifyEmail } from "../apis/AuthApi";
+import { Meteors } from "../../../components/meteorAnimation";
+import { verifyEmail } from '../../../apis/AuthApi'; // Adjust the import path as needed
+import { useTheme } from "../../../utils/ThemeContext";
 
-const EmailVerificationPage: React.FC = () => {
+const VerifyEmailPage: React.FC = () => {
   const router = useRouter();
   const { theme } = useTheme();
   const { id, hash } = router.query; // Extract id and hash from the URL
+  const [verificationStatus, setVerificationStatus] = useState<'success' | 'error' | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const cardBackgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
@@ -15,23 +18,26 @@ const EmailVerificationPage: React.FC = () => {
   const subTextColor = theme === "dark" ? "text-gray-300" : "text-gray-700";
 
   useEffect(() => {
-    const verifyEmailToken = async () => {
-      if (!id || !hash) return; // Ensure id and hash are present
-
-      try {
-        await verifyEmail(id as string, hash as string);
-        console.log('Email verified successfully!');
-        // Redirect the user or show a success message
-        router.push('/'); // Example: Redirect to a success page
-      } catch (error) {
-        console.error('An error occurred during email verification:', error);
-        // Handle the error, maybe show an error message to the user
-        router.push('/email-verification-failed'); // Example: Redirect to a failure page
+    const verify = async () => {
+      if (id && hash) {
+        try {
+          const data = await verifyEmail(id as string, hash as string);
+          setVerificationStatus('success');
+          console.log('Email verification successful:', data);
+        } catch (error) {
+          setVerificationStatus('error');
+          setError((error as any).message || 'An error occurred');
+          console.error('Email verification failed:', error);
+        }
       }
     };
 
-    verifyEmailToken();
-  }, [id, hash, router]);
+    verify();
+  }, [id, hash]);
+
+  if (!id || !hash) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div
@@ -60,7 +66,7 @@ const EmailVerificationPage: React.FC = () => {
         </button>
       </div>
     </div>
-  );
+  );;
 };
 
-export default EmailVerificationPage;
+export default VerifyEmailPage;

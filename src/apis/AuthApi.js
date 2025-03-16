@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'https://sfhmmy16.gr/api';
 
 // Create an axios instance with consistent config
 export const api = axios.create({
@@ -8,8 +8,9 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
+    
   },
-  withCredentials: true, // Correct placement
+  withCredentials: true // Important: send cookies when making requests across origins
 });
 
 // Set up axios interceptor to add auth token to all requests
@@ -103,6 +104,17 @@ export const updateUserProfile = async (profileData) => {
     throw error;
   }
 };
+
+export const forgotPassword = async (email) => {
+  try {
+    const response = await api.post('/forgotPassword', { email });
+    console.log('Password reset email sent:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error sending password reset email:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
 
 export const verifyEmail = async (id, hash) => {
   try {

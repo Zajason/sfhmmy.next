@@ -101,7 +101,7 @@ const ProfileView = () => {
           email: profileData.user.email || '',
           city: profileData.user.city || '',
           university: profileData.user.university || '',
-          semester: profileData.user.year || '',
+          year: profileData.user.year || '',
           avatar: profileData.user.avatar || '/images/others/default.jpg',
           daysPresent: profileData.user.days_present ? 
             Array.isArray(profileData.user.days_present) ? 

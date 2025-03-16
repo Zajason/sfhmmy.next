@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Meteors } from "../components/meteorAnimation";
 import { useTheme } from "../utils/ThemeContext";
@@ -8,13 +8,12 @@ import { useAuth } from "../context/authContext";
 const SignIn = () => {
   const router = useRouter();
   const { theme } = useTheme();
-  const { login, isLoading } = useAuth();
+  const { login, isLoading, isSignedIn } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { isSignedIn } = useAuth();
 
   // Theme variables
   const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
@@ -26,30 +25,36 @@ const SignIn = () => {
   const buttonHoverColor =
     theme === "dark" ? "hover:bg-blue-600" : "hover:bg-blue-700";
 
+  useEffect(() => {
+    if (isSignedIn) {
+      router.replace("/");
+    }
+  }, [isSignedIn, router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
-  
+
     try {
       // Call the login API and get the token
       const result = await loginUser({ email, password });
       console.log("Login result:", result);
-      
+
       // Check if token exists
       if (!result || !result.token) {
         throw new Error("No authentication token received");
       }
-      
+
       // Store token using the context's login function
       login(result.token);
-      
+
       // Add a small delay to ensure token is stored
       await new Promise(resolve => setTimeout(resolve, 300));
-      
+
       // Log the token from localStorage to verify it was stored
       console.log("Token in localStorage:", !!localStorage.getItem('authToken'));
-      
+
       // Redirect to profile page
       router.replace("/profile");
     } catch (error) {

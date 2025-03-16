@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Meteors } from "../components/meteorAnimation";
 import { useTheme } from "../utils/ThemeContext";
+import { forgotPassword } from "../apis/AuthApi";
 
 const ForgotPassword = () => {
   const router = useRouter();
@@ -28,10 +29,12 @@ const ForgotPassword = () => {
     setMessage("");
 
     try {
-      // Here you would normally call your API for password reset,
-      // e.g., await forgotPassword({ email });
-      // For now, we simulate success:
-      setMessage("Password reset link has been sent to your email.");
+      // Call the backend API for password reset
+      await forgotPassword(email);
+      
+      setMessage(
+        "Password reset email sent. Please check your inbox and follow the instructions."
+      );
 
       // Redirect back to the sign in page after 3 seconds
       setTimeout(() => {
@@ -41,6 +44,7 @@ const ForgotPassword = () => {
       setError("An error occurred. Please try again.");
     }
   };
+  
 
   return (
     <div

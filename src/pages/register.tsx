@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Meteors } from "../components/meteorAnimation";
 import { registerUser } from "../apis/AuthApi"; // Adjust this import as necessary
 import { useTheme } from "../utils/ThemeContext"; // Import theme context
+import { useAuth } from "../context/authContext"; // Import authentication context
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const Register: React.FC = () => {
   const [globalError, setGlobalError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const { theme } = useTheme();
+  const { isSignedIn } = useAuth(); // Get authentication status
   const router = useRouter();
   // For testing purposes, if you're not using reCAPTCHA,
   // we set a default value so the validation doesn't fail.
@@ -26,6 +28,13 @@ const Register: React.FC = () => {
     process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? null : "test"
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  // Redirect if user is authenticated
+  useEffect(() => {
+    if (isSignedIn) {
+      router.push("/");
+    }
+  }, [isSignedIn, router]);
 
   // Handle input changes
   const handleChange = (
@@ -234,7 +243,7 @@ const Register: React.FC = () => {
               className={`${textColor} block text-sm font-bold mb-2`}
               htmlFor="school"
             >
-              School<span className="text-red-500">*</span>
+              Department/Major<span className="text-red-500">*</span>
             </label>
             <input
               id="school"

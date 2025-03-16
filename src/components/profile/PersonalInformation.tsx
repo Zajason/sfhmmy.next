@@ -12,7 +12,7 @@ interface PersonalInformationProps {
 
 // Define the field mappings with proper typing
 type FieldMappings = {
-  [key in 'fullName' | 'username' | 'email' | 'city' | 'university' | 'semester']: string;
+  [key in 'fullName' | 'username' | 'email' | 'city' | 'university' | 'year']: string;
 };
 
 const PersonalInformation: React.FC<PersonalInformationProps> = ({ 
@@ -28,6 +28,10 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
 
   // Edit field handler - Start editing
   const handleEdit = (field: string) => {
+    if (field === 'email') {
+      toast.error("Email cannot be edited.");
+      return;
+    }
     setEditField(field);
     // Type check before accessing userData
     if (field in userData) {
@@ -43,6 +47,10 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
 
   // Save edited field value
   const handleSaveEdit = async (field: string) => {
+    if (field === 'email') {
+      toast.error("Email cannot be updated.");
+      return;
+    }
     try {
       setIsUpdating(true);
       
@@ -54,7 +62,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
         'email': 'email',
         'city': 'city',
         'university': 'university',
-        'semester': 'year'
+        'year': 'year'
       };
       
       // Type check the field before accessing mappings
@@ -68,8 +76,9 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
         name: userData.fullName,
         email: userData.email,
         university: userData.university,
-        year: userData.semester,
-        school: userData.university, // Using university as school if not available
+        year: userData.year,
+        school: userData.university,// Using university as school if not available
+        city: userData.city, 
         [apiField]: editValue
       };
       
@@ -178,7 +187,7 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
         {renderField('email', 'Email')}
         {renderField('city', 'City')}
         {renderField('university', 'University')}
-        {renderField('semester', 'Semester')}
+        {renderField('year', 'Year')}
       </div>
     </div>
   );
