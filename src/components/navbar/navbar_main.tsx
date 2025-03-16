@@ -7,23 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../context/authContext";
 import { getUserProfile } from "../../apis/AuthApi"; // Import the API function
 
-// Define types for navigation items
-interface NavSubItem {
-  href: string;
-  label: string;
-  target?: string;
-}
-
-interface NavItem {
-  href?: string;
-  label: string;
-  subItems?: NavSubItem[];
-  target?: string;
-}
-
-interface NavbarProps {
-  // No props needed but interface is required for component typing
-}
+interface NavbarProps {}
 
 const Navbar: React.FC<NavbarProps> = () => {
   const { theme } = useTheme();
@@ -45,7 +29,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           if (profileData?.user?.name) {
             setUserName(profileData.user.name);
           }
-          
+
           // Set avatar if available
           if (profileData?.user?.avatar) {
             setUserAvatar(profileData.user.avatar);
@@ -59,7 +43,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
     fetchUserData();
   }, [isSignedIn]);
-  
+
   // Rest of your component remains the same...
 
   // Close menu when route changes
@@ -97,14 +81,13 @@ const Navbar: React.FC<NavbarProps> = () => {
       ? "/images/others/Official Logo ΣΦΗΜΜΥ 16 for dark.png"
       : "/images/others/Official Logo ΣΦΗΜΜΥ 16 for white.png";
 
-  const navItems: NavItem[] = [
+  const navItems = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     {
       label: "Συνέδριο",
       subItems: [
         { href: "/agenda", label: "Πρόγραμμα" },
-        { href: "https://papers.sfhmmy.gr", label: "Papers", target: "_blank" },
         { href: "/sponsors", label: "Χορηγοί" },
         { href: "/members", label: "Οργανωτική Επιτροπή" },
         { href: "/speakersFull", label: "Επιστημονική Επιτροπή" },
@@ -114,9 +97,9 @@ const Navbar: React.FC<NavbarProps> = () => {
       label: "Activities",
       subItems: [
         { href: "/workshops", label: "Workshops" },
-        { 
-          href: "https://presfhmmy.sfhmmy.gr", 
-          label: "PreΣΦΗΜΜΥ", 
+        {
+          href: "https://presfhmmy.sfhmmy.gr",
+          label: "PreΣΦΗΜΜΥ",
           target: "_blank",
         },
         { href: "/career", label: "Career@ΣΦΗΜΜΥ" },
@@ -126,11 +109,7 @@ const Navbar: React.FC<NavbarProps> = () => {
     { href: "/contact", label: "Contact" },
   ];
 
-  // Function to check if a route is active
-  const isActive = (href: string | undefined): boolean => {
-    if (!href) return false;
-    return router.pathname === href;
-  };
+  const isActive = (href: string) => router.pathname === href;
 
   const handleHoverStart = (index: number) => {
     setHoveredIndex(index);
@@ -150,8 +129,8 @@ const Navbar: React.FC<NavbarProps> = () => {
 
   const handleLogout = async () => {
     // Add delay for visual feedback
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     logout(); // Use the logout function from context
     router.push("/");
   };
@@ -225,11 +204,15 @@ const Navbar: React.FC<NavbarProps> = () => {
                         onMouseLeave={handleHoverEnd}
                       >
                         {item.subItems.map((subItem, subIndex) => (
-                          <Link 
-                            key={subIndex} 
+                          <Link
+                            key={subIndex}
                             href={subItem.href}
                             target={subItem.target || "_self"} // Add target attribute here
-                            rel={subItem.target === "_blank" ? "noopener noreferrer" : undefined} // Add security attributes
+                            rel={
+                              subItem.target === "_blank"
+                                ? "noopener noreferrer"
+                                : undefined
+                            } // Add security attributes
                           >
                             <span
                               className={`block px-4 py-2 hover:bg-gray-800 ${
@@ -245,15 +228,17 @@ const Navbar: React.FC<NavbarProps> = () => {
                   </AnimatePresence>
                 </div>
               ) : (
-                <Link 
-                  key={index} 
-                  href={item.href || '/'}
+                <Link
+                  key={index}
+                  href={item.href!}
                   target={item.target || "_self"}
-                  rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+                  rel={
+                    item.target === "_blank" ? "noopener noreferrer" : undefined
+                  }
                 >
                   <motion.span
                     className={`hover:text-blue-400 cursor-pointer ${
-                      isActive(item.href) ? "text-blue-400" : ""
+                      isActive(item.href!) ? "text-blue-400" : ""
                     }`}
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2 }}
@@ -279,7 +264,8 @@ const Navbar: React.FC<NavbarProps> = () => {
                         height={30}
                         className="rounded-full"
                       />
-                      <span className="text-white text-sm">{userName}</span> {/* Use the dynamic name */}
+                      <span className="text-white text-sm">{userName}</span>{" "}
+                      {/* Use the dynamic name */}
                     </div>
                   </Link>
                 </div>
@@ -401,11 +387,15 @@ const Navbar: React.FC<NavbarProps> = () => {
                           transition={{ duration: 0.3, ease: "easeInOut" }}
                         >
                           {item.subItems.map((subItem, subIndex) => (
-                            <Link 
-                              key={subIndex} 
+                            <Link
+                              key={subIndex}
                               href={subItem.href}
                               target={subItem.target || "_self"} // Add target attribute here
-                              rel={subItem.target === "_blank" ? "noopener noreferrer" : undefined} // Add security attributes
+                              rel={
+                                subItem.target === "_blank"
+                                  ? "noopener noreferrer"
+                                  : undefined
+                              } // Add security attributes
                             >
                               <motion.div
                                 className={`px-4 py-3 hover:bg-gray-700 transition-colors ${
@@ -425,8 +415,17 @@ const Navbar: React.FC<NavbarProps> = () => {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <Link key={index} href={item.href || '/'} className="block mb-6 w-full" target={item.target || "_self"}
-                  rel={item.target === "_blank" ? "noopener noreferrer" : undefined}>
+                  <Link
+                    key={index}
+                    href={item.href}
+                    className="block mb-6 w-full"
+                    target={item.target || "_self"}
+                    rel={
+                      item.target === "_blank"
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                  >
                     <motion.div
                       className={`text-xl font-medium hover:text-blue-400 transition-colors bg-gray-800 bg-opacity-50 p-3 rounded-md ${
                         isActive(item.href)
