@@ -107,11 +107,24 @@ export const updateUserProfile = async (profileData) => {
 
 export const forgotPassword = async (email) => {
   try {
-    const response = await api.post('/forgotPassword', { email });
+    const response = await api.post('/forgot-password', { email });
     console.log('Password reset email sent:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error sending password reset email:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+export const resetpassword = async (token, password) => {
+  try {
+    const response = await api.post(`/reset-password/${token}`, { password
+    });
+    console.log('Password reset:', response.data);
+    return response.data;
+  }
+  catch (error) {
+    console.error('Error resetting password:', error.response ? error.response.data : error.message);
     throw error;
   }
 }

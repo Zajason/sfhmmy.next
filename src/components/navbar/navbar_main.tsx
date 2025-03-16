@@ -82,8 +82,8 @@ const Navbar: React.FC<NavbarProps> = () => {
       : "/images/others/Official Logo ΣΦΗΜΜΥ 16 for white.png";
 
   const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
+    { href: "/", label: "Home", target: "_self" },
+    { href: "/about", label: "About", target: "_self" },
     {
       label: "Συνέδριο",
       subItems: [
@@ -105,8 +105,8 @@ const Navbar: React.FC<NavbarProps> = () => {
         { href: "/career", label: "Career@ΣΦΗΜΜΥ" },
       ],
     },
-    { href: "/past-events", label: "Past Events" },
-    { href: "/contact", label: "Contact" },
+    { href: "/past-events", label: "Past Events", target: "_self" },
+    { href: "/contact", label: "Contact", target: "_self" },
   ];
 
   const isActive = (href: string) => router.pathname === href;
