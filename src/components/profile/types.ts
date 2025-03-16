@@ -3,7 +3,7 @@ export interface UserData {
     username: string;
     email: string;
     city: string;
-    semester: string;
+    year: string;
     university: string;
     avatar: string;
     daysPresent: number[];
@@ -16,7 +16,7 @@ export const defaultUserData: UserData = {
     email: "",
     city: "",
     university: "",
-    semester: "",
+    year: "",
     avatar: "/images/others/default.jpg",
     daysPresent: [],
     registeredWorkshops: []
