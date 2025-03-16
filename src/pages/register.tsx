@@ -54,7 +54,7 @@ const Register: React.FC = () => {
     }
   };
 
-  // Validate form fields
+  // Validate form fields, including checking that "year" is a number
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
     if (!formData.name.trim()) newErrors.name = "Full Name is required.";
@@ -72,7 +72,14 @@ const Register: React.FC = () => {
     }
     if (!formData.city.trim()) newErrors.city = "City is required.";
     if (!formData.school.trim()) newErrors.school = "School is required.";
-    if (!formData.year.trim()) newErrors.year = "Year is required.";
+
+    // Validate year: it should not be empty and must be a number
+    if (!formData.year.trim()) {
+      newErrors.year = "Year is required.";
+    } else if (isNaN(Number(formData.year))) {
+      newErrors.year = "Year should be a number.";
+    }
+
     if (!formData.university.trim())
       newErrors.university = "University is required.";
     // Only validate CAPTCHA if a site key exists (i.e. when reCAPTCHA is enabled)
@@ -246,9 +253,9 @@ const Register: React.FC = () => {
               Department/Major<span className="text-red-500">*</span>
             </label>
             <input
-              id="school"
+              id="department"
               type="text"
-              placeholder="Enter your school"
+              placeholder="Enter your department"
               className={`w-full px-3 py-2 ${inputBackground} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formData.school}
               onChange={handleChange}
@@ -273,7 +280,7 @@ const Register: React.FC = () => {
             </label>
             <input
               id="year"
-              type="text"
+              type="number"
               placeholder="Enter your year"
               className={`w-full px-3 py-2 ${inputBackground} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
               value={formData.year}
