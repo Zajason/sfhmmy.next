@@ -85,6 +85,7 @@ const ContactPage: React.FC = () => {
               type="text"
               id="name"
               name="name"
+              placeholder="Enter your name"
               value={formData.name}
               onChange={handleChange}
               className="w-full p-2 rounded bg-gray-700 focus:ring-2 focus:ring-blue-400 outline-none"
@@ -99,6 +100,7 @@ const ContactPage: React.FC = () => {
               type="email"
               id="email"
               name="email"
+              placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
               className="w-full p-2 rounded bg-gray-700 focus:ring-2 focus:ring-blue-400 outline-none"
@@ -113,6 +115,7 @@ const ContactPage: React.FC = () => {
               id="message"
               name="message"
               rows={4}
+              placeholder="Enter your message"
               value={formData.message}
               onChange={handleChange}
               className="w-full p-2 rounded bg-gray-700 focus:ring-2 focus:ring-blue-400 outline-none"
