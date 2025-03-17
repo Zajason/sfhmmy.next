@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { ThemeColors } from "./types";
+import { uploadCV, getCV, deleteCV } from "../../apis/AuthApi";
 
 interface CvUploadProps {
   themeColors: ThemeColors;
@@ -10,10 +11,25 @@ interface CvUploadProps {
 const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [cvUploaded, setCvUploaded] = useState(false);
+  const [cvUrl, setCvUrl] = useState<string | null>(null);
   const [isUploadingCV, setIsUploadingCV] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const { textColor, borderColor, accentColor } = themeColors;
+
+  useEffect(() => {
+    fetchCV();
+  }, []);
+
+  const fetchCV = async () => {
+    try {
+      const url = await getCV();
+      setCvUrl(url);
+      setCvUploaded(true);
+    } catch (error) {
+      console.error('Error fetching CV:', error);
+    }
+  };
 
   const handleCVUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -35,23 +51,19 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
     setIsUploadingCV(true);
 
     try {
-      // Waiting here connection with the backend
-      // const formData = new FormData();
-      // formData.append('cv', file);
-      // await fetch('/api/user/cv', { method: 'POST', body: formData });
+      // Call the uploadCV function from AuthApi.js
+      await uploadCV(file);
 
       // Mock successful upload
-      setTimeout(() => {
-        // Update user interface after "upload" completes
-        setCvUploaded(true);
-        toast.success('CV uploaded successfully!');
-        setIsUploadingCV(false);
-      }, 1500);
+      setCvUploaded(true);
+      toast.success('CV uploaded successfully!');
+      fetchCV(); // Fetch the updated CV URL
     } catch (error) {
       const errorMessage = error instanceof Error 
         ? error.message 
         : 'Unknown error occurred';
       toast.error(`Error uploading CV: ${errorMessage}`);
+    } finally {
       setIsUploadingCV(false);
     }
   };
@@ -60,12 +72,12 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
     if (!window.confirm('Are you sure you want to remove your CV?')) return;
 
     try {
-      // In a real app, call API to delete the CV
-      // await fetch('/api/user/cv', { method: 'DELETE' });
+      // Call the removeCV function from AuthApi.js
+      await deleteCV();
       
-      // Mock successful deletion
       setCvUploaded(false);
       setCvFile(null);
+      setCvUrl(null);
       
       // Clear the file input value so the same file can be re-uploaded
       if (fileInputRef.current) {
@@ -114,7 +126,7 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
               
               <div className="flex space-x-2">
                 <button 
-                  onClick={() => window.open('/path/to/cv.pdf', '_blank')} 
+                  onClick={() => cvUrl && window.open(cvUrl, '_blank')} 
                   className={`p-2 ${theme === "dark" ? "bg-blue-700" : "bg-blue-100"} rounded-md hover:opacity-80`}
                   title="View CV"
                 >

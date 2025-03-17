@@ -129,6 +129,46 @@ export const resetpassword = async (token, password) => {
   }
 }
 
+export const uploadCV = async (file) => {
+  try {
+    const formData = new FormData();
+    formData.append('cv', file);
+    const response = await api.post('/upload-cv', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    console.log('CV uploaded:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error uploading CV:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+export const getCV = async () => {
+  try {
+    const response = await api.get('/get-cv', {
+      responseType: 'blob'
+    });
+    return URL.createObjectURL(response.data);
+  } catch (error) {
+    console.error('Error fetching CV:', error);
+    throw error;
+  }
+}
+
+export const deleteCV = async () => {
+  try {
+    const response = await api.delete('/delete-cv');
+    console.log('CV deleted:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting CV:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
 export const verifyEmail = async (id, hash) => {
   try {
     const response = await api.get(`/email/verify/${id}/${hash}`);

@@ -250,7 +250,7 @@ const Register: React.FC = () => {
               className={`${textColor} block text-sm font-bold mb-2`}
               htmlFor="school"
             >
-              Department/Major<span className="text-red-500">*</span>
+              Major<span className="text-red-500">*</span>
             </label>
             <input
               id="department"
