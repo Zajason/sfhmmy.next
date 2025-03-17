@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://sfhmmy16.gr/api';
+const API_URL = 'https://sfhmmy.gr/api';
 
 // Create an axios instance with consistent config
 export const api = axios.create({
@@ -104,6 +104,17 @@ export const updateUserProfile = async (profileData) => {
     throw error;
   }
 };
+
+export const changePassword = async (passwordData) => {
+  try {
+    const response = await api.put('/change-password', passwordData);
+    console.log('Password changed:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error changing password:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
 
 export const forgotPassword = async (email) => {
   try {

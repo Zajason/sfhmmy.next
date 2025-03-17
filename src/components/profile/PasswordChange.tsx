@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import { ThemeColors } from "./types";
+import { changePassword } from "../../apis/AuthApi";
 
 interface PasswordChangeProps {
   themeColors: ThemeColors;
@@ -20,15 +21,20 @@ const PasswordChange: React.FC<PasswordChangeProps> = ({ themeColors, theme }) =
   const { textColor, borderColor, accentColor, inputBg } = themeColors;
 
   // Handle password change
-  const handleSubmitPasswordChange = (e: React.FormEvent) => {
+  const handleSubmitPasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
     if (newPassword === confirmPassword) {
-      // Submit password change
-      toast.success("Password updated successfully!");
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-      setIsPasswordChangeOpen(false);
+      try {
+        await changePassword({ currentPassword, newPassword });
+        toast.success("Password updated successfully!");
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        setIsPasswordChangeOpen(false);
+      } catch (error) {
+        toast.error("Error updating password");
+        console.error('Error changing password:', error);
+      }
     } else {
       toast.error("New passwords don't match");
     }
