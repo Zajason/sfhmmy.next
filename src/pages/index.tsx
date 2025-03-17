@@ -45,9 +45,10 @@ const ScrollableHome: React.FC = () => {
         <SpeakersLite />
       </Element> */}
 
-      <Element name="agendaSection" className="section">
+      {/*<Element name="agendaSection" className="section">
         <Agenda />
       </Element>
+      */}
     </>
   );
 };
