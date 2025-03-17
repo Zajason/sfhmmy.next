@@ -35,7 +35,7 @@ const HeroSection = () => {
 
           {/* Κουμπί Πρόσκλησης */}
           <div className="mt-8">
-            <Link href="/more-info">
+            <Link href="/about">
               <button className="bg-blue-500 hover:bg-blue-600 text-white text-lg font-medium px-6 py-3 rounded-lg shadow-lg transition">
                 Μάθετε Περισσότερα
               </button>
