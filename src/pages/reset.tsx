@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTheme } from "../utils/ThemeContext";
 import { Meteors } from "../components/meteorAnimation";
@@ -11,6 +10,7 @@ const ResetPasswordPage = () => {
     const [error, setError] = useState('');
     const router = useRouter();
     const { theme } = useTheme();
+    const { token } = router.query; // Extract token from URL query parameters
 
     // Set colors based on the theme
     const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
@@ -20,10 +20,9 @@ const ResetPasswordPage = () => {
     const buttonBackgroundColor = theme === "dark" ? "bg-blue-500" : "bg-blue-600";
     const buttonHoverClass = theme === "dark" ? "hover:bg-blue-600" : "hover:bg-blue-700";
 
-    const resetPassword = async (payload: { password: string }) => {
+    const resetPassword = async (token: string, password: string) => {
         try {
-            await resetpassword(payload); //fix the props here, copy forgot.tsx
-            
+            await resetpassword(token, password);
             router.push('/');
         } catch (error) {
             console.error('Error resetting password:', error);
@@ -37,7 +36,11 @@ const ResetPasswordPage = () => {
             return;
         }
         setError('');
-        resetPassword({ password });
+        if (typeof token === 'string') {
+            resetPassword(token, password);
+        } else {
+            setError('Invalid token');
+        }
     };
 
     return (
