@@ -95,6 +95,15 @@ const Register: React.FC = () => {
     setSuccess(null);
 
     const validationErrors = validate();
+    
+    // Custom validation for checkboxes
+    if (!(document.getElementById('privacyPolicy') as HTMLInputElement)?.checked) {
+      validationErrors.privacyPolicy = "You must accept the privacy policy.";
+    }
+    if (!(document.getElementById('photoConsent') as HTMLInputElement)?.checked) {
+      validationErrors.photoConsent = "You must consent to photos and videos.";
+    }
+
     if (Object.keys(validationErrors).length > 0) {
       console.log("Validation errors:", validationErrors);
       setErrors(validationErrors);
@@ -253,7 +262,7 @@ const Register: React.FC = () => {
               Major<span className="text-red-500">*</span>
             </label>
             <input
-              id="department"
+              id="school"
               type="text"
               placeholder="Enter your department"
               className={`w-full px-3 py-2 ${inputBackground} ${textColor} rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -336,6 +345,38 @@ const Register: React.FC = () => {
             )}
           </div>
           */}
+
+          {/* Privacy Policy Checkbox */}
+          <div className="mb-4">
+            <input
+              id="privacyPolicy"
+              type="checkbox"
+              className="mr-2"
+              required
+            />
+            <label
+              className={`${textColor} text-sm`}
+              htmlFor="privacyPolicy"
+            >
+              Αποδέχομαι την <a href="https://drive.google.com/file/d/1mHXEyWWt3NIpDnhvcAUwqMR8Xq_eDJv5/view" target="_blank" className="text-blue-500 underline">Πολιτική Απορρήτου</a> του ΣΦΗΜΜΥ 16.
+            </label>
+          </div>
+
+          {/* Consent for Photos and Videos Checkbox */}
+          <div className="mb-4">
+            <input
+              id="photoConsent"
+              type="checkbox"
+              className="mr-2"
+              required
+            />
+            <label
+              className={`${textColor} text-sm`}
+              htmlFor="photoConsent"
+            >
+              Συμφωνώ ότι κατά τη διάρκεια του συνεδρίου ενδέχεται να ληφθούν φωτογραφίες και βίντεο στα οποία ενδέχεται να εμφανίζομαι. Δίνω τη συγκατάθεσή μου για τη χρήση αυτών των υλικών από τους διοργανωτές για σκοπούς προώθησης και διαφήμισης, όπως σε ιστότοπους, κοινωνικά δίκτυα και άλλα μέσα.
+            </label>
+          </div>
 
           {/* Global Error Message */}
           {globalError && (
