@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Meteors } from "../components/meteorAnimation";
 import { useTheme } from "../utils/ThemeContext";
-import { loginUser } from "../apis/AuthApi";
+import { loginUser, resendVerificationEmail, checkEmailVerificationStatus } from "../apis/AuthApi";
 import { useAuth } from "../context/authContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const SignIn = () => {
   const router = useRouter();
@@ -35,31 +38,40 @@ const SignIn = () => {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
-
+  
     try {
-      // Call the login API and get the token
+      // First, try to authenticate to get our token
       const result = await loginUser({ email, password });
-      console.log("Login result:", result);
-
-      // Check if token exists
+      
       if (!result || !result.token) {
         throw new Error("No authentication token received");
       }
-
-      // Store token using the context's login function
-      login(result.token);
-
-      // Add a small delay to ensure token is stored
-      await new Promise(resolve => setTimeout(resolve, 300));
-
-      // Log the token from localStorage to verify it was stored
-      console.log("Token in localStorage:", !!localStorage.getItem('authToken'));
-
-      // Redirect to profile page
-      router.replace("/profile");
+  
+      console.log("Login result:", result);
+      
+      // Pass the token directly to the verification check
+      const isVerified = await checkEmailVerificationStatus(result.token);
+      
+      if (isVerified.verified) {
+        // Email is verified - NOW store token and complete the login process
+        localStorage.setItem('authToken', result.token);
+        login(result.token);
+        toast.success("Successfully signed in!");
+        router.push("/profile");
+      } else {
+        // Store token temporarily in sessionStorage for verification page
+        sessionStorage.setItem('pendingAuthToken', result.token);
+        
+        // Store email in session storage so verification page can display it
+        sessionStorage.setItem('pendingVerificationEmail', email);
+        
+        // Redirect to verification page
+        toast.info("Please verify your email before continuing");
+        router.push("/emailVerification");
+      }
     } catch (error) {
       console.error("Login error:", error);
-      setError("Invalid username or password. Please try again.");
+      setError("Invalid email or password. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

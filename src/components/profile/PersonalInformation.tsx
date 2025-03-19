@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { ThemeColors, UserData } from "./types";
 import { updateUserProfile } from "../../apis/AuthApi"; // Import the API function
+import { resendVerificationEmail } from "../../apis/AuthApi";
 
 interface PersonalInformationProps {
   userData: UserData;
@@ -10,13 +11,13 @@ interface PersonalInformationProps {
   theme: string;
 }
 
-// Define the field mappings with proper ton as yping
+// Define the field mappings with proper typing
 type FieldMappings = {
-  [key in 'fullName' | 'username' | 'email' | 'city' | 'university' | 'year']: string;
+  [key in 'fullName' | 'email' | 'city' | 'university' | 'year' | 'school']: string;
 };
 
 // Define which fields can be edited
-const EDITABLE_FIELDS = ['fullName', 'username', 'city', 'university', 'year'];
+const EDITABLE_FIELDS = ['fullName', 'city', 'university', 'year', 'school'];
 
 const PersonalInformation: React.FC<PersonalInformationProps> = ({ 
   userData, 
@@ -42,6 +43,18 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
     }
   };
 
+  // Resend verification email
+  const handleResendVerification = async () => {
+    try {
+      toast.info("Sending verification email...");
+      await resendVerificationEmail();
+      toast.success("Verification email sent successfully. Please check your inbox.");
+    } catch (error) {
+      console.error("Error resending verification email:", error);
+      toast.error("Failed to resend verification email. Please try again later.");
+    }
+  };
+
   // Cancel editing
   const handleCancelEdit = () => {
     setEditField(null);
@@ -61,11 +74,11 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
       // Map component field names to API field names
       const fieldMappings: FieldMappings = {
         'fullName': 'name',
-        'username': 'username',
         'email': 'email',
         'city': 'city',
         'university': 'university',
-        'year': 'year'
+        'year': 'year',
+        'school': 'school'
       };
       
       // Type check the field before accessing mappings
@@ -75,12 +88,13 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
       
       // Create payload with only the updated field
       // Add required fields that the API expects
+      
       const updatePayload = {
         name: userData.fullName,
         email: userData.email,
         university: userData.university,
         year: userData.year,
-        school: userData.university,// Using university as school if not available
+        school: userData.school || userData.university, // Use school if available, otherwise fall back to university
         city: userData.city, 
         [apiField]: editValue
       };
@@ -162,11 +176,28 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
                 </button>
               )}
               {field === 'email' && (
-                <div className="text-gray-500 text-xs flex items-center">
-                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  </svg>
-                  Cannot edit
+                <div className={`ml-2 text-xs inline-flex items-center ${userData.emailVerified ? 'text-green-500' : 'text-red-500'}`}>
+                  {userData.emailVerified ? (
+                    <>
+                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span>Verified</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>Unverified</span>
+                      <button 
+                        onClick={() => handleResendVerification()} 
+                        className="ml-2 text-blue-500 hover:underline"
+                      >
+                        Resend
+                      </button>
+                    </>
+                  )}
                 </div>
               )}
             </>
@@ -202,10 +233,10 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {renderField('fullName', 'Full Name')}
-        {renderField('username', 'Username')}
         {renderField('email', 'Email')}
         {renderField('city', 'City')}
         {renderField('university', 'University')}
+        {renderField('school', 'School')}
         {renderField('year', 'Year')}
       </div>
     </div>

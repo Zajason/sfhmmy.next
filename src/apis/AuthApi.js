@@ -1,6 +1,9 @@
 import axios from 'axios';
+import { toast } from 'react-toastify'; // Make sure this is imported at the top
 
-const API_URL = 'https://sfhmmy.gr/api';
+const API_URL = process.env.NODE_ENV === 'development' 
+  ? 'http://127.0.0.1:8000/api'  // Local development server
+  : 'https://sfhmmy.gr/api';     // Production server
 
 // Create an axios instance with consistent config
 export const api = axios.create({
@@ -16,11 +19,23 @@ export const api = axios.create({
 // Set up axios interceptor to add auth token to all requests
 api.interceptors.request.use(
   config => {
-    // Get token from localStorage
-    const token = localStorage.getItem('authToken');
+    // First try to get token from localStorage (for verified users)
+    let token = localStorage.getItem('authToken');
     
-    // For debugging - log token presence
-    console.log("Token exists:", !!token);
+    // For verification-related endpoints, try to use the pendingAuthToken
+    // Check if window is defined (client-side only) before accessing location
+    const isVerificationRelatedEndpoint = config.url && 
+      (config.url.includes('email/verification') || 
+       config.url.includes('verification-notification'));
+    
+    const isVerificationPage = typeof window !== 'undefined' && 
+      window.location && 
+      window.location.pathname && 
+      window.location.pathname.includes('emailVerification');
+    
+    if (!token && (isVerificationRelatedEndpoint || isVerificationPage)) {
+      token = sessionStorage.getItem('pendingAuthToken');
+    }
     
     if (token) {
       // Set the Authorization header with the token
@@ -33,20 +48,106 @@ api.interceptors.request.use(
   }
 );
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error('API response error:', error);
+    
+    const isCheckingVerification = error.config.url.includes('/email/verification-status');
+    const isResendingVerification = error.config.url.includes('/email/verification-notification');
+    const isLoginRequest = error.config.url.includes('/login');
+    
+    // Handle email verification required (403)
+    if (error.response && 
+        error.response.status === 403 && 
+        error.response.data?.message?.toLowerCase().includes('not verified') &&
+        !isCheckingVerification &&
+        !isResendingVerification &&
+        !isLoginRequest) { // Skip for login requests - we handle this separately
+      
+      console.log('Email verification required. Redirecting to verification page.');
+      
+      if (typeof window !== 'undefined' && 
+          !window.location.pathname.includes('emailVerification') &&
+          !window.location.pathname.includes('signIn')) {
+        
+        sessionStorage.setItem('redirectAfterVerification', window.location.pathname);
+        
+        if (typeof toast !== 'undefined') {
+          toast.info('Please verify your email address before continuing.');
+        } else {
+          alert('Please verify your email address before continuing.');
+        }
+        
+        window.location.href = '/emailVerification';
+      }
+      
+      return Promise.reject({
+        message: 'Email verification required.',
+        originalError: error,
+        isVerificationError: true
+      });
+    }
+    
+    // Rest of the interceptor remains the same
+    if (error.response && error.response.status === 401) {
+      console.log('Authentication error. Token may be invalid or expired.');
+      
+      if (typeof window !== 'undefined' && 
+          !window.location.pathname.includes('signIn')) {
+        
+        localStorage.removeItem('authToken');
+        
+        if (typeof toast !== 'undefined') {
+          toast.error('Your session has expired. Please sign in again.');
+        }
+        
+        setTimeout(() => {
+          window.location.href = '/signIn';
+        }, 1500);
+      }
+    }
+    
+    if (error.message === 'Network Error') {
+      console.error('Network error detected:', error);
+    }
+    
+    return Promise.reject(error);
+  }
+);
+
 export const registerUser = async (userData) => {
   try {
+    console.log('Attempting registration to:', API_URL + '/register');
     const response = await api.post('/register', userData);
     console.log('Registration successful:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Error during registration:', error.response ? error.response.data : error.message);
-    throw error.response ? error.response.data : new Error(error.message);
+    console.error('Registration error details:', {
+      message: error.message,
+      response: error.response,
+      request: error.request ? 'Request was made but no response received' : 'No request was made'
+    });
+    
+    // Provide more meaningful error message
+    if (error.message === 'Network Error') {
+      throw new Error('Cannot connect to the server. Please check your internet connection or the server might be down.');
+    }
+    
+    if (error.response) {
+      // The server responded with an error status code
+      const errorMessage = error.response.data?.message || 'Registration failed with status: ' + error.response.status;
+      throw new Error(errorMessage);
+    }
+    
+    throw error; // For other errors
   }
 };
 
 export const loginUser = async (loginData) => {
   try {
     const response = await api.post('/login', loginData);
+    console.log("response", response)
     console.log('Login successful:', response.data);
     
     // Extract token from response
@@ -56,14 +157,132 @@ export const loginUser = async (loginData) => {
       throw new Error('No token received from server');
     }
     
-    // Store token in localStorage
-    localStorage.setItem('authToken', token);
-    console.log('Token stored in localStorage');
-    
-    return { token };
+    // Instead of always storing in localStorage, return token and user info
+    return { 
+      token
+    };
   } catch (error) {
     console.error('Error during login:', error.response ? error.response.data : error.message);
     throw error;
+  }
+};
+
+export const loginWithVerificationCheck = async (loginData) => {
+  try {
+    // First try to login
+    const loginResult = await loginUser(loginData);
+    
+    try {
+      // Pass the token directly to the verification check
+      const verificationStatus = await checkEmailVerificationStatus(loginResult.token);
+      
+      if (!verificationStatus.verified) {
+        console.log('Email not verified, redirecting to verification page');
+        
+        // Store token temporarily in sessionStorage for verification page
+        sessionStorage.setItem('pendingAuthToken', loginResult.token);
+        
+        // Store the email for verification page
+        sessionStorage.setItem('pendingVerificationEmail', loginData.email);
+        
+        // Redirect to verification page
+        if (typeof window !== 'undefined') {
+          window.location.href = '/emailVerification';
+        }
+        
+        return {
+          success: false,
+          requiresVerification: true,
+          message: 'Please verify your email before continuing',
+          email: loginData.email
+        };
+      }
+      
+      // If verified, login is complete - store token in localStorage
+      localStorage.setItem('authToken', loginResult.token);
+      
+      return {
+        success: true,
+        token: loginResult.token,
+        message: 'Login successful'
+      };
+    } catch (verificationError) {
+      // For verification errors, assume email not verified
+      console.error('Error checking email verification:', verificationError);
+      
+      // Store token temporarily in sessionStorage
+      sessionStorage.setItem('pendingAuthToken', loginResult.token);
+      sessionStorage.setItem('pendingVerificationEmail', loginData.email);
+      
+      return {
+        success: false,
+        requiresVerification: true,
+        message: 'Please verify your email before continuing',
+        error: verificationError.message
+      };
+    }
+  } catch (loginError) {
+    console.error('Login with verification check failed:', loginError);
+    throw loginError;
+  }
+};
+
+// Resent verification email
+// Update to accept email parameter
+export const resendVerificationEmail = async (email = null) => {
+  try {
+    // If email is provided, include it in the request payload
+    const payload = email ? { email } : {};
+    
+    // Pass payload as request body
+    const response = await api.post('/email/verification-notification', payload);
+    console.log('Verification email resent:', response.data);
+    return {
+      success: true,
+      message: response.data?.message || 'Verification email sent!'
+    };
+  } catch (error) {
+    console.error('Error resending verification email:', error);
+    
+    // Handle validation errors (422)
+    if (error.response && error.response.status === 422) {
+      return {
+        success: false,
+        validationError: true,
+        message: error.response.data?.message || 'Invalid email format or parameters.'
+      };
+    }
+    
+    // Handle network errors
+    if (error.message === 'Network Error') {
+      return {
+        success: false,
+        networkError: true,
+        message: 'Could not connect to the server. Please check your internet connection.'
+      };
+    }
+    
+    // The rest of your error handling stays the same
+    if (error.response && error.response.status === 429) {
+      return {
+        success: false,
+        tooManyRequests: true,
+        message: 'Please wait before requesting another email.'
+      };
+    }
+    
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      return {
+        success: false,
+        authError: true,
+        message: 'Authentication error. Please sign in again.'
+      };
+    }
+    
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Failed to send verification email.'
+    };
   }
 };
 
@@ -158,12 +377,41 @@ export const uploadCV = async (file) => {
 
 export const getCV = async () => {
   try {
+    // First, get the user profile to extract the CV filename
+    const profileResponse = await api.get('/profile');
+    const cvFilename = profileResponse.data?.user?.cv;
+    
+    if (!cvFilename) {
+      console.log('No CV has been uploaded yet (no filename in profile)');
+      return { url: null, filename: null };
+    }
+
+    // Now get the actual CV file
     const response = await api.get('/get-cv', {
       responseType: 'blob'
     });
-    return URL.createObjectURL(response.data);
+
+    console.log("CV response received", response.status);
+
+    if (response && response.status === 204) {
+      console.log('No CV has been uploaded yet');
+      return { url: null, filename: null }; // Return null to indicate no CV available
+    }
+    
+    // Successfully got CV file
+    return { 
+      url: URL.createObjectURL(response.data), 
+      filename: cvFilename 
+    };
   } catch (error) {
-    console.error('Error fetching CV:', error);
+    // Handle 404 - CV file not found (database entry exists but file missing)
+    if (error.response && error.response.status === 404) {
+      console.log('CV file not found on server');
+      return { url: null, filename: null }; // Return null to indicate no CV available
+    }
+    
+    // Only log and throw for unexpected errors
+    console.error('Unexpected error fetching CV:', error);
     throw error;
   }
 }
@@ -186,6 +434,61 @@ export const verifyEmail = async (id, hash) => {
     return response.data;
   } catch (error) {
     console.error('Error verifying email:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+export const checkEmailVerificationStatus = async (token = null) => {
+  try {
+    // Create a custom config if token is provided directly
+    let config = {};
+    if (token) {
+      config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+    }
+    
+    const response = await api.get('/email/verification-status', config);
+    console.log('Email verification status checked:', response.data);
+    return {
+      verified: response.data.verified === true,
+      email: response.data.email
+    };
+  } catch (error) {
+    console.error('Error checking email verification status:', error);
+    
+    // If it's a 403 error with "not verified" message, this is EXPECTED behavior
+    if (error.response && error.response.status === 403) {
+      console.info('User email is not verified - returning verified:false');
+      return { 
+        verified: false, 
+        email: error.response.data?.email || null 
+      };
+    }
+    
+    // For auth errors (401), assume not verified
+    if (error.response && error.response.status === 401) {
+      console.info('Authentication error checking verification - assuming not verified');
+      return { 
+        verified: false,
+        email: null,
+        authError: true
+      };
+    }
+    
+    // For network errors
+    if (error.message === 'Network Error') {
+      console.error('Network error when checking verification status');
+      return { 
+        verified: false, 
+        email: null,
+        networkError: true
+      };
+    }
+    
+    // For any other unexpected errors
     throw error;
   }
 };

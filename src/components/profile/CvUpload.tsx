@@ -12,7 +12,10 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [cvUploaded, setCvUploaded] = useState(false);
   const [cvUrl, setCvUrl] = useState<string | null>(null);
+  const [cvFileName, setCvFileName] = useState<string>("No CV uploaded");
   const [isUploadingCV, setIsUploadingCV] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  // Removed uploadDate state
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const { textColor, borderColor, accentColor } = themeColors;
@@ -22,12 +25,29 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
   }, []);
 
   const fetchCV = async () => {
+    setIsLoading(true);
     try {
-      const url = await getCV();
-      setCvUrl(url);
-      setCvUploaded(true);
+      const result = await getCV();
+      
+      if (result) {
+        // CV exists and we got back an object with url and filename
+        setCvUrl(result.url);
+        setCvFileName(result.filename);
+        setCvUploaded(true);
+      } else {
+        // No CV found - this covers both 204 (not uploaded) and 404 (file not found) cases
+        setCvUrl(null);
+        setCvFileName("No CV uploaded");
+        setCvUploaded(false);
+      }
     } catch (error) {
-      console.error('Error fetching CV:', error);
+      // This will only happen for unexpected errors like network issues or server errors
+      console.error('Unexpected error loading CV:', error);
+      toast.error("Could not load CV. Please try again later.");
+      setCvFileName("Error loading CV");
+      setCvUploaded(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -53,11 +73,16 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
     try {
       // Call the uploadCV function from AuthApi.js
       await uploadCV(file);
-
-      // Mock successful upload
+      
+      // Update state with new CV info
       setCvUploaded(true);
+      setCvFileName(file.name);
+      // Removed setUploadDate
+      
+      // Re-fetch CV to get the URL from backend
+      await fetchCV();
+      
       toast.success('CV uploaded successfully!');
-      fetchCV(); // Fetch the updated CV URL
     } catch (error) {
       const errorMessage = error instanceof Error 
         ? error.message 
@@ -71,13 +96,16 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
   const handleRemoveCV = async () => {
     if (!window.confirm('Are you sure you want to remove your CV?')) return;
 
+    setIsLoading(true);
     try {
-      // Call the removeCV function from AuthApi.js
+      // Call the deleteCV function from AuthApi.js
       await deleteCV();
       
       setCvUploaded(false);
       setCvFile(null);
       setCvUrl(null);
+      setCvFileName("No CV uploaded");
+      // Removed setUploadDate
       
       // Clear the file input value so the same file can be re-uploaded
       if (fileInputRef.current) {
@@ -90,6 +118,16 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
         ? error.message 
         : 'Unknown error occurred';
       toast.error(`Error removing CV: ${errorMessage}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleViewCV = () => {
+    if (cvUrl) {
+      window.open(cvUrl, '_blank');
+    } else {
+      toast.error('CV preview is not available');
     }
   };
 
@@ -109,25 +147,35 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
           id="cv-upload"
         />
         
-        {cvUploaded ? (
+        {isLoading ? (
+          // Loading state
+          <div className="flex justify-center items-center p-8">
+            <svg className="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span className="ml-2 text-sm text-gray-500">Loading CV status...</span>
+          </div>
+        ) : cvUploaded ? (
+          // CV exists view
           <div className={`p-4 rounded-lg ${theme === "dark" ? "bg-gray-700" : "bg-gray-100"} mb-4`}>
             <div className="flex items-start justify-between">
-              <div className="flex items-center">
-                <svg className="w-8 h-8 text-red-500 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <div className="flex items-center max-w-[calc(100%-80px)]"> {/* Set max width to leave room for buttons */}
+                <svg className="w-8 h-8 text-red-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
                 </svg>
-                <div>
-                  <p className={`${textColor} font-medium`}>{cvFile?.name || "Your_CV.pdf"}</p>
-                  <p className="text-sm text-gray-500">
-                    Uploaded on {new Date().toLocaleDateString()}
+                <div className="min-w-0"> {/* This ensures the div can shrink below its content size */}
+                  <p className={`${textColor} font-medium truncate`} title={cvFileName || "Your_CV.pdf"}>
+                    {cvFileName || "Your_CV.pdf"}
                   </p>
                 </div>
               </div>
               
-              <div className="flex space-x-2">
+              <div className="flex space-x-2 flex-shrink-0"> {/* Prevent buttons from shrinking */}
                 <button 
-                  onClick={() => cvUrl && window.open(cvUrl, '_blank')} 
-                  className={`p-2 ${theme === "dark" ? "bg-blue-700" : "bg-blue-100"} rounded-md hover:opacity-80`}
+                  onClick={handleViewCV}
+                  disabled={!cvUrl}
+                  className={`p-2 ${theme === "dark" ? "bg-blue-700" : "bg-blue-100"} rounded-md hover:opacity-80 ${!cvUrl ? 'opacity-50 cursor-not-allowed' : ''}`}
                   title="View CV"
                 >
                   <svg className={`w-4 h-4 ${theme === "dark" ? "text-blue-300" : "text-blue-700"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -149,6 +197,7 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
             </div>
           </div>
         ) : (
+          // No CV uploaded view
           <div className={`border-2 border-dashed ${theme === "dark" ? "border-gray-700" : "border-gray-300"} p-6 rounded-lg text-center`}>
             <svg className={`w-12 h-12 mx-auto ${theme === "dark" ? "text-gray-600" : "text-gray-400"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

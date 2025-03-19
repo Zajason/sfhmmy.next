@@ -10,6 +10,7 @@ import ProfileContent from "../components/profile/ProfileContent";
 import { UserData, defaultUserData } from "../components/profile/types";
 import { getUserProfile, getUserQrCode } from "../apis/AuthApi";
 import { useAuth } from "../context/authContext";
+import { checkEmailVerificationStatus, resendVerificationEmail } from "../apis/AuthApi";
 
 const ProfileView = () => {
   const { theme } = useTheme();
@@ -71,30 +72,42 @@ const ProfileView = () => {
       try {
         setIsLoading(true);
         
-        // Wait a bit to make sure token is properly set
-        // This can help with race conditions on page load
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // First check if email is verified
+        try {
+          const verificationStatus = await checkEmailVerificationStatus();
+          
+          if (!verificationStatus.verified) {
+            console.log("Email not verified, redirecting to verification page");
+            
+            // Send a verification email if none was sent in the last minute
+            const lastSent = localStorage.getItem('lastVerificationEmailSent');
+            const now = new Date();
+            
+            if (!lastSent || (now.getTime() - new Date(lastSent).getTime() > 60000)) {
+              try {
+                await resendVerificationEmail();
+                localStorage.setItem('lastVerificationEmailSent', now.toString());
+                toast.info("A verification email has been sent to your address");
+              } catch (emailError) {
+                console.error("Failed to send verification email:", emailError);
+              }
+            } else {
+              toast.info("Please verify your email before accessing your account");
+            }
+            
+            router.push('/emailVerification');
+            return;
+          }
+        } catch (verificationError) {
+          console.error("Error checking email verification:", verificationError);
+          // Continue anyway and let the API call either succeed or fail
+        }
         
-        // Fetch profile data with debug info
+        // Continue with profile data fetch
         console.log("Fetching profile data...");
         const profileData = await getUserProfile();
-        console.log("Profile data received:", profileData);
         
-        // For development, if your API isn't ready, you can mock the response:
-        // const profileData = { 
-        //   user: {
-        //     name: "Demo User",
-        //     username: "demouser",
-        //     email: "demo@example.com",
-        //     city: "Athens",
-        //     university: "Athens University",
-        //     year: "3rd Year",
-        //     days_present: [1, 2],
-        //     registered_workshops: ["Workshop 1", "Workshop 2"]
-        //   }
-        // };
-        
-        // Map API response to our UserData interface
+        // Map the response data to our UserData structure
         const mappedUserData: UserData = {
           fullName: profileData.user.name || '',
           username: profileData.user.username || profileData.user.email.split('@')[0],
@@ -102,6 +115,8 @@ const ProfileView = () => {
           city: profileData.user.city || '',
           university: profileData.user.university || '',
           year: profileData.user.year || '',
+          school: profileData.user.school || '',
+          emailVerified: profileData.user.email_verified_at !== null,
           avatar: profileData.user.avatar || '/images/others/default.jpg',
           daysPresent: profileData.user.days_present ? 
             Array.isArray(profileData.user.days_present) ? 
@@ -112,37 +127,40 @@ const ProfileView = () => {
             Array.isArray(profileData.user.registered_workshops) ? 
               profileData.user.registered_workshops : 
               JSON.parse(profileData.user.registered_workshops) : 
-            []
+            [],
+          presence: profileData.user.presence || 0,
+          userID: profileData.user.user_id || ''
         };
-
+    
         setUserData(mappedUserData);
         
-        // Separately fetch QR code to handle binary data
-        try {
-          console.log("Fetching QR code...");
-          const qrCode = await getUserQrCode();
-          console.log("QR code received");
-          setQrCodeUrl(qrCode);
-        } catch (err) {
-          console.error("Failed to load QR code:", err);
-          toast.error("Could not load QR code");
-        }
-
+        // Rest of your code for QR code etc.
+        
       } catch (error: any) {
         console.error("Error fetching profile:", error);
         
-        // Show more detailed error to the user
-        let errorMsg = "Failed to load profile data";
-        if (error.response) {
-          errorMsg += ` (${error.response.status}: ${error.response.statusText})`;
-        }
-        toast.error(errorMsg);
-        
-        // If unauthorized, redirect to login
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        // Handle verification errors with higher priority
+        if (error.response && 
+            error.response.status === 403 && 
+            error.response.data && 
+            typeof error.response.data.message === 'string' && 
+            error.response.data.message.toLowerCase().includes('email')) {
+          
+          // Email verification error
+          toast.error("Your email address needs to be verified");
+          router.push('/emailVerification');
+        } else if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+          // Other authorization errors - likely invalid token
           localStorage.removeItem("authToken");
-          toast.error("Your session has expired. Please log in again.");
-          setTimeout(() => router.push('/signIn'), 2000);
+          toast.error("Your session has expired. Please sign in again.");
+          setTimeout(() => router.push('/signIn'), 1500);
+        } else {
+          // Other errors
+          let errorMsg = "Failed to load profile data";
+          if (error.response) {
+            errorMsg += ` (${error.response.status || 'Unknown'})`;
+          }
+          toast.error(errorMsg);
         }
       } finally {
         setIsLoading(false);
