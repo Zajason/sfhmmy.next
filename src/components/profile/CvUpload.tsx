@@ -29,19 +29,19 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
     try {
       const result = await getCV();
       
-      if (result) {
-        // CV exists and we got back an object with url and filename
+      if (result && result.url && result.filename) {
+        // CV exists and we got back valid data
         setCvUrl(result.url);
         setCvFileName(result.filename);
         setCvUploaded(true);
       } else {
-        // No CV found - this covers both 204 (not uploaded) and 404 (file not found) cases
+        // No CV found - returned object with null values
         setCvUrl(null);
         setCvFileName("No CV uploaded");
         setCvUploaded(false);
       }
     } catch (error) {
-      // This will only happen for unexpected errors like network issues or server errors
+      // Error handling remains the same
       console.error('Unexpected error loading CV:', error);
       toast.error("Could not load CV. Please try again later.");
       setCvFileName("Error loading CV");

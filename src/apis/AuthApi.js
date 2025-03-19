@@ -73,11 +73,6 @@ api.interceptors.response.use(
         
         sessionStorage.setItem('redirectAfterVerification', window.location.pathname);
         
-        if (typeof toast !== 'undefined') {
-          toast.info('Please verify your email address before continuing.');
-        } else {
-          alert('Please verify your email address before continuing.');
-        }
         
         window.location.href = '/emailVerification';
       }
