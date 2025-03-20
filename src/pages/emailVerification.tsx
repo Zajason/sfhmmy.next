@@ -1,36 +1,109 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactElement } from 'react';
 import { toast } from 'react-toastify';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Meteors } from "../components/meteorAnimation";
 import { useTheme } from "../utils/ThemeContext";
-import { resendVerificationEmail } from '../apis/AuthApi';
+import { resendVerificationEmail, checkEmailVerificationStatus } from '../apis/AuthApi';
+import { useAuth } from '../context/authContext';
 
-const EmailVerification = () => {
-  const [isResending, setIsResending] = useState(false);
-  const [isChecking, setIsChecking] = useState(false);
+interface VerificationResponse {
+  success: boolean;
+  message?: string;
+  emailNotFound?: boolean;
+  networkError?: boolean;
+  tooManyRequests?: boolean;
+  authError?: boolean;
+  validationError?: boolean;
+  verified?: boolean;
+}
+
+const EmailVerification: React.FC = () => {
+  const [isResending, setIsResending] = useState<boolean>(false);
+  const [isChecking, setIsChecking] = useState<boolean>(false);
   const [lastSent, setLastSent] = useState<Date | null>(null);
-  const [countdown, setCountdown] = useState(0);
+  const [countdown, setCountdown] = useState<number>(0);
   const [userEmail, setUserEmail] = useState<string>('');
-  const [showEmailInput, setShowEmailInput] = useState(false);
+  const [showEmailInput, setShowEmailInput] = useState<boolean>(true);
   const router = useRouter();
   const { theme } = useTheme();
+  const { isSignedIn } = useAuth();
 
-  // Determine styling based on theme
   const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const cardBackgroundColor = theme === "dark" ? "bg-gray-900" : "bg-gray-200";
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
   const subTextColor = theme === "dark" ? "text-gray-300" : "text-gray-700";
   const inputBg = theme === "dark" ? "bg-gray-800" : "bg-white";
 
+
+  // Check if user is already verified and redirect if needed
+  useEffect(() => {
+    const checkVerificationStatus = async () => {
+      try {
+        setIsChecking(true);
+        
+        // If user is signed in, check verification status
+        if (isSignedIn) {
+          const token = localStorage.getItem('authToken');
+          if (token) {
+            const verificationStatus = await checkEmailVerificationStatus(token);
+            
+            if (verificationStatus.verified) {
+              toast.success('Your email is already verified');
+              router.push('/profile');
+              return;
+            }
+          }
+        }
+        
+        // For users that aren't signed in but have a pending token
+        const pendingToken = sessionStorage.getItem('pendingAuthToken');
+        if (pendingToken) {
+          try {
+            const verificationStatus = await checkEmailVerificationStatus(pendingToken);
+            if (verificationStatus.verified) {
+              // Move token to localStorage for full access
+              localStorage.setItem('authToken', pendingToken);
+              sessionStorage.removeItem('pendingAuthToken');
+              sessionStorage.removeItem('pendingVerificationEmail');
+              toast.success('Your email has been verified!');
+              router.push('/profile');
+              return;
+            }
+          } catch (error) {
+            console.log('Error checking pending verification, will show verification page', error);
+          }
+        }
+      } catch (error) {
+        console.error('Error checking verification status:', error);
+      } finally {
+        setIsChecking(false);
+      }
+    };
+    
+    checkVerificationStatus();
+  }, [router, isSignedIn]);
+
   // Get email from session storage on component mount
   useEffect(() => {
+    // Check if there's a stored timestamp for the last sent email (for any address)
+    const lastSentStr = localStorage.getItem('lastVerificationEmailSent');
+    if (lastSentStr) {
+      const lastSent = new Date(lastSentStr);
+      const now = new Date();
+      const diffSeconds = Math.floor((now.getTime() - lastSent.getTime()) / 1000);
+      
+      if (diffSeconds < 60) {
+        // If less than 60 seconds have passed, set remaining countdown
+        setCountdown(60 - diffSeconds);
+      }
+    }
+
+    // Get email from session storage
     const email = sessionStorage.getItem('pendingVerificationEmail');
     if (email) {
       setUserEmail(email);
-    } else {
-      // If no email in session, show input form
-      setShowEmailInput(true);
+      sessionStorage.removeItem('pendingVerificationEmail');
     }
   }, []);
 
@@ -44,15 +117,7 @@ const EmailVerification = () => {
     }
   }, [countdown]);
 
-  // Auto-send verification email on load if email is available
-  useEffect(() => {
-    if (userEmail && !lastSent && !countdown && !showEmailInput) {
-      handleResendVerification(true);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userEmail]);
-
-  const handleResendVerification = async (isAutoSend = false) => {
+  const handleResendVerification = async (isAutoSend = false): Promise<void> => {
     // Validate email before sending
     if (!userEmail || !userEmail.includes('@')) {
       toast.error('Please enter a valid email address');
@@ -72,6 +137,12 @@ const EmailVerification = () => {
         setLastSent(now);
         setCountdown(60); // Set countdown to 60 seconds
         
+        // Switch to verification instructions view
+        setShowEmailInput(false);
+        
+        // Store email in session storage for future reference
+        sessionStorage.setItem('pendingVerificationEmail', userEmail);
+        
         if (!isAutoSend) {
           toast.success('Verification email has been sent to your email address');
         } else {
@@ -79,7 +150,23 @@ const EmailVerification = () => {
         }
       } else {
         // Handle error cases based on the returned result object
-        if (result.networkError) {
+        if (result.emailNotFound) {
+          toast.error(
+            (
+              <div>
+                Email address not found. 
+                <button 
+                  onClick={() => router.push('/register')} 
+                  className="ml-2 underline text-blue-500"
+                >
+                  Register now
+                </button>
+              </div>
+            ) as ReactElement,
+            { closeOnClick: false }
+          );
+          setShowEmailInput(true); // Show the email input form so they can correct it
+        } else if (result.networkError) {
           toast.error('Network error. Please check your connection and try again.');
         } else if (result.tooManyRequests) {
           toast.warning('Please wait before requesting another email');
@@ -98,40 +185,79 @@ const EmailVerification = () => {
   };
   
   // Handle email input for manual entry
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setUserEmail(e.target.value);
   };
   
-  // Handle form submission for manual email entry
-  const handleSubmitEmail = async (e: React.FormEvent) => {
+   // Handle form submission for manual email entry
+  const handleSubmitEmail = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-    setIsResending(true);
+    
+    // Validate email before sending
+    if (!userEmail || !userEmail.includes('@')) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
     
     try {
+      setIsResending(true);
+      
       const result = await resendVerificationEmail(userEmail);
       
       if (result.success) {
-        toast.success('Verification email sent successfully!');
-        setShowEmailInput(false); // Hide the input form after successful send
-        setCountdown(60); // Start cooldown timer
+        // Save the time when the verification email was sent
+        const now = new Date();
+        localStorage.setItem('lastVerificationEmailSent', now.toString());
+        setLastSent(now);
+        setCountdown(60); // Set countdown to 60 seconds
+        
+        // Switch to verification instructions view
+        setShowEmailInput(false);
         
         // Store email in session storage for future reference
         sessionStorage.setItem('pendingVerificationEmail', userEmail);
+        
+        toast.success('Verification email has been sent to your email address');
       } else {
+        // Handle error cases based on the returned result object
         if (result.emailNotFound) {
-          toast.error('Email address not found. Have you registered?');
+          toast.error(
+            <div>
+              Email address not found. 
+              <button 
+                onClick={() => router.push('/register')} 
+                className="ml-2 underline text-blue-500"
+              >
+                Register now
+              </button>
+            </div>,
+            { closeOnClick: false }
+          );
+        } else if (result.networkError) {
+          toast.error('Network error. Please check your connection and try again.');
         } else if (result.tooManyRequests) {
-          toast.warning('Please wait before requesting another email.');
+          toast.warning('Please wait before requesting another email');
+        } else if (result.authError) {
+          toast.error('Authentication error. Please try signing in again.');
         } else {
-          toast.error(result.message || 'Failed to send verification email.');
+          toast.error(result.message || 'We were unable to send the verification email. Please try again later.');
         }
       }
     } catch (error) {
-      toast.error('An unexpected error occurred. Please try again.');
+      console.error('Error resending verification email:', error);
+      toast.error('We were unable to send the verification email. Please try again later.');
     } finally {
       setIsResending(false);
     }
   };
+  
+  if (isChecking) {
+    return (
+      <div className={`${backgroundColor} w-full h-screen flex items-center justify-center`}>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
   
   return (
     <>
@@ -150,16 +276,7 @@ const EmailVerification = () => {
               Email Verification Required
             </h2>
             <p className={`mt-2 text-center text-sm ${subTextColor}`}>
-              {userEmail ? (
-                <>
-                  Your email address <span className="font-semibold">{userEmail}</span> needs to be verified before you can access your profile.
-                  Please check your inbox for a verification link.
-                </>
-              ) : (
-                <>
-                  Your email address needs to be verified before you can access your profile.
-                </>
-              )}
+              Your email address needs to be verified before you can access your profile.
             </p>
           </div>
           
@@ -167,6 +284,7 @@ const EmailVerification = () => {
             // Show form for manual email entry
             <div className={`rounded-md shadow-sm ${cardBackgroundColor} p-6`}>
               <form onSubmit={handleSubmitEmail} className="space-y-6">
+                {/* Form content - unchanged */}
                 <div>
                   <label htmlFor="email" className={`block text-sm font-medium ${textColor}`}>
                     Email Address
@@ -188,18 +306,27 @@ const EmailVerification = () => {
                 <div>
                   <button
                     type="submit"
-                    disabled={isResending}
-                    className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${isResending ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+                    disabled={isResending || countdown > 0}
+                    className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
+                      isResending || countdown > 0 ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'
+                    } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
                   >
-                    {isResending ? 'Sending...' : 'Send Verification Email'}
+                    {isResending ? (
+                      'Sending...'
+                    ) : countdown > 0 ? (
+                      `Send available in ${countdown}s`
+                    ) : (
+                      'Send Verification Email'
+                    )}
                   </button>
                 </div>
               </form>
             </div>
           ) : (
-            // Show verification instructions
+            // Show verification instructions - unchanged
             <div className={`rounded-md shadow-sm ${cardBackgroundColor} p-6`}>
               <div className="flex flex-col items-center">
+                {/* Verification instructions content - unchanged */}
                 <svg className="w-16 h-16 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>

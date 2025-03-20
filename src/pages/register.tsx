@@ -17,7 +17,7 @@ const Register: React.FC = () => {
     school: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [globalError, setGlobalError] = useState<string | null>(null);
+  const [globalError, setGlobalError] = useState<React.ReactNode | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const { theme } = useTheme();
   const { isSignedIn } = useAuth(); // Get authentication status
@@ -117,13 +117,31 @@ const Register: React.FC = () => {
     try {
       const data = await registerUser(userData);
       console.log("Registration successful:", data);
-      // Redirect to the email verification page after successful registration
-      router.push("/emailVerification");
+
+      sessionStorage.setItem('pendingVerificationEmail', formData.email);
+
+      router.push("/registrationSuccess");
     } catch (err: any) {
       console.error("Registration error:", err);
-      setGlobalError(
-        typeof err === "string" ? err : "Registration failed. Please try again."
-      );
+  
+      // Check for specific error types
+      if (err.message && err.message.includes('User already exists')) {
+        setGlobalError(
+          <>
+            This email address is already registered. 
+            <button 
+              onClick={() => router.push('/signIn')} 
+              className="ml-2 text-blue-500 underline"
+            >
+              Sign in instead
+            </button>
+          </>
+        );
+      } else {
+        setGlobalError(
+          typeof err.message === "string" ? err.message : "Registration failed. Please try again."
+        );
+      }
     } finally {
       setIsSubmitting(false);
     }

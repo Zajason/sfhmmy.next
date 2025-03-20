@@ -239,6 +239,15 @@ export const resendVerificationEmail = async (email = null) => {
   } catch (error) {
     console.error('Error resending verification email:', error);
     
+    // Handle 404 - Email not found errors
+    if (error.response && error.response.status === 404) {
+      return {
+        success: false,
+        emailNotFound: true,
+        message: 'The email address you entered is not registered in our system.'
+      };
+    }
+    
     // Handle validation errors (422)
     if (error.response && error.response.status === 422) {
       return {
@@ -248,7 +257,7 @@ export const resendVerificationEmail = async (email = null) => {
       };
     }
     
-    // Handle network errors
+    // The rest of your error handling stays the same
     if (error.message === 'Network Error') {
       return {
         success: false,
@@ -257,20 +266,11 @@ export const resendVerificationEmail = async (email = null) => {
       };
     }
     
-    // The rest of your error handling stays the same
     if (error.response && error.response.status === 429) {
       return {
         success: false,
         tooManyRequests: true,
         message: 'Please wait before requesting another email.'
-      };
-    }
-    
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-      return {
-        success: false,
-        authError: true,
-        message: 'Authentication error. Please sign in again.'
       };
     }
     
