@@ -3,16 +3,16 @@ export interface UserData {
     username: string;
     email: string;
     city: string;
-    year: string;
+    year: number;
     university: string;
-    school: string;  // Added school from schema
+    school: string;
     avatar: string;
     daysPresent: number[];
     registeredWorkshops: string[];
-    emailVerified: boolean;  // New field to track email verification status
-    presence: number;  // Added from schema
-    userID: string;    // Added from schema (user_id)
-    cv?: string;       // CV file path if uploaded (optional)
+    emailVerified: boolean; 
+    presence: number;
+    userID: string;   
+    cv?: string;     
 }
 
 export const defaultUserData: UserData = {
@@ -22,7 +22,7 @@ export const defaultUserData: UserData = {
     city: "",
     university: "",
     school: "",
-    year: "",
+    year: 0,
     avatar: "/images/others/default.jpg",
     daysPresent: [],
     registeredWorkshops: [],

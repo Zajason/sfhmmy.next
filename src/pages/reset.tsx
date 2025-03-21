@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTheme } from "../utils/ThemeContext";
 import { Meteors } from "../components/meteorAnimation";
-import { resetpassword } from "../apis/AuthApi";
+import { resetPassword } from "../apis/services/authService"; // Change the import from forgotPassword to resetPassword
 
 const ResetPasswordPage = () => {
     const [password, setPassword] = useState('');
@@ -10,7 +10,7 @@ const ResetPasswordPage = () => {
     const [error, setError] = useState('');
     const router = useRouter();
     const { theme } = useTheme();
-    const { token } = router.query; // Extract token from URL query parameters
+    const { token } = router.query;
 
     // Set colors based on the theme
     const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
@@ -20,12 +20,13 @@ const ResetPasswordPage = () => {
     const buttonBackgroundColor = theme === "dark" ? "bg-blue-500" : "bg-blue-600";
     const buttonHoverClass = theme === "dark" ? "hover:bg-blue-600" : "hover:bg-blue-700";
 
-    const resetPassword = async (token: string, password: string) => {
+    const handlePasswordReset = async (token: string, password: string) => {
         try {
-            await resetpassword(token, password);
-            router.push('/');
+            await resetPassword(token, password);
+            router.push('/signIn');
         } catch (error) {
             console.error('Error resetting password:', error);
+            setError('Failed to reset password. The link may be expired or invalid.');
         }
     };
 
@@ -37,7 +38,7 @@ const ResetPasswordPage = () => {
         }
         setError('');
         if (typeof token === 'string') {
-            resetPassword(token, password);
+            handlePasswordReset(token, password);
         } else {
             setError('Invalid token');
         }

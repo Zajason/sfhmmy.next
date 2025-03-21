@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useTheme } from "../../utils/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../context/authContext";
-import { getUserProfile } from "../../apis/AuthApi"; // Import the API function
+import { getUserProfile } from "../../apis/services/profileService"; // Import the API function
 
 interface NavbarProps {}
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeColors } from "./types";
-import Image from "next/image";
-import { getUserQrCode } from "../../apis/AuthApi";
+import { getUserQrCode } from "../../apis/services/profileService";
+import { toast } from "react-toastify";
 
 interface QrCodeDisplayProps {
   themeColors: ThemeColors;
@@ -15,6 +15,19 @@ const QrCodeDisplay: React.FC<QrCodeDisplayProps> = ({ themeColors, theme }) => 
   const [isLoading, setIsLoading] = useState(false);
   const { textColor } = themeColors;
 
+  const fetchQrCode = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const qrCodeUrl = await getUserQrCode();
+      setQrCode(qrCodeUrl);
+    } catch (error) {
+      console.error("Error fetching QR code:", error);
+      toast.error("Could not load your QR code. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
   const toggleQrModal = () => {
     setIsQrModalOpen(!isQrModalOpen);
     

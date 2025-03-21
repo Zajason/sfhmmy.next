@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Meteors } from "../components/meteorAnimation";
 import { useTheme } from "../utils/ThemeContext";
-import { resendVerificationEmail, checkEmailVerificationStatus } from '../apis/AuthApi';
+import { resendVerificationEmail, checkEmailVerificationStatus } from '../apis/services/authService';
 import { useAuth } from '../context/authContext';
 
 interface VerificationResponse {
@@ -152,17 +152,15 @@ const EmailVerification: React.FC = () => {
         // Handle error cases based on the returned result object
         if (result.emailNotFound) {
           toast.error(
-            (
-              <div>
-                Email address not found. 
-                <button 
-                  onClick={() => router.push('/register')} 
-                  className="ml-2 underline text-blue-500"
-                >
-                  Register now
-                </button>
-              </div>
-            ) as ReactElement,
+            <div>
+              Email address not found. 
+              <button 
+                onClick={() => router.push('/register')} 
+                className="ml-2 underline text-blue-500"
+              >
+                Register now
+              </button>
+            </div>,
             { closeOnClick: false }
           );
           setShowEmailInput(true); // Show the email input form so they can correct it

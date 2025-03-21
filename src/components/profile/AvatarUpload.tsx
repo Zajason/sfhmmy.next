@@ -117,7 +117,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ userData, setUserData, them
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            {/* <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <button
                 onClick={triggerAvatarInput}
                 className="text-white hover:text-blue-200 mb-4"
@@ -144,7 +144,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ userData, setUserData, them
                   </div>
                 </button>
               )}
-            </div>
+            </div> */}
           </>
         )}
       </div>

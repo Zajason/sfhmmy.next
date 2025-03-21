@@ -8,9 +8,9 @@ import "react-toastify/dist/ReactToastify.css";
 import ProfileSidebar from "../components/profile/ProfileSidebar";
 import ProfileContent from "../components/profile/ProfileContent";
 import { UserData, defaultUserData } from "../components/profile/types";
-import { getUserProfile, getUserQrCode } from "../apis/AuthApi";
+import { getUserProfile } from "../apis/services/profileService";
 import { useAuth } from "../context/authContext";
-import { checkEmailVerificationStatus, resendVerificationEmail } from "../apis/AuthApi";
+import { checkEmailVerificationStatus, resendVerificationEmail } from "../apis/services/authService";
 
 const ProfileView = () => {
   const { theme } = useTheme();
@@ -113,7 +113,7 @@ const ProfileView = () => {
           email: profileData.user.email || '',
           city: profileData.user.city || '',
           university: profileData.user.university || '',
-          year: profileData.user.year || '',
+          year: profileData.user.year || 0,
           school: profileData.user.school || '',
           emailVerified: profileData.user.email_verified_at !== null,
           avatar: profileData.user.avatar || '/images/others/default.jpg',

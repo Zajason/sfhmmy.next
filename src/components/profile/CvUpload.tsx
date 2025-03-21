@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { ThemeColors } from "./types";
-import { uploadCV, getCV, deleteCV } from "../../apis/AuthApi";
+import { uploadCV, getCV, deleteCV } from "../../apis/services/fileService";
 
 interface CvUploadProps {
   themeColors: ThemeColors;
@@ -9,7 +9,6 @@ interface CvUploadProps {
 }
 
 const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
-  const [cvFile, setCvFile] = useState<File | null>(null);
   const [cvUploaded, setCvUploaded] = useState(false);
   const [cvUrl, setCvUrl] = useState<string | null>(null);
   const [cvFileName, setCvFileName] = useState<string>("No CV uploaded");
@@ -28,11 +27,11 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
     setIsLoading(true);
     try {
       const result = await getCV();
-      
-      if (result && result.url && result.filename) {
+      console.log("result", result)
+      if (result && typeof result === 'object' && result.exists == true) {
         // CV exists and we got back valid data
         setCvUrl(result.url);
-        setCvFileName(result.filename);
+        setCvFileName(result.filename || "My CV");
         setCvUploaded(true);
       } else {
         // No CV found - returned object with null values
@@ -67,7 +66,6 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
       return;
     }
 
-    setCvFile(file);
     setIsUploadingCV(true);
 
     try {
@@ -82,7 +80,6 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
       // Re-fetch CV to get the URL from backend
       await fetchCV();
       
-      toast.success('CV uploaded successfully!');
     } catch (error) {
       const errorMessage = error instanceof Error 
         ? error.message 
@@ -102,7 +99,6 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
       await deleteCV();
       
       setCvUploaded(false);
-      setCvFile(null);
       setCvUrl(null);
       setCvFileName("No CV uploaded");
       // Removed setUploadDate
@@ -112,7 +108,6 @@ const CvUpload: React.FC<CvUploadProps> = ({ themeColors, theme }) => {
         fileInputRef.current.value = '';
       }
       
-      toast.success('CV removed successfully');
     } catch (error) {
       const errorMessage = error instanceof Error 
         ? error.message 

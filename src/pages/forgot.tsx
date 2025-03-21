@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Meteors } from "../components/meteorAnimation";
 import { useTheme } from "../utils/ThemeContext";
-import { forgotPassword } from "../apis/AuthApi";
+import { forgotPassword } from "../apis/services/authService";
 
 const ForgotPassword = () => {
   const router = useRouter();
