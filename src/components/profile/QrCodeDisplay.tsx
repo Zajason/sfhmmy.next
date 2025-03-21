@@ -16,7 +16,7 @@ const QrCodeDisplay: React.FC<QrCodeDisplayProps> = ({ qrCodeUrl, themeColors, t
   const toggleQrModal = () => {
     setIsQrModalOpen(!isQrModalOpen);
   };
-  console.log("qrCodeUrl",qrCodeUrl);
+  
   // Default QR code if not provided from API
   const qrSrc = qrCodeUrl || "/images/others/qr.png";
 
