@@ -298,7 +298,7 @@ export const getUserProfile = async () => {
   }
 };
 
-// Get user QR code
+// Get user QR code (Not Needed for now as the src of the image of the qr code gets the path /api/user/qrcode)
 export const getUserQrCode = async () => {
   try {
     const response = await api.get('/user/qrcode', { 
