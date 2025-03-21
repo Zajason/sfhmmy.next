@@ -128,8 +128,7 @@ const ProfileView = () => {
               JSON.parse(profileData.user.registered_workshops) : 
             [],
           presence: profileData.user.presence || 0,
-          userID: profileData.user.user_id || '',
-          qrCodeUrl: profileData.qrCodeUrl || null
+          userID: profileData.user.user_id || ''
         };
     
         setUserData(mappedUserData);

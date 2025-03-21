@@ -289,8 +289,7 @@ export const getUserProfile = async () => {
     console.log('Profile fetched:', response.data);
     console.log('Profile fetched:', response);
     return {
-      user: response.data.user, 
-      qrCodeUrl: response.data.qr_code_url
+      user: response.data.user
     };
   } catch (error) {
     console.error('Error fetching profile:', error.response ? error.response.data : error.message);

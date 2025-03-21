@@ -13,7 +13,6 @@ export interface UserData {
     presence: number;  // Added from schema
     userID: string;    // Added from schema (user_id)
     cv?: string;       // CV file path if uploaded (optional)
-    qrCodeUrl?: string | null;  // QR code URL if available
 }
 
 export const defaultUserData: UserData = {
@@ -30,8 +29,7 @@ export const defaultUserData: UserData = {
     emailVerified: false,
     presence: 0,
     userID: "",
-    cv: "",
-    qrCodeUrl: null
+    cv: ""
 };
 
 export interface ThemeColors {
