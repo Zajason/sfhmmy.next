@@ -287,14 +287,18 @@ export const getUserProfile = async () => {
     // Use our api instance with interceptors
     const response = await api.get('/profile');
     console.log('Profile fetched:', response.data);
-    return response.data;
+    console.log('Profile fetched:', response);
+    return {
+      user: response.data.user, 
+      qrCodeUrl: response.data.qr_code_url
+    };
   } catch (error) {
     console.error('Error fetching profile:', error.response ? error.response.data : error.message);
     throw error;
   }
 };
 
-// Get user QR code
+// Get user QR code (Not Needed for now as the src of the image of the qr code gets the path /api/user/qrcode)
 export const getUserQrCode = async () => {
   try {
     const response = await api.get('/user/qrcode', { 

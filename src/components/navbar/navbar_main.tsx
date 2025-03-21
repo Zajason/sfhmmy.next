@@ -25,12 +25,15 @@ const Navbar: React.FC<NavbarProps> = () => {
       if (isSignedIn) {
         try {
           const profileData = await getUserProfile();
-          // Set the user name from the API response
+          console.log("User profile data:", profileData);
+          
+          // Set the user name from the API response (adjusted for the actual data structure)
           if (profileData?.user?.name) {
             setUserName(profileData.user.name);
           }
 
-          // Set avatar if available
+          // Set avatar if available - keeping the default handling since avatar isn't in the sample data
+          // If there's no avatar in the response, it will keep using the default avatar
           if (profileData?.user?.avatar) {
             setUserAvatar(profileData.user.avatar);
           }
@@ -43,8 +46,6 @@ const Navbar: React.FC<NavbarProps> = () => {
 
     fetchUserData();
   }, [isSignedIn]);
-
-  // Rest of your component remains the same...
 
   // Close menu when route changes
   useEffect(() => {
