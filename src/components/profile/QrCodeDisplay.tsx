@@ -4,22 +4,21 @@ import { ThemeColors } from "./types";
 import Image from "next/image";
 
 interface QrCodeDisplayProps {
+  qrCodeUrl: string | null;
   themeColors: ThemeColors;
   theme: string;
-  qrCodeUrl?: string | null;
 }
 
-const QrCodeDisplay: React.FC<QrCodeDisplayProps> = ({ themeColors, theme, qrCodeUrl }) => {
+const QrCodeDisplay: React.FC<QrCodeDisplayProps> = ({ qrCodeUrl, themeColors, theme }) => {
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const { textColor } = themeColors;
 
   const toggleQrModal = () => {
     setIsQrModalOpen(!isQrModalOpen);
   };
-  
+  console.log("qrCodeUrl",qrCodeUrl);
   // Default QR code if not provided from API
   const qrSrc = qrCodeUrl || "/images/others/qr.png";
-
 
   return (
     <>

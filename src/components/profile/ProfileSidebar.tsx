@@ -10,7 +10,6 @@ interface ProfileSidebarProps {
     themeColors: ThemeColors;
     theme: string;
     itemVariants: any;
-    qrCodeUrl?: string | null;
 }
 
 // Then in the component function
@@ -19,11 +18,11 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
     setUserData, 
     themeColors, 
     theme, 
-    itemVariants,
-    qrCodeUrl
+    itemVariants
 }) => {
     const { cardBackgroundColor, textColor } = themeColors;
     const isEligibleForCertificate = userData.daysPresent.length >= 2;
+    console.log("userDataasfasf",userData);
 
     return (
         <motion.div 
@@ -116,9 +115,9 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
 
                 {/* QR Code Component */}
                 <QrCodeDisplay 
+                    qrCodeUrl={userData.qrCodeUrl ?? null} 
                     themeColors={themeColors} 
-                    theme={theme} 
-                    qrCodeUrl={qrCodeUrl}
+                    theme={theme}
                 />
             </div>
         </motion.div>

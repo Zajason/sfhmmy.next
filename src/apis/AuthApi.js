@@ -287,7 +287,11 @@ export const getUserProfile = async () => {
     // Use our api instance with interceptors
     const response = await api.get('/profile');
     console.log('Profile fetched:', response.data);
-    return response.data;
+    console.log('Profile fetched:', response);
+    return {
+      user: response.data.user, 
+      qrCodeUrl: response.data.qr_code_url
+    };
   } catch (error) {
     console.error('Error fetching profile:', error.response ? error.response.data : error.message);
     throw error;

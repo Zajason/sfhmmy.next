@@ -17,7 +17,6 @@ const ProfileView = () => {
   const router = useRouter();
   const { isSignedIn } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
   
   // Use defaultUserData as initial state
   const [userData, setUserData] = useState<UserData>(defaultUserData);
@@ -129,12 +128,11 @@ const ProfileView = () => {
               JSON.parse(profileData.user.registered_workshops) : 
             [],
           presence: profileData.user.presence || 0,
-          userID: profileData.user.user_id || ''
+          userID: profileData.user.user_id || '',
+          qrCodeUrl: profileData.qrCodeUrl || null
         };
     
         setUserData(mappedUserData);
-        
-        // Rest of your code for QR code etc.
         
       } catch (error: any) {
         console.error("Error fetching profile:", error);
@@ -214,7 +212,6 @@ const ProfileView = () => {
             themeColors={themeColors}
             theme={theme}
             itemVariants={itemVariants}
-            qrCodeUrl={qrCodeUrl}
           />
 
           <ProfileContent 
