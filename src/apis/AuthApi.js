@@ -224,7 +224,7 @@ export const loginWithVerificationCheck = async (loginData) => {
 
 // Resent verification email
 // Update to accept email parameter
-export const resendVerificationEmail = async (email = null) => {
+export const resendVerificationEmail = async (email) => {
   try {
     // If email is provided, include it in the request payload
     const payload = email ? { email } : {};
@@ -433,7 +433,7 @@ export const verifyEmail = async (id, hash) => {
   }
 };
 
-export const checkEmailVerificationStatus = async (token = null) => {
+export const checkEmailVerificationStatus = async (token) => {
   try {
     // Create a custom config if token is provided directly
     let config = {};

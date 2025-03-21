@@ -45,7 +45,7 @@ const EmailVerification: React.FC = () => {
         // If user is signed in, check verification status
         if (isSignedIn) {
           const token = localStorage.getItem('authToken');
-          if (token) {
+          if (token !== null) {
             const verificationStatus = await checkEmailVerificationStatus(token);
             
             if (verificationStatus.verified) {
@@ -127,8 +127,8 @@ const EmailVerification: React.FC = () => {
     try {
       setIsResending(true);
       
-      // Use the imported resendVerificationEmail function instead of api directly
-      const result = await resendVerificationEmail(userEmail);
+      // Use the imported resendVerificationEmail function instead of API directly
+      const result: VerificationResponse = await resendVerificationEmail(userEmail);
       
       if (result.success) {
         // Save the time when the verification email was sent
@@ -170,7 +170,7 @@ const EmailVerification: React.FC = () => {
           toast.error('Network error. Please check your connection and try again.');
         } else if (result.tooManyRequests) {
           toast.warning('Please wait before requesting another email');
-        } else if (result.authError) {
+        } else if ('authError' in result && result.authError) {
           toast.error('Authentication error. Please try signing in again.');
         } else {
           toast.error(result.message || 'We were unable to send the verification email. Please try again later.');
@@ -237,7 +237,7 @@ const EmailVerification: React.FC = () => {
           toast.error('Network error. Please check your connection and try again.');
         } else if (result.tooManyRequests) {
           toast.warning('Please wait before requesting another email');
-        } else if (result.authError) {
+        } else if ('authError' in result && result.authError) {
           toast.error('Authentication error. Please try signing in again.');
         } else {
           toast.error(result.message || 'We were unable to send the verification email. Please try again later.');
