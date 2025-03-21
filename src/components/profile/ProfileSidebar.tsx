@@ -22,7 +22,6 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
 }) => {
     const { cardBackgroundColor, textColor } = themeColors;
     const isEligibleForCertificate = userData.daysPresent.length >= 2;
-    console.log("userDataasfasf",userData);
 
     return (
         <motion.div 
@@ -115,7 +114,6 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
 
                 {/* QR Code Component */}
                 <QrCodeDisplay 
-                    qrCodeUrl={userData.qrCodeUrl ?? null} 
                     themeColors={themeColors} 
                     theme={theme}
                 />
