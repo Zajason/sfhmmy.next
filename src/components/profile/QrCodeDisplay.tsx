@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeColors } from "./types";
 import Image from "next/image";
 import { getUserQrCode } from "../../apis/AuthApi";
+import { get } from "http";
 
 interface QrCodeDisplayProps {
   themeColors: ThemeColors;
@@ -15,13 +16,23 @@ const QrCodeDisplay: React.FC<QrCodeDisplayProps> = ({ themeColors, theme }) => 
   const [isLoading, setIsLoading] = useState(false);
   const { textColor } = themeColors;
 
-  const toggleQrModal = () => {
-    setIsQrModalOpen(!isQrModalOpen);
-    
+  const toggleQrModal = async () => {
+    const nextState = !isQrModalOpen;
+
     // If opening the modal and we don't have a QR code yet, fetch it
-    if (!isQrModalOpen && !qrCode) {
-      fetchQrCode();
+    if (nextState && !qrCode) {
+      try {
+        setIsLoading(true);
+        const qrCodeUrl = await getUserQrCode();
+        setQrCode(qrCodeUrl);
+      } catch (error) {
+        console.error("Error fetching QR code:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
+
+    setIsQrModalOpen(nextState);
   };
 
   // Initial load only on first mount

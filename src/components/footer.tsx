@@ -21,7 +21,6 @@ const Footer = () => {
             <div className="mt-4 text-center">
               <p className="mb-2">Υπό την αιγίδα</p>
               <div className="flex justify-center items-center space-x-4">
-                {/* Replace these src paths with actual logos when available */}
                 <img
                   src="../../images/footer/thmmy.png"
                   alt="ΤΗΜΜΥ"
@@ -92,6 +91,18 @@ const Footer = () => {
               </a>
             </div>
           </div>
+        </div>
+
+        {/* Privacy Policy Link */}
+        <div className="mt-6 text-center">
+          <a
+            href="https://drive.google.com/file/d/1mHXEyWWt3NIpDnhvcAUwqMR8Xq_eDJv5/view"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 underline hover:text-blue-400"
+          >
+            Πολιτική απορρήτου
+          </a>
         </div>
 
         {/* Copyright */}
