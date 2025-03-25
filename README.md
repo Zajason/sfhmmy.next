@@ -11,7 +11,7 @@ Key features include:
 - Smooth animations for a visually appealing UI.
 - Dark and light mode themes.
 - Detailed pages for speakers, workshops, and members.
-- Registration and authentication capabilities (integration pending backend support).
+- Registration and authentication capabilities.
 
 ---
 
