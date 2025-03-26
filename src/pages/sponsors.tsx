@@ -24,9 +24,10 @@ const Sponsors = () => {
     },
   };
 
-  const levels = ["Platinum", "Gold", "Silver"];
+  const levels = ["Diamond", "Platinum", "Gold", "Silver"];
 
   const levelColors = {
+    Diamond: "text-sky-400", // light blue
     Platinum: "text-[#e5e4e2]",
     Gold: "text-yellow-500",
     Silver: "text-gray-400",

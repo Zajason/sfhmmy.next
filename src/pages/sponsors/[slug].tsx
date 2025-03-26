@@ -1,15 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { sponsorsData } from "../../data/SponsorsData";
 import { Meteors } from "../../components/meteorAnimation";
 
+type Sponsor = {
+  name: string;
+  image: string;
+  link: string;
+  link2?: string;
+  link3?: string;
+  level: string;
+  slug: string;
+  description_gr: string;
+  description_eng: string;
+};
+
 const SponsorPage = () => {
   const router = useRouter();
-  const { name } = router.query;
+  const { slug } = router.query;
 
-  const sponsor = sponsorsData.find(
-    (s) => s.name.toLowerCase().replace(/\s+/g, "") === name
-  );
+  const [sponsor, setSponsor] = useState<Sponsor | null>(null);
+
+  useEffect(() => {
+    if (slug && typeof slug === "string") {
+      const found = sponsorsData.find((s) => s.slug === slug);
+      setSponsor(found || null);
+    }
+  }, [slug]);
 
   if (!sponsor) {
     return (
@@ -40,20 +57,14 @@ const SponsorPage = () => {
         </div>
 
         {/* Greek Description */}
-        {sponsor.description_gr && sponsor.description_gr.trim() !== "" && (
+        {sponsor.description_gr?.trim() && (
           <>
             <h2 className="text-2xl font-semibold underline mb-2">Περιγραφή:</h2>
             <p className="mb-8 whitespace-pre-line">{sponsor.description_gr}</p>
           </>
         )}
 
-        {/* English Description */}
-        {sponsor.description_eng && sponsor.description_eng.trim() !== "" && (
-          <>
-            <h2 className="text-2xl font-semibold underline mb-2">Description:</h2>
-            <p className="mb-8 whitespace-pre-line">{sponsor.description_eng}</p>
-          </>
-        )}
+       
 
         {/* Links */}
         {links.length > 0 && (

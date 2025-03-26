@@ -90,7 +90,7 @@ export const sponsorsData = [
     image: "/images/sponsors/hron.png",
     link: "",
     level: "Gold",
-    slug:"hron",
+    slug:"ηρων",
     description_gr: "Ο ΗΡΩΝ δραστηριοποιείται στην παραγωγή, προμήθεια και εμπορία ηλεκτρικής ενέργειας,καθώς και στην προμήθεια και εμπορία φυσικού αερίου στην Ελλάδα. Έχοντας ξεκινήσει τηλειτουργία του το 2000, ο ΗΡΩΝ ανήκει στον Όμιλο ΓΕΚ ΤΕΡΝΑ. Ο ΗΡΩΝ ήταν ο πρώτοςιδιωτικός όμιλος που δραστηριοποιήθηκε στην ελληνική απελευθερωμένη αγορά ηλεκτρικήςενέργειας, καθώς και ο πρώτος ιδιωτικός όμιλος που δραστηριοποιήθηκε στην αγορά φυσικούαερίου στην Ελλάδα. Ο ΗΡΩΝ κατασκεύασε και λειτουργεί με επιτυχία τον πρώτο ιδιωτικόσταθμό ηλεκτροπαραγωγής με φυσικό αέριο στην Ελλάδα από το 2004.",
     description_eng: "HERON is active in electricity production, supply and trading, as well as in natural gas supplyand trading in Greece. Having started its operations in 2000, HERON is owned by the GEKTERNA Group. HERON was the first private Group to operate in the Greek liberalizedelectricity market, as well as the first private group to operate in the natural gas market inGreece. HERON constructed and has successfully been operating the first private gas-fueledpower plant in Greece since 2004.",
   },
@@ -150,23 +150,23 @@ export const sponsorsData = [
     description_gr: "Η KENOTOM είναι μία εταιρεία παροχής υπηρεσιών για Ενσωματωμένα Συστήματα και Βιομηχανικούς αυτοματισμούς με έδρα τη Θεσσαλονίκη. Η εταιρεία έχει αποκτήσει σημαντική εμπειρία στις Μονάδες Ηλεκτρονικού Ελέγχου Αυτοκινήτου (ECU) έχοντας δημιουργήσει συνεργασίες με ορισμένες από τις κορυφαίες εταιρίες “Tier-1”, προμηθευτές των κατασκευαστών αυτοκινήτων.Η τεχνογνωσία της στην Ανοικτού Συστήματος Αρχιτεκτονική (AUTOSAR), καθώς και η συμμόρφωση της τόσο με τα πρότυπα MISRA-C/C++ όσο και με τα πρότυπα ασφάλειας (ISO26262/ISO21434), τοποθετούν την εταιρεία στην πρώτη γραμμή της ανάπτυξης εφαρμογών στο κλάδο της αυτοκινητοβιομηχανίας.Επιπλέον η εταιρεία συμμορφώνεται με τα πρότυπα ποιότητας, ασφάλειας πληροφοριών και λειτουργικής ασφάλειας (ISO/IEC 27001, ISO 9001), αλλά και με τις προδιαγραφές που ορίζει η αυτοκινητοβιομηχανία (VDA-ISA TISAX), καθώς η ομάδα της επικεντρώνεται στην ανάπτυξη κρίσιμων ενσωματωμένων συστημάτων σε θέματα ασφαλείας. Η διατήρηση και η προώθηση του συστήματος διαχείρισης ποιότητας είναι θεμελιώδης για την καθημερινή δραστηριότητα της εταιρείας.Η εμπιστοσύνη,  η εξέλιξη,  η αφοσίωση και το ταλέντο είναι οι βασικές αξίες της ομάδας της ΚΕΝΟΤΟΜ που της δίνουν τη δυνατότητα να παρέχει υπηρεσίες υψηλής ποιότητας για ενσωματωμένα συστήματα και βιομηχανικούς αυτοματισμούς στη νότια Ευρώπη.",
     description_eng: "KENOTOM is an engineering services provider for Embedded Systems and Industrial Automation based in Thessaloniki, Greece. The company has high expertise in automotive safety critical Electronic Control Units (ECUs) development, in the Powertrain, Interior, and ADAS domains. Having established partnerships with some of the top Tier-1 automotive electronics suppliers KENOTOM contributes to all stages of the development process, from system requirements and architecture, to implementation, testing, and validation.KENOTOM’s deep knowhow in Automotive Open System Architecture (AUTOSAR), ASPICE process model, functional safety, and security standards (ISO26262/ISO21434), combined with adherence to quality, information security, and operational security standards (ISO/IEC 27001, ISO 9001), place the company at the forefront of automotive electronics development.Trust, Evolution, Commitment and Talent are key values for our team and enable us to deliver the highest quality engineering services for embedded systems and industrial automation.",
   },
-  {
-    name: "Metlen",
-    image: "/images/sponsors/metlen.png",
-    link: "",
-    level: "Gold",
-    slug:"metlen",
-    description_gr: "",
-    description_eng: ""
-  },
+  // {
+  //   name: "Metlen",
+  //   image: "/images/sponsors/metlen.png",
+  //   link: "",
+  //   level: "Gold",
+  //   slug:"metlen",
+  //   description_gr: "",
+  //   description_eng: ""
+  //},
   {
     name: "PwC",
     image: "/images/sponsors/pwc.png",
     link: "",
     level: "Gold",
     slug:"pwc",
-    description_gr: "",
-    description_eng: "Η PwC έχει ως όραμα τη δημιουργία κλίματος εμπιστοσύνης στην κοινωνία και την επίλυση σημαντικών προβλημάτων. Είναι ένα δίκτυο εταιρειών σε 149 χώρες με περισσότερα από 370.000 στελέχη που δεσμεύονται να παραδίδουν ποιοτικό έργο στις ελεγκτικές, φορολογικές και συμβουλευτικές υπηρεσίες που αναλαμβάνουν. Στη Ελλάδα διαθέτει γραφεία σε Αθήνα, Θεσσαλονίκη, Πάτρα, Ιωάννινα, Ρόδο και Βόλο, και απασχολεί περισσότερους από 2.400 εργαζόμενους.PwC has as a purpose to build trust in society and solve important problems. It is a global network with presence in 149 countries and more than 370.000 professionals, committed to provide quality Assurance, Tax and Advisory Services. PwC Greece has offices in Athens, Thessaloniki, Patras, Ioannina, Rhodes and Volos and has more than 2.400 employees.",
+    description_gr: "Η PwC έχει ως όραμα τη δημιουργία κλίματος εμπιστοσύνης στην κοινωνία και την επίλυση σημαντικών προβλημάτων. Είναι ένα δίκτυο εταιρειών σε 149 χώρες με περισσότερα από 370.000 στελέχη που δεσμεύονται να παραδίδουν ποιοτικό έργο στις ελεγκτικές, φορολογικές και συμβουλευτικές υπηρεσίες που αναλαμβάνουν. Στη Ελλάδα διαθέτει γραφεία σε Αθήνα, Θεσσαλονίκη, Πάτρα, Ιωάννινα, Ρόδο και Βόλο, και απασχολεί περισσότερους από 2.400 εργαζόμενους.PwC has as a purpose to build trust in society and solve important problems. It is a global network with presence in 149 countries and more than 370.000 professionals, committed to provide quality Assurance, Tax and Advisory Services. PwC Greece has offices in Athens, Thessaloniki, Patras, Ioannina, Rhodes and Volos and has more than 2.400 employees.",
+    description_eng: "",
   },
   {
     name: "SABO",
@@ -182,7 +182,7 @@ export const sponsorsData = [
     image: "/images/sponsors/singular.png",
     link: "",
     level: "Gold",
-    slug:"space-hellas-singularlogi",
+    slug:"Space Hellas & SingularLogic",
     description_gr: "Η Space Hellas είναι ένας κορυφαίος Digital Integrator και value–added Service Provider με διεθνή παρουσία στον τομέα του ICT. Δραστηριοποιείται από το 1985 στον χώρο της υψηλής τεχνολογίας με στόχο τη δημιουργία νέων δεδομένων στο ταξίδι του ψηφιακού μετασχηματισμού των σύγχρονων επιχειρήσεων και οργανισμών. Η SingularLogic, μέλος του Ομίλου Space Hellas, είναι ένας κορυφαίος Software Integrator που παρέχει λύσεις επιχειρηματικού λογισμικού και υπηρεσίες σε μεγάλες επιχειρήσεις και οργανισμούς του Ιδιωτικού και του Δημόσιου τομέα. Διαθέτει υψηλού επιπέδου εξειδικευμένο ανθρώπινο δυναμικό, ευρύ χαρτοφυλάκιο λύσεων και υπηρεσιών, πανελλαδικό δίκτυο συνεργατών, μεγάλη πελατειακή βάση και έχει υλοποιήσει σημαντικά έργα πληροφορικής στον Ιδιωτικό και Δημόσιο τομέα, στην Ελλάδα και στο εξωτερικό.  ",
     description_eng: ""
   },
@@ -200,6 +200,7 @@ export const sponsorsData = [
     image: "/images/sponsors/softcom.png",
     link: "",
     level: "Silver",
+    slug:"softcom",
     
     description_gr: "H Software Competitiveness International Α.Ε. (SoftCom International) είναι μια συνεχώς αναπτυσσόμενη εταιρεία, που ειδικεύεται σε Υπηρεσίες Έρευνας & Ανάπτυξης Λογισμικού και Εξατομικευμένες Λύσεις Πληροφορικής.H εταιρεία εστιάζει στην προσφορά υπηρεσιών λογισμικού για large scale projects, safety-sensitive λογισμικό και εξατομικευμένες λύσεις λογισμικού για τη διεθνή αγορά, με ιδιαίτερη έμφαση την Κεντρική Ευρώπη.Σε έναν ταχύτατα αναπτυσσόμενο τεχνολογικά κόσμο, η SoftCom International κινείται πάντα βάσει των αναγκών που επιτάσσει το σήμερα, γι’ αυτό και η ομάδα της αποτελείται από καταρτισμένους, έμπειρους, ταλαντούχους και ενθουσιώδεις μηχανικούς λογισμικού, ενώ το τεχνολογικό της portfolio περιλαμβάνει cutting edge τεχνολογίες στην ανάπτυξη λογισμικού, μεθοδολογίες και εργαλεία, real-time συστήματα, horizontal distributed εφαρμογές, client-server εφαρμογές, web εφαρμογές, embedded συστήματα, κ.λπ.",
     description_eng: "Software Competitiveness International S.A. (SoftCom International) specializes in demanding Software and customized ICT-Services.The team consists of highly educated, experienced, motivated, and talented Software Engineers.SoftCom’s International broad software technology portfolio includes: cutting edge SW development technologies, methods and tools, real-time systems, distributed and horizontally scaling applications, client – server applications, web applications, embedded systems, etc.Recognizing the needs of the ever-growing technological world, the company mainly focuses on providing software R&D services and innovative customized software products and solutions for safety-sensitive and quality-demanding markets. The products are tailor-made to customers’ needs, the majority of whom belong to the Central European market.",
