@@ -128,7 +128,11 @@ const EmailVerification: React.FC = () => {
       setIsResending(true);
       
       // Use the imported resendVerificationEmail function instead of API directly
-      const result: VerificationResponse = await resendVerificationEmail(userEmail);
+      const apiResponse = await resendVerificationEmail(userEmail);
+      const result: VerificationResponse = {
+        ...apiResponse,
+        success: apiResponse.success ?? false, // Ensure success is always a boolean
+      };
       
       if (result.success) {
         // Save the time when the verification email was sent
