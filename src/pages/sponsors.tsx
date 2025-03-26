@@ -61,15 +61,13 @@ const Sponsors = () => {
           return (
             <div key={level} className="w-full z-10 mb-16">
               <h2
-                className={`text-3xl font-bold mb-6 text-center ${
-                  levelColors[level as keyof typeof levelColors]
-                }`}
+                className={`text-3xl font-bold mb-6 text-center ${levelColors[level]}`}
               >
                 {level.toUpperCase()} SPONSORS
               </h2>
 
               <motion.div
-                className="w-full px-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-10 justify-items-center"
+                className="w-full px-8 flex flex-wrap justify-center gap-10"
                 initial="hidden"
                 animate="visible"
                 variants={staggerContainer}

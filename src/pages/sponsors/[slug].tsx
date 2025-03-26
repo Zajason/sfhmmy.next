@@ -47,13 +47,15 @@ const SponsorPage = () => {
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Header: Logo + Name */}
-        <div className="flex items-center justify-start gap-6 mb-10">
+        <div className="flex flex-wrap items-center justify-start gap-6 mb-10">
           <img
             src={sponsor.image}
             alt={sponsor.name}
             className="h-28 w-28 object-contain"
           />
-          <h1 className="text-5xl font-bold">{sponsor.name}</h1>
+          <h1 className="text-5xl font-bold break-words w-full sm:w-auto">
+            {sponsor.name}
+          </h1>
         </div>
 
         {/* Greek Description */}
@@ -63,8 +65,6 @@ const SponsorPage = () => {
             <p className="mb-8 whitespace-pre-line">{sponsor.description_gr}</p>
           </>
         )}
-
-       
 
         {/* Links */}
         {links.length > 0 && (
