@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeColors } from "./types";
+<<<<<<< HEAD
 import Image from "next/image";
 import { getUserQrCode } from "../../apis/AuthApi";
 import { get } from "http";
+=======
+import { getUserQrCode } from "../../apis/services/profileService";
+import { toast } from "react-toastify";
+>>>>>>> aae16e1a0afa1893bfc18d85e5a97b5201a08564
 
 interface QrCodeDisplayProps {
   themeColors: ThemeColors;
@@ -16,9 +21,28 @@ const QrCodeDisplay: React.FC<QrCodeDisplayProps> = ({ themeColors, theme }) => 
   const [isLoading, setIsLoading] = useState(false);
   const { textColor } = themeColors;
 
+<<<<<<< HEAD
   const toggleQrModal = async () => {
     const nextState = !isQrModalOpen;
 
+=======
+  const fetchQrCode = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const qrCodeUrl = await getUserQrCode();
+      setQrCode(qrCodeUrl);
+    } catch (error) {
+      console.error("Error fetching QR code:", error);
+      toast.error("Could not load your QR code. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const toggleQrModal = () => {
+    setIsQrModalOpen(!isQrModalOpen);
+    
+>>>>>>> aae16e1a0afa1893bfc18d85e5a97b5201a08564
     // If opening the modal and we don't have a QR code yet, fetch it
     if (nextState && !qrCode) {
       try {

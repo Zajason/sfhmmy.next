@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 import { ThemeColors } from "./types";
-import { changePassword } from "../../apis/AuthApi";
+import { changePassword } from "../../apis/services/authService";
 
 interface PasswordChangeProps {
   themeColors: ThemeColors;

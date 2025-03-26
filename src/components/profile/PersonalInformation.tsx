@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { ThemeColors, UserData } from "./types";
-import { updateUserProfile } from "../../apis/AuthApi"; // Import the API function
-import { resendVerificationEmail } from "../../apis/AuthApi";
+import { updateUserProfile } from "../../apis/services/profileService"; // Import the API function
+import { resendVerificationEmail } from "../../apis/services/authService";
 
 interface PersonalInformationProps {
   userData: UserData;
@@ -46,12 +46,9 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
   // Resend verification email
   const handleResendVerification = async () => {
     try {
-      toast.info("Sending verification email...");
       await resendVerificationEmail();
-      toast.success("Verification email sent successfully. Please check your inbox.");
     } catch (error) {
       console.error("Error resending verification email:", error);
-      toast.error("Failed to resend verification email. Please try again later.");
     }
   };
 
@@ -93,8 +90,8 @@ const PersonalInformation: React.FC<PersonalInformationProps> = ({
         name: userData.fullName,
         email: userData.email,
         university: userData.university,
-        year: userData.year,
-        school: userData.school || userData.university, // Use school if available, otherwise fall back to university
+        year: userData.year, // Convert number to string
+        school: userData.school || userData.university,
         city: userData.city, 
         [apiField]: editValue
       };

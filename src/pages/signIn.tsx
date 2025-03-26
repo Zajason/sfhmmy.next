@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Meteors } from "../components/meteorAnimation";
 import { useTheme } from "../utils/ThemeContext";
-import { loginUser, checkEmailVerificationStatus } from "../apis/AuthApi";
+import { loginUser, checkEmailVerificationStatus } from "../apis/services/authService";
 import { useAuth } from "../context/authContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Meteors } from "../components/meteorAnimation";
-import { registerUser } from "../apis/AuthApi"; // Adjust this import as necessary
+import { registerUser } from "../apis/services/authService"; // Adjust this import as necessary
 import { useTheme } from "../utils/ThemeContext"; // Import theme context
 import { useAuth } from "../context/authContext"; // Import authentication context
 
@@ -46,14 +46,6 @@ const Register: React.FC = () => {
     setErrors((prev) => ({ ...prev, [id]: "" }));
   };
 
-  // Handle reCAPTCHA (if enabled)
-  const handleCaptchaChange = (value: string | null) => {
-    setCaptchaValue(value);
-    if (value) {
-      setErrors((prev) => ({ ...prev, captcha: "" }));
-    }
-  };
-
   // Validate form fields, including checking that "year" is a number
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
@@ -74,7 +66,7 @@ const Register: React.FC = () => {
     if (!formData.school.trim()) newErrors.school = "School is required.";
 
     // Validate year: it should not be empty and must be a number
-    if (!formData.year.trim()) {
+    if (!formData.year) {
       newErrors.year = "Year is required.";
     } else if (isNaN(Number(formData.year))) {
       newErrors.year = "Year should be a number.";
@@ -82,9 +74,7 @@ const Register: React.FC = () => {
 
     if (!formData.university.trim())
       newErrors.university = "University is required.";
-    // Only validate CAPTCHA if a site key exists (i.e. when reCAPTCHA is enabled)
-    if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && !captchaValue)
-      newErrors.captcha = "Please complete the CAPTCHA.";
+    
     return newErrors;
   };
 
@@ -111,7 +101,11 @@ const Register: React.FC = () => {
     }
 
     setIsSubmitting(true);
-    const userData = { ...formData, captcha: captchaValue };
+    // Convert year to integer, default to 0 if empty
+    const userData = { 
+      ...formData,
+      year: formData.year ? parseInt(formData.year, 10) : 0
+    };
     console.log("Calling registerUser with:", userData);
 
     try {
@@ -348,21 +342,6 @@ const Register: React.FC = () => {
               </p>
             )}
           </div>
-
-          {/* reCAPTCHA */}
-          {/*
-          <div className="mb-4">
-            <ReCAPTCHA
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
-              onChange={handleCaptchaChange}
-            />
-            {errors.captcha && (
-              <p className="text-red-500 text-xs mt-1" id="captcha-error">
-                {errors.captcha}
-              </p>
-            )}
-          </div>
-          */}
 
           {/* Privacy Policy Checkbox */}
           <div className="mb-4">
