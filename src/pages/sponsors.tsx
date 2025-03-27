@@ -24,7 +24,7 @@ const Sponsors = () => {
     },
   };
 
-  const levels = ["Diamond", "Platinum", "Gold", "Silver"];
+  const levels: (keyof typeof levelColors)[] = ["Diamond", "Platinum", "Gold", "Silver"];
 
   const levelColors = {
     Diamond: "text-sky-400", // light blue
