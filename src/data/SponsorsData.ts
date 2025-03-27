@@ -165,7 +165,7 @@ export const sponsorsData = [
     link: "",
     level: "Gold",
     slug:"pwc",
-    description_gr: "Η PwC έχει ως όραμα τη δημιουργία κλίματος εμπιστοσύνης στην κοινωνία και την επίλυση σημαντικών προβλημάτων. Είναι ένα δίκτυο εταιρειών σε 149 χώρες με περισσότερα από 370.000 στελέχη που δεσμεύονται να παραδίδουν ποιοτικό έργο στις ελεγκτικές, φορολογικές και συμβουλευτικές υπηρεσίες που αναλαμβάνουν. Στη Ελλάδα διαθέτει γραφεία σε Αθήνα, Θεσσαλονίκη, Πάτρα, Ιωάννινα, Ρόδο και Βόλο, και απασχολεί περισσότερους από 2.400 εργαζόμενους.PwC has as a purpose to build trust in society and solve important problems. It is a global network with presence in 149 countries and more than 370.000 professionals, committed to provide quality Assurance, Tax and Advisory Services. PwC Greece has offices in Athens, Thessaloniki, Patras, Ioannina, Rhodes and Volos and has more than 2.400 employees.",
+    description_gr: "Η PwC έχει ως όραμα τη δημιουργία κλίματος εμπιστοσύνης στην κοινωνία και την επίλυση σημαντικών προβλημάτων. Είναι ένα δίκτυο εταιρειών σε 149 χώρες με περισσότερα από 370.000 στελέχη που δεσμεύονται να παραδίδουν ποιοτικό έργο στις ελεγκτικές, φορολογικές και συμβουλευτικές υπηρεσίες που αναλαμβάνουν. Στη Ελλάδα διαθέτει γραφεία σε Αθήνα, Θεσσαλονίκη, Πάτρα, Ιωάννινα, Ρόδο και Βόλο, και απασχολεί περισσότερους από 2.400 εργαζόμενους.",
     description_eng: "",
   },
   {
