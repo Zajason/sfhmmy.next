@@ -23,20 +23,39 @@ const PasswordChange: React.FC<PasswordChangeProps> = ({ themeColors, theme }) =
   // Handle password change
   const handleSubmitPasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newPassword === confirmPassword) {
-      try {
-        await changePassword({ currentPassword, newPassword });
-        toast.success("Password updated successfully!");
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
-        setIsPasswordChangeOpen(false);
-      } catch (error) {
-        toast.error("Error updating password");
-        console.error('Error changing password:', error);
-      }
-    } else {
+    
+    // Check if the new password is the same as the current password
+    if (newPassword === currentPassword) {
+      toast.error("New password must be different from your current password");
+      return;
+    }
+    
+    // Check if the new password matches the confirmation
+    if (newPassword !== confirmPassword) {
       toast.error("New passwords don't match");
+      return;
+    }
+    
+    // Validate minimum password length
+    if (newPassword.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return;
+    }
+    
+    try {
+      await changePassword({ currentPassword, newPassword });
+      
+      // Clear form and close panel on success
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setIsPasswordChangeOpen(false);
+      
+    } catch (error: any) {
+      // Display the actual error message from the backend if available
+      const errorMessage = error.message || "Error updating password";
+      toast.error(errorMessage);
+      console.error('Error changing password:', error);
     }
   };
 

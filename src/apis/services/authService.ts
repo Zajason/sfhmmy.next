@@ -331,9 +331,8 @@ export const verifyEmail = async (id: string, hash: string): Promise<ApiResponse
 export const changePassword = async (passwordData: PasswordChangeData): Promise<ApiResponse> => {
   try {
     const response = await axiosInstance.put<ApiResponse>('/change-password', {
-      current_password: passwordData.currentPassword,
-      password: passwordData.newPassword,
-      password_confirmation: passwordData.newPassword
+      currentPassword: passwordData.currentPassword,
+      newPassword: passwordData.newPassword
     });
     
     toast.success('Password changed successfully');
