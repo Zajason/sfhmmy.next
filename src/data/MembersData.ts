@@ -49,31 +49,31 @@ export const membersData = [
   },
   {
     "name": "Angie Sylai",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Fundraising Member",
     "linkedin": ""
   },
   {
     "name": "Altzi Tsanko",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Fundraising Member",
     "linkedin": ""
   },
   {
     "name": "Leonidas Giasanakopoulos",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Fundraising Member",
     "linkedin": ""
   },
   {
     "name": "Maria Kara",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Fundraising Member",
     "linkedin": ""
   },
   {
     "name": "Michalis Chytiroglou",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Fundraising Member",
     "linkedin": ""
   },
@@ -127,37 +127,37 @@ export const membersData = [
   },
   {
     "name": "Iordanis Chatzikonstantinou",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Activities Member",
     "linkedin": ""
   },
   {
     "name": "Elena Lazaridou",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Activities Member",
     "linkedin": ""
   },
   {
     "name": "Haritina Agrafioti",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Activities Member",
     "linkedin": ""
   },
   {
     "name": "Maria Sotiria Kostomanolaki",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Activities Member",
     "linkedin": ""
   },
   {
     "name": "Lefteris Balogiannis",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Activities Member",
     "linkedin": ""
   },
   {
     "name": "Aimilia Xakoustou",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Activities Member",
     "linkedin": ""
   },
@@ -169,37 +169,37 @@ export const membersData = [
   },
   {
     "name": "Orfeas Siozos",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Graphic Design Member",
     "linkedin": ""
   },
   {
     "name": "Dimitris Antonopoulos",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Graphic Design Member",
     "linkedin": ""
   },
   {
     "name": "Maria Aitsidou",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Graphic Design Member",
     "linkedin": ""
   },
   {
     "name": "Eleftheria Panagiotidou",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Graphic Design Member",
     "linkedin": ""
   },
   {
     "name": "Maria Doulgeridou",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Graphic Design Member",
     "linkedin": ""
   },
   {
     "name": "Xristina Vadola",
-    "image": "/images/members/view?usp=drive_link",
+    "image": "/images/members/",
     "role": "Graphic Design Member",
     "linkedin": ""
   },
