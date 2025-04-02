@@ -90,9 +90,6 @@ const Register: React.FC = () => {
     if (!(document.getElementById('privacyPolicy') as HTMLInputElement)?.checked) {
       validationErrors.privacyPolicy = "You must accept the privacy policy.";
     }
-    if (!(document.getElementById('photoConsent') as HTMLInputElement)?.checked) {
-      validationErrors.photoConsent = "You must consent to photos and videos.";
-    }
 
     if (Object.keys(validationErrors).length > 0) {
       console.log("Validation errors:", validationErrors);
@@ -345,34 +342,35 @@ const Register: React.FC = () => {
 
           {/* Privacy Policy Checkbox */}
           <div className="mb-4">
-            <input
-              id="privacyPolicy"
-              type="checkbox"
-              className="mr-2"
-              required
-            />
-            <label
-              className={`${textColor} text-sm`}
-              htmlFor="privacyPolicy"
-            >
-              Αποδέχομαι την <a href="https://drive.google.com/file/d/1mHXEyWWt3NIpDnhvcAUwqMR8Xq_eDJv5/view" target="_blank" className="text-blue-500 underline">Πολιτική Απορρήτου</a> του ΣΦΗΜΜΥ 16.
-            </label>
-          </div>
-
-          {/* Consent for Photos and Videos Checkbox */}
-          <div className="mb-4">
-            <input
-              id="photoConsent"
-              type="checkbox"
-              className="mr-2"
-              required
-            />
-            <label
-              className={`${textColor} text-sm`}
-              htmlFor="photoConsent"
-            >
-              Συμφωνώ ότι κατά τη διάρκεια του συνεδρίου ενδέχεται να ληφθούν φωτογραφίες και βίντεο στα οποία ενδέχεται να εμφανίζομαι. Δίνω τη συγκατάθεσή μου για τη χρήση αυτών των υλικών από τους διοργανωτές για σκοπούς προώθησης και διαφήμισης, όπως σε ιστότοπους, κοινωνικά δίκτυα και άλλα μέσα.
-            </label>
+            <div className="flex items-start">
+              <input
+                id="privacyPolicy"
+                type="checkbox"
+                className={`mt-1 mr-2 ${errors.privacyPolicy ? 'ring-2 ring-red-500' : ''}`}
+                required
+                onChange={(e) => {
+                  // Clear the error when checkbox is checked
+                  if (e.target.checked && errors.privacyPolicy) {
+                    setErrors(prev => ({ ...prev, privacyPolicy: '' }));
+                  }
+                }}
+                aria-invalid={errors.privacyPolicy ? "true" : "false"}
+                aria-describedby={errors.privacyPolicy ? "privacyPolicy-error" : undefined}
+              />
+              <div>
+                <label
+                  className={`${textColor} text-sm`}
+                  htmlFor="privacyPolicy"
+                >
+                  Διάβασα και αποδέχομαι την <a href="https://drive.google.com/file/d/1mHXEyWWt3NIpDnhvcAUwqMR8Xq_eDJv5/view" target="_blank" className="text-blue-500 underline">Πολιτική Απορρήτου</a> του ΣΦΗΜΜΥ 16.
+                </label>
+                {errors.privacyPolicy && (
+                  <p className="text-red-500 text-xs mt-1" id="privacyPolicy-error">
+                    {errors.privacyPolicy}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* Global Error Message */}
