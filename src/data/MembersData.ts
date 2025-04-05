@@ -49,31 +49,31 @@ export const membersData = [
   },
   {
     "name": "Angie Sylai",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_1840.jpg",
     "role": "Fundraising Member",
     "linkedin": ""
   },
   {
     "name": "Altzi Tsanko",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_1789.jpg",
     "role": "Fundraising Member",
     "linkedin": ""
   },
   {
     "name": "Leonidas Giasanakopoulos",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_1821.jpg",
     "role": "Fundraising Member",
     "linkedin": ""
   },
   {
     "name": "Maria Kara",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_1751.jpg",
     "role": "Fundraising Member",
     "linkedin": ""
   },
   {
     "name": "Michalis Chytiroglou",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_1685.jpg",
     "role": "Fundraising Member",
     "linkedin": ""
   },
@@ -127,37 +127,37 @@ export const membersData = [
   },
   {
     "name": "Iordanis Chatzikonstantinou",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_1503.jpg",
     "role": "Activities Member",
     "linkedin": ""
   },
   {
     "name": "Elena Lazaridou",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_1635.jpg",
     "role": "Activities Member",
     "linkedin": ""
   },
   {
     "name": "Haritina Agrafioti",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_1559.jpg",
     "role": "Activities Member",
     "linkedin": ""
   },
   {
     "name": "Maria Sotiria Kostomanolaki",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_1531.jpg",
     "role": "Activities Member",
     "linkedin": ""
   },
   {
     "name": "Lefteris Balogiannis",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_1436.jpg",
     "role": "Activities Member",
     "linkedin": ""
   },
   {
     "name": "Aimilia Xakoustou",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_1482.jpg",
     "role": "Activities Member",
     "linkedin": ""
   },
@@ -169,37 +169,37 @@ export const membersData = [
   },
   {
     "name": "Orfeas Siozos",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_2169.jpg"  ,
     "role": "Graphic Design Member",
     "linkedin": ""
   },
   {
     "name": "Dimitris Antonopoulos",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_2135.jpg",
     "role": "Graphic Design Member",
     "linkedin": ""
   },
   {
     "name": "Maria Aitsidou",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_2107.jpg",
     "role": "Graphic Design Member",
     "linkedin": ""
   },
   {
     "name": "Eleftheria Panagiotidou",
-    "image": "/images/members/",
+    "image": "/images/members/98290B2F-671A-452F-9F6F-473A0F9C9198.jpg",
     "role": "Graphic Design Member",
     "linkedin": ""
   },
   {
     "name": "Maria Doulgeridou",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_2119.jpg",
     "role": "Graphic Design Member",
     "linkedin": ""
   },
   {
     "name": "Xristina Vadola",
-    "image": "/images/members/",
+    "image": "/images/members/IMG_2123.jpg",
     "role": "Graphic Design Member",
     "linkedin": ""
   },
@@ -246,6 +246,12 @@ export const membersData = [
     "linkedin": ""
   },
   {
+    "name": "Iason Daniil Zakynthinos",
+    "image": "/images/members/IMG_3410.png",
+    "role": "Information Technology Member",
+    "linkedin": "https://www.linkedin.com/in/iason-daniil-zakynthinos-b1a172194/"
+  },
+  {
     "name": "Thanos Efthymiou",
     "image": "/images/members/IMG_1290.jpg",
     "role": "Information Technology Member",
@@ -263,12 +269,7 @@ export const membersData = [
     "role": "Information Technology Member",
     "linkedin": ""
   },
-  {
-    "name": "Iason Daniil Zakynthinos",
-    "image": "/images/members/IMG_3410.png",
-    "role": "Information Technology Member",
-    "linkedin": "https://www.linkedin.com/in/iason-daniil-zakynthinos-b1a172194/"
-  },
+
   {
     "name": "Katerina Papoutsoglou",
     "image": "/images/members/image0.jpeg",

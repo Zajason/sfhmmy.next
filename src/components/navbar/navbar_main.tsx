@@ -91,7 +91,8 @@ const Navbar: React.FC<NavbarProps> = () => {
         { href: "/agenda", label: "Πρόγραμμα" },
         { href: "/sponsors", label: "Χορηγοί" },
         { href: "/members", label: "Οργανωτική Επιτροπή" },
-        { href: "/speakersFull", label: "Επιστημονική Επιτροπή" },
+        { href: "/scientific", label: "Επιστημονική Επιτροπή" },
+        
       ],
     },
     {

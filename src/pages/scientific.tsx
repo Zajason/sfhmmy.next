@@ -6,13 +6,13 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
-import { membersData } from "../data/MembersData";
+import { scientificData } from "../data/ScientificData.ts";
 import { useTheme } from "../utils/ThemeContext";
 import Image from "next/image";
 import Link from "next/link";
-import ComingSoon from "@/components/ComingSoon";
+// import ComingSoon from "@/components/ComingSoon";
 
-const Members = () => {
+const Scientific = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const springConfig = { stiffness: 100, damping: 5 };
   const x = useMotionValue(0);
@@ -29,7 +29,6 @@ const Members = () => {
     useTransform(x, [-100, 100], [-45, 45]),
     springConfig
   );
-
   const translateX = useSpring(
     useTransform(x, [-100, 100], [-50, 50]),
     springConfig
@@ -53,27 +52,23 @@ const Members = () => {
     },
   };
 
+  // Group the scientificData based on the role keywords
   const groupedTeams: Record<string, any[]> = {};
-  membersData.forEach((member, index) => {
+  scientificData.forEach((member, index) => {
     const role = member.role;
     let team = "Other";
-    if (role.includes("Head Organizer")) team = "1_Head Organizer";
-    else if (role.includes("Information Technology")) team = "2_IT Team";
-    else if (role.includes("Fundraising")) team = "3_Fundraising Team";
-    else if (role.includes("Logistics")) team = "4_Logistics Team";
-    else if (role.includes("Academics")) team = "5_Academics Team";
-    else if (role.includes("Activities")) team = "6_Activities Team";
-    else if (role.includes("Graphic Design")) team = "7_Graphic Design Team";
-    else if (role.includes("Public Relations")) team = "8_Public Relations Team";
-    else if (role.includes("Ambassador")) team = "9_Ambassadors";
+    if (role.includes("Supervisor")) team = "1_Scientific Supervisor";
+    else if (role.includes("Advisor")) team = "2_Scientific Advisos";
+    else if (role.includes("Organizer")) team = "3_PreSFHMMY 9 Organizers";
 
     if (!groupedTeams[team]) groupedTeams[team] = [];
     groupedTeams[team].push({ ...member, id: index });
   });
 
-
-
-  const sortedGroups = Object.entries(groupedTeams).sort(([a], [b]) => a.localeCompare(b));
+  // Sort groups by their keys so they appear in the desired order
+  const sortedGroups = Object.entries(groupedTeams).sort(([a], [b]) =>
+    a.localeCompare(b)
+  );
 
   return (
     <div className={`min-h-screen ${backgroundColor}`}>
@@ -87,16 +82,17 @@ const Members = () => {
           variants={fadeInUp}
           className={`${textColor} text-4xl font-bold mb-8`}
         >
-          Meet The Organizing Committee 
+          Meet The Scientific Committee
         </motion.h1>
-  
+
         {sortedGroups.map(([team, items]) => (
           <div key={team} className="w-full mb-16">
-            <h2 className={`text-2xl font-semibold mb-6 text-center ${textColor}`}>
+            <h2
+              className={`text-2xl font-semibold mb-6 text-center ${textColor}`}
+            >
               {team.replace(/^\d+_/, "")}
             </h2>
             <motion.div
-              // Change grid columns for responsiveness:
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-center px-20"
               variants={staggerContainer}
             >
@@ -158,8 +154,7 @@ const Members = () => {
                       </motion.div>
                     )}
                   </AnimatePresence>
-  
-                  {/* Use responsive sizing for the circles */}
+
                   <motion.div
                     className="relative h-40 w-40 sm:h-52 sm:w-52 overflow-hidden rounded-full border-2 group-hover:scale-105 group-hover:z-30 transition duration-500 mx-auto"
                     style={{
@@ -170,7 +165,7 @@ const Members = () => {
                   >
                     <Image
                       onMouseMove={handleMouseMove}
-                      src={`${item.image}`}
+                      src={item.image}
                       alt={item.name}
                       layout="fill"
                       objectFit="cover"
@@ -185,9 +180,6 @@ const Members = () => {
       </motion.div>
     </div>
   );
-};  
+};
 
-export default Members;
-    // <>
-    //   <ComingSoon />
-    // </>
+export default Scientific;
