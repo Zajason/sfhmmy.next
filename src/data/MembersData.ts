@@ -243,7 +243,7 @@ export const membersData = [
     "name": "Stefanos Fragkoulis",
     "image": "/images/members/IMG_1349.jpg",
     "role": "Information Technology Coordinator",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/stefanos-fragkoulis-13a7a3236/"
   },
   {
     "name": "Iason Daniil Zakynthinos",
