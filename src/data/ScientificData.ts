@@ -13,7 +13,7 @@ export const scientificData = [
     },
     {
       name: "Nestor Chatzidiamantis",
-      image: "/images/scientific/nestor.jpg",
+      image: "/images/scientific/nestor.JPG",
       role: "Scientific Advisor",
       linkedin: "",
     },

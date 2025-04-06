@@ -326,7 +326,7 @@ export const membersData = [
   },
   {
     "name": "Vasiliki Neila",
-    "image": "/images/members/\u0392\u03b1\u03c3\u03b9\u03bb\u03b9\u03ba\u03ae \u039d\u03b5\u03af\u03bb\u03b1.jpg",
+    "image": "/images/members/vasiliki.jpg",
     "role": "Ambassador Athens",
     "linkedin": "www.linkedin.com/in/vasilikineila"
   },
