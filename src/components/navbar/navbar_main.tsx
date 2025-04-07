@@ -79,7 +79,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
   const logoSrc =
     theme === "dark"
-      ? "/images/others/Official Logo ΣΦΗΜΜΥ 16 for dark.png"
+      ? "/images/others/sfhmmy.png"
       : "/images/others/Official Logo ΣΦΗΜΜΥ 16 for white.png";
 
   const navItems = [
