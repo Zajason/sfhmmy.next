@@ -12,7 +12,7 @@ const Footer = () => {
           <div className="flex flex-col items-center">
             {/* Main ΣΦΗΜΜΥ 16 Logo */}
             <img
-              src="images/others/Official Logo ΣΦΗΜΜΥ 16 for dark.png"
+              src="images/others/sfhmmy.png"
               alt="Logo"
               className="w-40 mb-4"
             />
