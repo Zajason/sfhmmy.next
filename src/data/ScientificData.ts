@@ -2,7 +2,7 @@ export const scientificData = [
     {
       name: "Panagiotis Petrantonakis",
       image: "/images/scientific/ppetrant.jpg",
-      role: "Scientific Supervisors",
+      role: "Scientific Supervisor",
       linkedin: "",
     },
     {

@@ -3,19 +3,19 @@ export const membersData = [
     "name": "Lena Simitsaki",
     "image": "/images/members/IMG_2018.jpg",
     "role": "Head Organizer",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/eleni-simitsaki-ab233a272"
   },
   {
     "name": "Maria Papakostidi",
     "image": "/images/members/IMG_1911.jpg",
     "role": "Logistics Coordinator",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/maria-papakostidi-a488b9252/"
   },
   {
     "name": "Despina Togkelidou",
     "image": "/images/members/IMG_1982.jpg",
     "role": "Logistics Member",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/despoina-togkelidou-61085a301?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
   },
   {
     "name": "Vicky Tsintsfou",
@@ -33,7 +33,7 @@ export const membersData = [
     "name": "Eleftheria Roussou",
     "image": "/images/members/IMG_1990.jpg",
     "role": "Logistics Member",
-    "linkedin": ""
+    "linkedin": "http://www.linkedin.com/in/eleftheria-roussou-2b7b9a341"
   },
   {
     "name": "Chryssana Georgiadou",
@@ -45,7 +45,7 @@ export const membersData = [
     "name": "Aggeliki Tavridou",
     "image": "/images/members/IMG_1722.jpg",
     "role": "Fundraising Coordinator",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/aggeliki-tavridou/"
   },
   {
     "name": "Angie Sylai",
@@ -57,7 +57,7 @@ export const membersData = [
     "name": "Altzi Tsanko",
     "image": "/images/members/IMG_1789.jpg",
     "role": "Fundraising Member",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/altzi-tsanko/"
   },
   {
     "name": "Leonidas Giasanakopoulos",
@@ -99,31 +99,31 @@ export const membersData = [
     "name": "Anestis Sotiropoulos",
     "image": "/images/members/IMG_2068.jpg",
     "role": "Academics Member",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/anestis-sotiropoulos-13437b33b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
   },
   {
     "name": "George Anastasiadis",
     "image": "/images/members/IMG_2039.jpg",
     "role": "Academics Member",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/georgios-anastasiadis-6a77a1212/"
   },
   {
     "name": "Milena Leoudi",
     "image": "/images/members/IMG_2239.JPG",
     "role": "Academics Member",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/dimitra-eleni-leoudi-02b90b322/"
   },
   {
     "name": "Konstantina Gkavanozi",
     "image": "/images/members/IMG_2050.jpg",
     "role": "Academics Member",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/konstantina-gkavanozi-74a335262?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
   },
   {
     "name": "Thomas Achilleas Billas",
     "image": "/images/members/IMG_1580.jpg",
     "role": "Activities Coordinator",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/thomas-achilleas-billas-132314211/"
   },
   {
     "name": "Iordanis Chatzikonstantinou",
@@ -153,7 +153,7 @@ export const membersData = [
     "name": "Lefteris Balogiannis",
     "image": "/images/members/IMG_1436.jpg",
     "role": "Activities Member",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/eleftherios-balogiannis-416685167/"
   },
   {
     "name": "Aimilia Xakoustou",
@@ -171,13 +171,13 @@ export const membersData = [
     "name": "Orfeas Siozos",
     "image": "/images/members/IMG_2169.jpg"  ,
     "role": "Graphic Design Member",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/orfeas-siozos-65a626237/"
   },
   {
     "name": "Dimitris Antonopoulos",
     "image": "/images/members/IMG_2135.jpg",
     "role": "Graphic Design Member",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/dimitrios-antonopoulos/"
   },
   {
     "name": "Maria Aitsidou",
@@ -255,19 +255,19 @@ export const membersData = [
     "name": "Thanos Efthymiou",
     "image": "/images/members/IMG_1290.jpg",
     "role": "Information Technology Member",
-    "linkedin": ""
+    "linkedin": "https://thanosefthymiou.com/linkedin"
   },
   {
     "name": "Chrysostomos Koumides",
     "image": "/images/members/IMG_1368.jpg",
     "role": "Information Technology Membe",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/chrysostomos-koumides-465880222/"
   },
   {
     "name": "Maria Mamougiorgi",
     "image": "/images/members/IMG_1416.jpg",
     "role": "Information Technology Member",
-    "linkedin": ""
+    "linkedin": "https://www.linkedin.com/in/maria-mamougiorgi/"
   },
 
   {
