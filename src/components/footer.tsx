@@ -12,7 +12,7 @@ const Footer = () => {
           <div className="flex flex-col items-center">
             {/* Main ΣΦΗΜΜΥ 16 Logo */}
             <img
-              src="images/others/sfhmmy.png"
+              src="/images/others/sfhmmy.png"
               alt="Logo"
               className="w-40 mb-4"
             />
@@ -48,7 +48,7 @@ const Footer = () => {
                 className="hover:text-blue-400"
               >
                 <img
-                  src="images/socials/facebook.png"
+                  src="/images/socials/facebook.png"
                   alt="Facebook"
                   className="w-8"
                 />
@@ -60,7 +60,7 @@ const Footer = () => {
                 className="hover:text-blue-400"
               >
                 <img
-                  src="images/socials/instagram.png"
+                  src="/images/socials/instagram.png"
                   alt="Instagram"
                   className="w-8"
                 />
@@ -72,7 +72,7 @@ const Footer = () => {
                 className="hover:text-blue-400"
               >
                 <img
-                  src="images/socials/linkedin.png"
+                  src="/images/socials/linkedin.png"
                   alt="LinkedIn"
                   className="w-8"
                 />
@@ -84,7 +84,7 @@ const Footer = () => {
                 className="hover:text-blue-400"
               >
                 <img
-                  src="images/socials/youtube.png"
+                  src="/images/socials/youtube.png"
                   alt="YouTube"
                   className="w-8"
                 />

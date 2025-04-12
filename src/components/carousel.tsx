@@ -13,7 +13,7 @@ export const InfiniteMovingCards = ({
   onClick, // Add onClick as a prop
 }: {
   items: {
-    quote: string;
+   
     name: string;
     title: string;
     image: string;
@@ -125,9 +125,7 @@ export const InfiniteMovingCards = ({
             />
             <h2 className={`text-lg ${textColor}`}>{item.name}</h2>
             <p className={`text-sm ${subtitleColor}`}>{item.title}</p>
-            <blockquote className={`mt-4 ${quoteColor}`}>
-              {item.quote}
-            </blockquote>
+           
           </li>
         ))}
       </ul>

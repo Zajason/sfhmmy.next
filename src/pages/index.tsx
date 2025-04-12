@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link as ScrollLink, Element } from "react-scroll";
 import HeroSection from "@/components/index/HeroSection";
-// import SpeakersLite from "../components/index/speakerCarousel";
+import SpeakersLite from "../components/index/speakerCarousel";
 import AboutUs from "../components/index/section_about_us";
 import Agenda from "../components/agenda";
 import Register from "./register";
@@ -41,9 +41,9 @@ const ScrollableHome: React.FC = () => {
         <SubjectsSection />
       </Element>
 
-      {/* <Element name="speakersSection" className="section">
+       <Element name="speakersSection" className="section">
         <SpeakersLite />
-      </Element> */}
+      </Element> 
 
       {/*<Element name="agendaSection" className="section">
         <Agenda />
