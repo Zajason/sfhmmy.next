@@ -60,7 +60,7 @@
 //               </p>
 //             </div>
 //           ),
-//           link: `/workshops/${encodeURIComponent(workshop.name)}`, // Ensure safe URL encoding
+//           link: `/workshops/${encodeURIComponent(workshop.slug)}`, // Ensure safe URL encoding
 //         }))}
 //       />
 //     </div>

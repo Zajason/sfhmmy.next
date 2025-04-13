@@ -1,6 +1,7 @@
 export const workshopsData = [
   {
     "name": "AI in Embedded Systems",
+    "slug": "ai-in-embedded-systems",
     "room": "Room A1",
     "time": "10:00 - 11:30",
     "max_participants": 30,
@@ -9,6 +10,7 @@ export const workshopsData = [
   },
   {
     "name": "Robotics and Automation",
+    "slug": "robotics-and-automation",
     "room": "Room B2",
     "time": "11:45 - 13:15",
     "max_participants": 25,
@@ -17,6 +19,7 @@ export const workshopsData = [
   },
   {
     "name": "Satellite Communications",
+    "slug": "satellite-communications",
     "room": "Room C3",
     "time": "14:00 - 15:30",
     "max_participants": 20,
@@ -25,6 +28,7 @@ export const workshopsData = [
   },
   {
     "name": "Machine Learning for Engineers",
+    "slug": "machine-learning-for-engineers",
     "room": "Room D4",
     "time": "16:00 - 17:30",
     "max_participants": 35,
@@ -33,6 +37,7 @@ export const workshopsData = [
   },
   {
     "name": "High Voltage Power Systems",
+    "slug": "high-voltage-power-systems",
     "room": "Room E5",
     "time": "10:30 - 12:00",
     "max_participants": 30,
@@ -41,6 +46,7 @@ export const workshopsData = [
   },
   {
     "name": "FPGA and Microcontrollers",
+    "slug": "fpga-and-microcontrollers",
     "room": "Room F6",
     "time": "13:30 - 15:00",
     "max_participants": 20,
@@ -49,6 +55,7 @@ export const workshopsData = [
   },
   {
     "name": "Cybersecurity in IoT",
+    "slug": "cybersecurity-in-iot",
     "room": "Room G7",
     "time": "15:15 - 16:45",
     "max_participants": 25,
@@ -57,6 +64,7 @@ export const workshopsData = [
   },
   {
     "name": "Quantum Computing Basics",
+    "slug": "quantum-computing-basics",
     "room": "Room H8",
     "time": "17:00 - 18:30",
     "max_participants": 20,
