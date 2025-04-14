@@ -4,7 +4,7 @@ import { ThemeColors, UserData } from "./types";
 import PersonalInformation from "./PersonalInformation";
 import PasswordChange from "./PasswordChange";
 import WorkshopsList from "./WorkshopsList";
-import CvUpload from "./CvUpload";
+// import CvUpload from "./CvUpload";
 
 interface ProfileContentProps {
   userData: UserData;
@@ -50,11 +50,11 @@ const ProfileContent: React.FC<ProfileContentProps> = ({
         theme={theme}
       />
 
-      {/* CV Upload Section */}
+      {/* CV Upload Section
       <CvUpload 
         themeColors={themeColors}
         theme={theme}
-      />
+      /> */}
     </motion.div>
   );
 };
