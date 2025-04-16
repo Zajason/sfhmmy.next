@@ -21,6 +21,7 @@ function getPageTitle(pathname: string): string {
     '/workshops': 'Εργαστήρια | ΣΦΗΜΜΥ16',
     '/contact': 'Επικοινωνία | ΣΦΗΜΜΥ16',
     '/career': 'Καριέρα | ΣΦΗΜΜΥ16',
+    '/update': 'Ενημερώσεις | ΣΦΗΜΜΥ16',
   };
 
   return titles[pathname] || 'ΣΦΗΜΜΥ16 - Συνέδριο Ηλεκτρολόγων Μηχανικών & Μηχανικών Υπολογιστών';
