@@ -57,7 +57,7 @@ const WorkshopsPage: React.FC = () => {
                 Date: {new Date(workshop.date).toLocaleDateString()} at {workshop.hour}
               </p>
               <p className="text-sm text-gray-400">
-                Participants: {workshop.availability}/{workshop.max_participants}
+                Participants: {workshop.max_participants - workshop.availability}/{workshop.max_participants}
               </p>
             </div>
           ),

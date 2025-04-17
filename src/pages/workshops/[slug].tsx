@@ -6,20 +6,22 @@ import { FaCheck } from "react-icons/fa";
 
 // Define Workshop interface matching API response
 interface Workshop {
-  workshop_id: number;
+  workshop_id: string;  // now string to accommodate UUIDs
   title: string;
-  description: string;  // contains all workshop details
+  description: string;
   date: string;
   hour: string;
   availability: number;
   image_url: string;
   max_participants: number;
-  slug: string;
 }
 
 const WorkshopDetails: React.FC = () => {
   const router = useRouter();
   const { slug } = router.query;
+
+  // Use slug directly as workshop_id (string)
+  const workshopId = Array.isArray(slug) ? slug[0] : slug;
 
   const [workshop, setWorkshop] = useState<Workshop | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,15 +29,14 @@ const WorkshopDetails: React.FC = () => {
   const [registered, setRegistered] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!slug) return;
+    if (!workshopId) return;
     async function fetchWorkshop() {
       try {
         const data: Workshop[] = await workshopFetch();
-        const match = data.find((w) => w.slug === slug);
+        const match = data.find((w) => w.workshop_id === workshopId);
         setWorkshop(match || null);
         if (match) {
-          // simulate current filled spots from availability
-          setSpotsFilled(match.availability);
+            setSpotsFilled(match.max_participants - match.availability);
         }
       } catch (err) {
         console.error("Error fetching workshops:", err);
@@ -44,7 +45,7 @@ const WorkshopDetails: React.FC = () => {
       }
     }
     fetchWorkshop();
-  }, [slug]);
+  }, [workshopId]);
 
   if (loading) {
     return <div className="text-center text-white py-24">Loading workshop...</div>;
@@ -64,18 +65,20 @@ const WorkshopDetails: React.FC = () => {
   return (
     <div className="min-h-screen bg-black text-white p-10 pt-20">
       <div className="max-w-2xl mx-auto bg-gray-900 rounded-lg p-6 shadow-lg border border-gray-800">
-        <img
-          src={workshop.image_url}
-          alt={workshop.title}
-          className="w-full h-64 object-cover rounded mb-6"
-        />
+      <img
+                src={`/images/${workshop.image_url}`}
+                alt={workshop.title}
+                className="w-full max-w-[500px] max-h-[500px] object-contain rounded mb-4"
+              />
         <h1 className="text-4xl font-bold text-center mb-4">
           {workshop.title}
         </h1>
         {/* All details come inside description */}
         <div className="mb-6">
           <p className="text-base whitespace-pre-line">
-            {workshop.description}
+            <div
+              dangerouslySetInnerHTML={{ __html: workshop.description }}
+            />
           </p>
         </div>
         <div className="mb-6 text-center">
