@@ -33,7 +33,6 @@ const Navbar: React.FC<NavbarProps> = () => {
           }
 
           // Set avatar if available - keeping the default handling since avatar isn't in the sample data
-          // If there's no avatar in the response, it will keep using the default avatar
           if (profileData?.user?.avatar) {
             setUserAvatar(profileData.user.avatar);
           }
@@ -82,6 +81,7 @@ const Navbar: React.FC<NavbarProps> = () => {
       ? "/images/others/sfhmmy.png"
       : "/images/others/Official Logo ΣΦΗΜΜΥ 16 for white.png";
 
+  // Define navigation items
   const navItems = [
     { href: "/", label: "Home", target: "_self" },
     { href: "/about", label: "About", target: "_self" },
@@ -93,7 +93,6 @@ const Navbar: React.FC<NavbarProps> = () => {
         { href: "/members", label: "Οργανωτική Επιτροπή" },
         { href: "/scientific", label: "Επιστημονική Επιτροπή" },
         { href: "/speakersFull", label: "Ομιλητές" },
-        
       ],
     },
     {
@@ -110,7 +109,17 @@ const Navbar: React.FC<NavbarProps> = () => {
     },
     { href: "/past-events", label: "Past Events", target: "_self" },
     { href: "/contact", label: "Contact", target: "_self" },
+    // The "Updates" item is only shown when the user is signed in.
+    { href: "/updates", label: "Updates", target: "_self" },
   ];
+
+  // Filter navigation items to only include "Updates" if user is signed in.
+  const filteredNavItems = navItems.filter((item) => {
+    if (item.href === "/updates" && !isSignedIn) {
+      return false;
+    }
+    return true;
+  });
 
   const isActive = (href: string) => router.pathname === href;
 
@@ -133,7 +142,6 @@ const Navbar: React.FC<NavbarProps> = () => {
   const handleLogout = async () => {
     // Add delay for visual feedback
     await new Promise((resolve) => setTimeout(resolve, 1000));
-
     logout(); // Use the logout function from context
     router.push("/");
   };
@@ -166,7 +174,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
           {/* Navigation Links in Center */}
           <div className="hidden md:flex justify-center flex-1 space-x-6">
-            {navItems.map((item, index) =>
+            {filteredNavItems.map((item, index) =>
               item.subItems ? (
                 <div
                   key={index}
@@ -210,12 +218,12 @@ const Navbar: React.FC<NavbarProps> = () => {
                           <Link
                             key={subIndex}
                             href={subItem.href}
-                            target={subItem.target || "_self"} // Add target attribute here
+                            target={subItem.target || "_self"}
                             rel={
                               subItem.target === "_blank"
                                 ? "noopener noreferrer"
                                 : undefined
-                            } // Add security attributes
+                            }
                           >
                             <span
                               className={`block px-4 py-2 hover:bg-gray-800 ${
@@ -261,14 +269,13 @@ const Navbar: React.FC<NavbarProps> = () => {
                   <Link href="/profile">
                     <div className="flex items-center space-x-2 cursor-pointer">
                       <Image
-                        src={userAvatar} // Use the dynamic avatar
+                        src={userAvatar}
                         alt="Profile"
                         width={30}
                         height={30}
                         className="rounded-full"
                       />
-                      <span className="text-white text-sm">{userName}</span>{" "}
-                      {/* Use the dynamic name */}
+                      <span className="text-white text-sm">{userName}</span>
                     </div>
                   </Link>
                 </div>
@@ -351,9 +358,9 @@ const Navbar: React.FC<NavbarProps> = () => {
               </button>
             </div>
 
-            {/* Navigation Items with scroll - taking up most of the space */}
+            {/* Navigation Items with scroll */}
             <div className="flex-grow overflow-y-auto px-8 py-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900">
-              {navItems.map((item, index) =>
+              {filteredNavItems.map((item, index) =>
                 item.subItems ? (
                   <div key={index} className="mb-6 w-full">
                     <motion.div
@@ -393,12 +400,12 @@ const Navbar: React.FC<NavbarProps> = () => {
                             <Link
                               key={subIndex}
                               href={subItem.href}
-                              target={subItem.target || "_self"} // Add target attribute here
+                              target={subItem.target || "_self"}
                               rel={
                                 subItem.target === "_blank"
                                   ? "noopener noreferrer"
                                   : undefined
-                              } // Add security attributes
+                              }
                             >
                               <motion.div
                                 className={`px-4 py-3 hover:bg-gray-700 transition-colors ${
@@ -448,21 +455,21 @@ const Navbar: React.FC<NavbarProps> = () => {
               )}
             </div>
 
-            {/* Auth Buttons at the Bottom with improved styling */}
+            {/* Auth Buttons at the Bottom */}
             <div className="p-6 w-full bg-gray-900">
-              {isSignedIn ? ( // Note: Fixed the variable name from signedIn to isSignedIn
+              {isSignedIn ? (
                 <div className="flex flex-col items-center space-y-4">
                   <Link href="/profile">
                     <div className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
                       <Image
-                        src={userAvatar} // Use the dynamic avatar
+                        src={userAvatar}
                         alt="Profile"
                         width={50}
                         height={50}
                         className="rounded-full border-2 border-blue-400"
                       />
                       <span className="text-white text-lg font-medium">
-                        {userName} {/* Use the dynamic name */}
+                        {userName}
                       </span>
                     </div>
                   </Link>

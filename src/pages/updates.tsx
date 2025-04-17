@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/authContext"; // Adjust the path as needed
+import { getAnnouncements } from "../apis/AuthApi.js"; // Import your API function
 
 // Motion variants (feel free to modify these)
 const fadeInUp = {
@@ -21,6 +22,7 @@ interface Announcement {
   date: string;
   tags: string[];
   content: string;
+  // other fields like created_at, updated_at can be added if needed
 }
 
 const UpdatesFeed: React.FC = () => {
@@ -35,17 +37,33 @@ const UpdatesFeed: React.FC = () => {
     // Only fetch announcements if the user is authenticated
     if (!isSignedIn) return;
 
-    fetch("https://sfhmmy.gr/api/announcements", {
-      credentials: "include", // include cookies for authentication
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch announcements");
+    getAnnouncements()
+      .then((response: any) => {
+        // Our API returns an object with a key "announcements" containing an array
+        let announcementsData: any[] = [];
+        if (response.announcements && Array.isArray(response.announcements)) {
+          announcementsData = response.announcements;
+        } else if (response.data && Array.isArray(response.data)) {
+          announcementsData = response.data;
+        } else if (Array.isArray(response)) {
+          announcementsData = response;
+        } else {
+          throw new Error("Announcements data is not an array");
         }
-        return res.json();
-      })
-      .then((data: Announcement[]) => {
-        setAnnouncements(data);
+
+        // Transform each announcement to ensure that the tags field is an array.
+        // If tags is a string (e.g., "hotels,stay"), split it by comma.
+        const transformedAnnouncements = announcementsData.map((announcement) => {
+          return {
+            ...announcement,
+            tags:
+              typeof announcement.tags === "string"
+                ? announcement.tags.split(",").map((t: string) => t.trim())
+                : announcement.tags,
+          };
+        });
+
+        setAnnouncements(transformedAnnouncements);
         setLoading(false);
       })
       .catch((err) => {
