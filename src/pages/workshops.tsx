@@ -33,12 +33,15 @@ const WorkshopsPage: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center text-white py-24">Loading workshops...</div>;
+    return (
+      <div className="text-center text-white py-24">Loading workshops...</div>
+    );
   }
 
   return (
     <div className="bg-black min-h-screen text-white py-24 px-10">
       <h1 className="text-4xl font-bold text-center mb-16">Workshops</h1>
+      {/* Cast items as any to allow JSX descriptions */}
       <HoverEffect
         className="mt-10"
         items={workshops.map((workshop: Workshop) => ({
@@ -46,11 +49,10 @@ const WorkshopsPage: React.FC = () => {
           description: (
             <div>
               <img
-                src={workshop.image_url}
+                src={`/images/${workshop.image_url}`}
                 alt={workshop.title}
-                className="w-full h-40 object-cover rounded mb-4"
+                className="w-full max-w-[500px] max-h-[500px] object-contain rounded mb-4"
               />
-              <p className="mb-2">{workshop.description}</p>
               <p className="text-sm text-gray-400">
                 Date: {new Date(workshop.date).toLocaleDateString()} at {workshop.hour}
               </p>
@@ -60,7 +62,7 @@ const WorkshopsPage: React.FC = () => {
             </div>
           ),
           link: `/workshops/${encodeURIComponent(workshop.workshop_id)}`,
-        }))}
+        })) as any}
       />
     </div>
   );
