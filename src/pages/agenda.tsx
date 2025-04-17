@@ -6,7 +6,7 @@ export const AgendaPage = () => {
   return (
     <div className="min-h-screen bg-black pt-20">
       {/* Render the updated Schedule component */}
-      <Future />
+      <Schedule />
       {/* <Schedule />*/}
     </div>
   );
