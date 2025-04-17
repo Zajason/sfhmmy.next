@@ -1,82 +1,69 @@
-// import React, { useState, useEffect } from "react";
-// import { HoverEffect } from "../components/card-hover-effect.tsx"; // Ensure correct path
-// import { workshopsData } from "../data/WorkshopsData";
-// import {
-//   FaBolt,
-//   FaCogs,
-//   FaMicrochip,
-//   FaLaptop,
-//   FaSatelliteDish,
-//   FaBrain,
-// } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { HoverEffect } from "../components/card-hover-effect.tsx";
+import { workshopFetch } from "../apis/AuthApi";
 
-// const iconMap: Record<string, JSX.Element> = {
-//   FaBolt: <FaBolt className="text-yellow-400 text-4xl mb-4" />,
-//   FaCogs: <FaCogs className="text-gray-400 text-4xl mb-4" />,
-//   FaMicrochip: <FaMicrochip className="text-green-400 text-4xl mb-4" />,
-//   FaLaptop: <FaLaptop className="text-blue-400 text-4xl mb-4" />,
-//   FaSatelliteDish: (
-//     <FaSatelliteDish className="text-purple-400 text-4xl mb-4" />
-//   ),
-//   FaBrain: <FaBrain className="text-pink-400 text-4xl mb-4" />,
-// };
+// Define the Workshop interface to type our fetched data
+interface Workshop {
+  workshop_id: number;
+  title: string;
+  description: string;
+  date: string;
+  hour: string;
+  availability: number;
+  image_url: string;
+  max_participants: number;
+}
 
-// const WorkshopsPage = () => {
-//   const [participants, setParticipants] = useState<{ [key: string]: number }>(
-//     {}
-//   );
+const WorkshopsPage: React.FC = () => {
+  const [workshops, setWorkshops] = useState<Workshop[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-//   useEffect(() => {
-//     const updatedParticipants: { [key: string]: number } = {};
-//     workshopsData.forEach((workshop) => {
-//       updatedParticipants[workshop.name] = Math.floor(
-//         Math.random() * workshop.max_participants
-//       );
-//     });
-//     setParticipants(updatedParticipants);
-//   }, []);
+  useEffect(() => {
+    async function loadWorkshops() {
+      try {
+        const data: Workshop[] = await workshopFetch();
+        setWorkshops(data);
+      } catch (error) {
+        console.error("Error fetching workshops:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadWorkshops();
+  }, []);
 
-//   return (
-//     <div className="bg-black min-h-screen text-white py-24 px-10">
-//       {" "}
-//       {/* Adjusted spacing */}
-//       <h1 className="text-4xl font-bold text-center mb-16">Workshops</h1>{" "}
-//       {/* Increased margin-bottom */}
-//       <HoverEffect
-//         className="mt-10" // Moves the grid lower
-//         items={workshopsData.map((workshop) => ({
-//           title: workshop.name, // Keep title as a simple string
-//           description: (
-//             <div>
-//               <div className="flex items-center space-x-4 mb-2">
-//                 {iconMap[workshop.icon]}{" "}
-//                 {/* Display the mapped icon separately */}
-//                 <span className="text-lg font-semibold">{workshop.name}</span>
-//               </div>
-//               <p>{workshop.description}</p>
-//               <p className="text-sm text-gray-400">
-//                 Participants: {participants[workshop.name] || 0}/
-//                 {workshop.max_participants}
-//               </p>
-//             </div>
-//           ),
-//           link: `/workshops/${encodeURIComponent(workshop.slug)}`, // Ensure safe URL encoding
-//         }))}
-//       />
-//     </div>
-//   );
-// };
+  if (loading) {
+    return <div className="text-center text-white py-24">Loading workshops...</div>;
+  }
 
-// export default WorkshopsPage;
-import React from "react";
-import ComingSoon from "../components/ComingSoon";
-
-const Workshops: React.FC = () => {
   return (
-    <>
-      <ComingSoon />
-    </>
+    <div className="bg-black min-h-screen text-white py-24 px-10">
+      <h1 className="text-4xl font-bold text-center mb-16">Workshops</h1>
+      <HoverEffect
+        className="mt-10"
+        items={workshops.map((workshop: Workshop) => ({
+          title: workshop.title,
+          description: (
+            <div>
+              <img
+                src={workshop.image_url}
+                alt={workshop.title}
+                className="w-full h-40 object-cover rounded mb-4"
+              />
+              <p className="mb-2">{workshop.description}</p>
+              <p className="text-sm text-gray-400">
+                Date: {new Date(workshop.date).toLocaleDateString()} at {workshop.hour}
+              </p>
+              <p className="text-sm text-gray-400">
+                Participants: {workshop.availability}/{workshop.max_participants}
+              </p>
+            </div>
+          ),
+          link: `/workshops/${encodeURIComponent(workshop.workshop_id)}`,
+        }))}
+      />
+    </div>
   );
 };
 
-export default Workshops;
+export default WorkshopsPage;

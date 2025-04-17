@@ -436,6 +436,61 @@ export const verifyEmail = async (id, hash) => {
   }
 };
 
+export const workshopFetch = async () => {
+  try {
+    const response = await api.get('/listworkshops');
+    console.log('Workshop data fetched:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching workshop data:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+export const workshopEnroll = async (workshopId) => {
+  try {
+    const response = await api.post('/workshops/${workshopId}/enroll', { workshopId });
+    console.log('Enrolled in workshop:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error enrolling in workshop:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+export const workshopUnenroll = async (workshopId) => {
+  try {
+    const response = await api.delete('/workshops/${workshopId}/unenroll', { workshopId });
+    console.log('Unenrolled from workshop:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error unenrolling from workshop:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+export const joinWaitingList = async (workshopId) => {
+  try {
+    const response = await api.post('/workshops/${workshopId}/waiting-list', { workshopId });
+    console.log('Joined waiting list for workshop:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error joining waiting list for workshop:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+export const leaveWaitingList = async (workshopId) => {
+  try {
+    const response = await api.delete('/workshops/${workshopId}/waiting-list', { workshopId });
+    console.log('Left waiting list for workshop:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error leaving waiting list for workshop:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
 export const checkEmailVerificationStatus = async (token) => {
   try {
     // Create a custom config if token is provided directly
