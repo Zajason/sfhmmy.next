@@ -449,7 +449,7 @@ export const workshopFetch = async () => {
 
 export const workshopEnroll = async (workshopId) => {
   try {
-    const response = await api.post('/workshops/${workshopId}/enroll', { workshopId });
+    const response = await api.post(`/workshops/${workshopId}/enroll`, { workshopId });
     console.log('Enrolled in workshop:', response.data);
     return response.data;
   } catch (error) {
@@ -460,7 +460,7 @@ export const workshopEnroll = async (workshopId) => {
 
 export const workshopUnenroll = async (workshopId) => {
   try {
-    const response = await api.delete('/workshops/${workshopId}/unenroll', { workshopId });
+    const response = await api.delete(`/workshops/${workshopId}/unenroll`, { workshopId });
     console.log('Unenrolled from workshop:', response.data);
     return response.data;
   } catch (error) {
@@ -471,7 +471,7 @@ export const workshopUnenroll = async (workshopId) => {
 
 export const joinWaitingList = async (workshopId) => {
   try {
-    const response = await api.post('/workshops/${workshopId}/waiting-list', { workshopId });
+    const response = await api.post(`/workshops/${workshopId}/waiting-list`, { workshopId });
     console.log('Joined waiting list for workshop:', response.data);
     return response.data;
   } catch (error) {
@@ -482,7 +482,7 @@ export const joinWaitingList = async (workshopId) => {
 
 export const leaveWaitingList = async (workshopId) => {
   try {
-    const response = await api.delete('/workshops/${workshopId}/waiting-list', { workshopId });
+    const response = await api.delete(`/workshops/${workshopId}/waiting-list`, { workshopId });
     console.log('Left waiting list for workshop:', response.data);
     return response.data;
   } catch (error) {
