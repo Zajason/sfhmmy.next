@@ -581,7 +581,7 @@ export const eventsData = [
     type: "Workshop Registration",
     name: "RAS NTUA Workshop - Registration",
     place: "ΚΕΔΕΑ",
-    room: "Αμφιθέατρο II",
+    room: "Αμφιθέατρο I",
     time: "05:00 PM - 05:30 PM",
     day: "Σάββατο"
   },
@@ -605,7 +605,7 @@ export const eventsData = [
     type: "Workshop",
     name: "ΚΑΥΚΑΣ Workshop",
     place: "ΚΕΔΕΑ",
-    room: "Αμφιθέατρο II",
+    room: "Αμφιθέατρο III",
     time: "05:00 PM - 06:30 PM",
     day: "Σάββατο"
   },
@@ -627,7 +627,7 @@ export const eventsData = [
   },
   {
     type: "Workshop Registration",
-    name: "EESTEC LC Thessaloniki Workshop",
+    name: "EESTEC LC Thessaloniki Workshop - Registration",
     place: "TAΞΥΠ ΑΠΘ",
     room: "Αίθουσα ΤΑΞΥΠ",
     time: "02:30 PM - 03:00 PM",
@@ -635,7 +635,7 @@ export const eventsData = [
   },
   {
     type: "Workshop",
-    name: "EESTEC LC Thessaloniki Workshop - Registration",
+    name: "EESTEC LC Thessaloniki Workshop ",
     place: "TAΞΥΠ ΑΠΘ",
     room: "Αίθουσα ΤΑΞΥΠ",
     time: "03:00 PM - 05:30 PM",
