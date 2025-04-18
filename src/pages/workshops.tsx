@@ -10,6 +10,7 @@ interface Workshop {
   description: string;
   date: string;
   hour: string;
+  end_time: string | null;
   availability: number;
   image_url: string;
   max_participants: number;
@@ -56,7 +57,7 @@ const WorkshopsPage: React.FC = () => {
                 className="w-full max-w-[500px] max-h-[500px] object-contain rounded mb-4"
               />
               <p className="text-sm text-gray-400">
-                Date: {new Date(workshop.date).toLocaleDateString()} at {workshop.hour}
+                Date: {new Date(workshop.date).toLocaleDateString()} at {workshop.hour.slice(0, 5)} - {workshop.end_time ? workshop.end_time.slice(0, 5) : "TBD"}
               </p>
               <p className="text-sm text-gray-400">
                 Participants: {workshop.max_participants - workshop.availability}/{workshop.max_participants}

@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { workshopFetch, workshopEnroll, workshopUnenroll, getUserWorkshops } from "../../apis/AuthApi";
+import {
+  workshopFetch,
+  workshopEnroll,
+  workshopUnenroll,
+  getUserWorkshops,
+} from "../../apis/AuthApi";
 import { FaCheck } from "react-icons/fa";
 
 // Define Workshop interface matching API response
 interface Workshop {
-  workshop_id: string;  // now string to accommodate UUIDs
+  workshop_id: string;
   title: string;
   description: string;
   date: string;
-  hour: string;
+  hour: string;           // start time
+  end_time: string | null; // end time
   availability: number;
   image_url: string;
   max_participants: number;
@@ -30,34 +36,25 @@ const WorkshopDetails: React.FC = () => {
 
   useEffect(() => {
     if (!workshopId) return;
-  
+
     async function fetchWorkshop() {
       setLoading(true);
       try {
-        // fire both requests in parallel
         const [allWorkshops, userEnrollments]: [Workshop[], any[]] = await Promise.all([
           workshopFetch(),
-          getUserWorkshops()
+          getUserWorkshops(),
         ]);
-  
-        // find the workshop we care about
-        const current = allWorkshops.find(w => w.workshop_id === workshopId) || null;
-        setWorkshop(current);
-  
-        if (current) {
-          // update spots filled as before
-          setSpotsFilled(current.max_participants - current.availability);
-  
-          // pull out the IDs from your enrollment payload
-          // if getUserWorkshops() returns an array of IDs: 
-          //   const enrolledIds = userEnrollments as string[];
-          // if it returns full objects with a `.pivot.workshop_id`:
-          const enrolledIds = userEnrollments.map(e => 
-            // pivot might live under e.pivot.workshop_id
-            e.pivot?.workshop_id ?? e.workshop_id
-          );
-  
-          // now set registered based on whether the current one is in that list:
+
+        const match = allWorkshops.find((w) => w.workshop_id === workshopId) || null;
+        setWorkshop(match);
+
+        if (match) {
+          // calculate filled spots
+          const filled = match.max_participants - match.availability;
+          setSpotsFilled(filled);
+
+          // extract workshop IDs from enrollment payload
+          const enrolledIds = userEnrollments.map((e) => e.pivot?.workshop_id ?? e.workshop_id);
           setRegistered(enrolledIds.includes(workshopId));
         }
       } catch (err) {
@@ -66,11 +63,9 @@ const WorkshopDetails: React.FC = () => {
         setLoading(false);
       }
     }
-  
+
     fetchWorkshop();
   }, [workshopId]);
-  
-  
 
   if (loading) {
     return <div className="text-center text-white py-24">Loading workshop...</div>;
@@ -119,17 +114,31 @@ const WorkshopDetails: React.FC = () => {
           alt={workshop.title}
           className="w-full max-w-[500px] max-h-[500px] object-contain rounded mb-4"
         />
-        <h1 className="text-4xl font-bold text-center mb-4">
-          {workshop.title}
-        </h1>
-        <div className="mb-6">
-          <div className="text-base whitespace-pre-line" dangerouslySetInnerHTML={{ __html: workshop.description }} />
+        <h1 className="text-4xl font-bold text-center mb-4">{workshop.title}</h1>
+
+        {/* Display date and duration */}
+        <div className="mb-6 text-center">
+          <p className="text-lg">
+            <span className="font-semibold">Date:</span> {workshop.date}
+          </p>
+          <p className="text-lg">
+            <span className="font-semibold">Duration:</span> {workshop.hour.slice(0, 5)} - {workshop.end_time ? workshop.end_time.slice(0, 5) : "TBD"}
+          </p>
         </div>
+
+        <div className="mb-6">
+          <div
+            className="text-base whitespace-pre-line"
+            dangerouslySetInnerHTML={{ __html: workshop.description }}
+          />
+        </div>
+
         <div className="mb-6 text-center">
           <p className="text-lg font-semibold">
             {spotsFilled} / {workshop.max_participants} spots filled
           </p>
         </div>
+
         <div className="flex justify-center mb-6">
           {isFull && !registered ? (
             <button
@@ -148,9 +157,7 @@ const WorkshopDetails: React.FC = () => {
                   : "bg-red-600 hover:bg-red-700"
               }`}
             >
-              <span>
-                {unenrolling ? "Leaving…" : "Leave"}
-              </span>
+              <span>{unenrolling ? "Leaving…" : "Leave"}</span>
             </button>
           ) : (
             <button
@@ -162,12 +169,11 @@ const WorkshopDetails: React.FC = () => {
                   : "bg-blue-600 hover:bg-blue-700"
               }`}
             >
-              <span>
-                {enrolling ? "Registering…" : "Register"}
-              </span>
+              <span>{enrolling ? "Registering…" : "Register"}</span>
             </button>
           )}
         </div>
+
         <div className="flex justify-center">
           <Link
             href="/workshops"
