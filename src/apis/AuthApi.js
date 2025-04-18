@@ -502,6 +502,17 @@ export const getUserWorkshops = async () => {
   }
 }
 
+export const getUserWaitingList = async () => {
+  try {
+    const response = await api.get('/profile/waiting-list');
+    console.log('User waiting list fetched:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user waiting list:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
 export const checkEmailVerificationStatus = async (token) => {
   try {
     // Create a custom config if token is provided directly
