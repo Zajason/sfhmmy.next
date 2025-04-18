@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { workshopFetch, workshopEnroll, workshopUnenroll } from "../../apis/AuthApi";
+import { workshopFetch, workshopEnroll, workshopUnenroll, getUserWorkshops } from "../../apis/AuthApi";
 import { FaCheck } from "react-icons/fa";
 
 // Define Workshop interface matching API response
@@ -30,26 +30,47 @@ const WorkshopDetails: React.FC = () => {
 
   useEffect(() => {
     if (!workshopId) return;
+  
     async function fetchWorkshop() {
+      setLoading(true);
       try {
-        const data: Workshop[] = await workshopFetch();
-        const match = data.find((w) => w.workshop_id === workshopId);
-        setWorkshop(match || null);
-        if (match) {
-          const filled = match.max_participants - match.availability;
-          setSpotsFilled(filled);
-          // determine if current user is registered by checking availability logic or API flags
-          // for this example, assume user registered if spotsFilled less than max
-          setRegistered(filled > 0);
+        // fire both requests in parallel
+        const [allWorkshops, userEnrollments]: [Workshop[], any[]] = await Promise.all([
+          workshopFetch(),
+          getUserWorkshops()
+        ]);
+  
+        // find the workshop we care about
+        const current = allWorkshops.find(w => w.workshop_id === workshopId) || null;
+        setWorkshop(current);
+  
+        if (current) {
+          // update spots filled as before
+          setSpotsFilled(current.max_participants - current.availability);
+  
+          // pull out the IDs from your enrollment payload
+          // if getUserWorkshops() returns an array of IDs: 
+          //   const enrolledIds = userEnrollments as string[];
+          // if it returns full objects with a `.pivot.workshop_id`:
+          const enrolledIds = userEnrollments.map(e => 
+            // pivot might live under e.pivot.workshop_id
+            e.pivot?.workshop_id ?? e.workshop_id
+          );
+  
+          // now set registered based on whether the current one is in that list:
+          setRegistered(enrolledIds.includes(workshopId));
         }
       } catch (err) {
-        console.error("Error fetching workshops:", err);
+        console.error("Error loading workshop + enrollments:", err);
       } finally {
         setLoading(false);
       }
     }
+  
     fetchWorkshop();
   }, [workshopId]);
+  
+  
 
   if (loading) {
     return <div className="text-center text-white py-24">Loading workshop...</div>;

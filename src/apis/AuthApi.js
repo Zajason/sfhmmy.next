@@ -491,6 +491,17 @@ export const leaveWaitingList = async (workshopId) => {
   }
 }
 
+export const getUserWorkshops = async () => {
+  try {
+    const response = await api.get('/profile/workshops');
+    console.log('User workshops fetched:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user workshops:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
 export const checkEmailVerificationStatus = async (token) => {
   try {
     // Create a custom config if token is provided directly
