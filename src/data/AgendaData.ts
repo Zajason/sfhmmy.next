@@ -145,7 +145,7 @@ export const eventsData = [
   },
   {
     type: "Workshop",
-    name: "Broken Shells Workshop & NG-DSALab Workshop",
+    name: "Broken Shells & NG-DSALab Workshop",
     place: "ΚΕΔΕΑ",
     room: "Αμφιθέατρο I",
     time: "03:00 PM - 05:00 PM",
@@ -764,7 +764,7 @@ export const eventsData = [
   },
   {
     type: "Speech",
-    name: "Nikolaos Pλeros - 'Photonics for computing and AI accelerators'",
+    name: "Nikolaos Pleros - 'Photonics for computing and AI accelerators'",
     place: "Αίθουσα Τελετών ΑΠΘ",
     room: "Ceremony Hall",
     time: "04:00 PM - 05:00 PM",
