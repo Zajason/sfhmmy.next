@@ -98,7 +98,7 @@ const Navbar: React.FC<NavbarProps> = () => {
     {
       label: "Activities",
       subItems: [
-        { href: "/workshops", label: "Workshops" },
+        { href: "/workshops", label: "Workshops" }, // Re-enabled Workshops link
         {
           href: "https://presfhmmy.sfhmmy.gr",
           label: "PreΣΦΗΜΜΥ",
@@ -109,7 +109,6 @@ const Navbar: React.FC<NavbarProps> = () => {
     },
     { href: "/past-events", label: "Past Events", target: "_self" },
     { href: "/contact", label: "Contact", target: "_self" },
-    // The "Updates" item is only shown when the user is signed in.
     { href: "/updates", label: "Updates", target: "_self" },
   ];
 

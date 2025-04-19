@@ -1,5 +1,7 @@
+// pages/workshops/[slug].tsx
 import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
+import { marked } from "marked";
 import Link from "next/link";
 import {
   workshopFetch,
@@ -42,6 +44,8 @@ const WorkshopDetails: React.FC = () => {
   const [waitingListed, setWaitingListed] = useState<boolean>(false);
   const [joiningWait, setJoiningWait] = useState<boolean>(false);
   const [leavingWait, setLeavingWait] = useState<boolean>(false);
+
+  const html = workshop ? marked(workshop.description) : "";
 
   // Fetch details and user statuses
   const fetchWorkshop = useCallback(async () => {
@@ -135,7 +139,6 @@ const WorkshopDetails: React.FC = () => {
     setJoiningWait(true);
     try {
       await joinWaitingList(workshop.workshop_id);
-      // sticky: immediately mark ourselves waiting
       setWaitingListed(true);
       await fetchWorkshop();
     } catch (err) {
@@ -150,7 +153,6 @@ const WorkshopDetails: React.FC = () => {
     setLeavingWait(true);
     try {
       await leaveWaitingList(workshop.workshop_id);
-      // clear only when we explicitly leave
       setWaitingListed(false);
       await fetchWorkshop();
     } catch (err) {
@@ -170,12 +172,14 @@ const WorkshopDetails: React.FC = () => {
   return (
     <div className="min-h-screen bg-black text-white p-10 pt-20">
       <div className="max-w-2xl mx-auto bg-gray-900 rounded-lg p-6 shadow-lg border border-gray-800">
-        <img
-          src={`/images/${workshop.image_url}`}
-          alt={workshop.title}
-          className="w-full max-w-[500px] max-h-[500px] object-contain rounded mb-4"
-        />
-        <h1 className="text-4xl font-bold text-center mb-4">{workshop.title}</h1>
+        <div className="flex flex-col items-center mb-6">
+          <img
+            src={`/images/${workshop.image_url}`}
+            alt={workshop.title}
+            className="w-full max-w-[500px] max-h-[500px] object-contain rounded mb-4"
+          />
+          <h1 className="text-4xl font-bold text-center mb-4">{workshop.title}</h1>
+        </div>
 
         <div className="mb-6 text-center">
           <p className="text-lg">
@@ -188,8 +192,8 @@ const WorkshopDetails: React.FC = () => {
 
         <div className="mb-6">
           <div
-            className="text-base whitespace-pre-line"
-            dangerouslySetInnerHTML={{ __html: workshop.description }}
+            className="prose max-w-none"
+            dangerouslySetInnerHTML={{ __html: html }}
           />
         </div>
 

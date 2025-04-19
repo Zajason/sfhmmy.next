@@ -50,13 +50,17 @@ const WorkshopsPage: React.FC = () => {
         items={workshops.map((workshop: Workshop) => ({
           title: workshop.title,
           description: (
-            <div>
-              <img
-                src={`/images/${workshop.image_url}`}
-                alt={workshop.title}
-                className="w-full max-w-[500px] max-h-[500px] object-contain rounded mb-4"
-              />
-              <p className="text-sm text-gray-400">
+            <div className="flex flex-col items-center">
+              <div
+                className="w-[350px] h-[350px] flex items-center justify-center bg-gray-800 rounded overflow-hidden"
+              >
+                <img
+                  src={`/images/${workshop.image_url}`}
+                  alt={workshop.title}
+                  className="object-contain w-full h-full"
+                />
+              </div>
+              <p className="text-sm text-gray-400 mt-4">
                 Date: {new Date(workshop.date).toLocaleDateString()} at {workshop.hour.slice(0, 5)} - {workshop.end_time ? workshop.end_time.slice(0, 5) : "TBD"}
               </p>
               <p className="text-sm text-gray-400">
