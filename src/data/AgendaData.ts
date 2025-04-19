@@ -121,7 +121,7 @@ export const eventsData = [
   },
   {
     type: "Workshop Registration",
-    name: "Panther Workshop - Registration",
+    name: "Panther Racing Workshop - Registration",
     place: "ΚΕΔΕΑ",
     room: "Αμφιθέατρο III",
     time: "12:00 AM - 12:30 AM",
@@ -129,7 +129,7 @@ export const eventsData = [
   },
   {
     type: "Workshop",
-    name: "Panther Workshop",
+    name: "Panther Racing Workshop",
     place: "ΚΕΔΕΑ",
     room: "Αμφιθέατρο III",
     time: "12:30 AM - 02:00 PM",
@@ -137,7 +137,7 @@ export const eventsData = [
   },
   {
     type: "Workshop Registration",
-    name: "Broken Shells Workshop - Registration",
+    name: "Broken Shells & NG-DSALab Workshop - Registration",
     place: "ΚΕΔΕΑ",
     room: "Αμφιθέατρο I",
     time: "02:30 PM - 03:00 PM",
@@ -145,7 +145,7 @@ export const eventsData = [
   },
   {
     type: "Workshop",
-    name: "Broken Shells Workshop",
+    name: "Broken Shells Workshop & NG-DSALab Workshop",
     place: "ΚΕΔΕΑ",
     room: "Αμφιθέατρο I",
     time: "03:00 PM - 05:00 PM",
@@ -179,7 +179,7 @@ export const eventsData = [
     type: "Workshop",
     name: "BEAM Workshop",
     place: "ΚΕΔΕΑ",
-    room: "Αμφιθέατρο II",
+    room: "Αμφιθέατρο III",
     time: "03:00 PM - 05:00 PM",
     day: "Παρασκευή"
   },
@@ -195,7 +195,7 @@ export const eventsData = [
     type: "Workshop",
     name: "EduACT Workshop",
     place: "ΚΕΔΕΑ",
-    room: "Αμφιθέατρο III",
+    room: "Φουαγιέ (1ος όροφος)",
     time: "03:00 PM - 05:00 PM",
     day: "Παρασκευή"
   },
@@ -581,7 +581,7 @@ export const eventsData = [
     type: "Workshop Registration",
     name: "RAS NTUA Workshop - Registration",
     place: "ΚΕΔΕΑ",
-    room: "Αμφιθέατρο I",
+    room: "Αμφιθέατρο II",
     time: "05:00 PM - 05:30 PM",
     day: "Σάββατο"
   },
@@ -589,7 +589,7 @@ export const eventsData = [
     type: "Workshop",
     name: "RAS NTUA Workshop",
     place: "ΚΕΔΕΑ",
-    room: "Αμφιθέατρο I",
+    room: "Αμφιθέατρο II",
     time: "05:30 PM - 07:30 PM",
     day: "Σάββατο"
   },
