@@ -21,17 +21,17 @@ const SubjectsSection = () => {
     },
     {
       title: "Μικροηλεκτρονική",
-      description: "Συζήτηση για την ανάπτυξη λογισμικού και υλικού.",
+      description: "Συζήτηση για τις τελευταίες εξελίξεις στη μικροηλεκτρονική.",
       icon: <FaLaptop className="text-purple-400 text-4xl mb-4" />
     },
     {
       title: "Συστήματα Αυτομάτου Ελέγχου",
-      description: "Οι τελευταίες εξελίξεις σε δίκτυα 5G και πέρα.",
+      description: "Οι τελευταίες εξελίξεις σε συστήματα αυτομάτου ελέγχου.",
       icon: <FaSatelliteDish className="text-red-400 text-4xl mb-4" />
     },
     {
       title: "Επεξεργασία Σήματος και Εικόνας",
-      description: "Τεχνολογίες αιχμής όπως AI και Blockchain.",
+      description: "Ανακαλύψτε τις νεότερες τάσεις στην επεξεργασία σήματος και εικόνας.",
       icon: <FaBrain className="text-pink-400 text-4xl mb-4" />
     },
     {
