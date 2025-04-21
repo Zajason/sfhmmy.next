@@ -5,34 +5,74 @@ import { FaBolt, FaCogs, FaMicrochip, FaLaptop, FaSatelliteDish, FaBrain, FaNetw
 const SubjectsSection = () => {
   const subjects = [
     {
-      title: "Ηλεκτρική Ενέργεια",
+      title: "Συστήματα Ηλεκτρικής Ενέργειας",
       description: "Συζήτηση για τις ανανεώσιμες πηγές ενέργειας και τη διαχείριση δικτύου.",
       icon: <FaBolt className="text-yellow-400 text-4xl mb-4" />
     },
     {
-      title: "Συστήματα Ελέγχου",
+      title: "Ηλεκτρικά και Ηλεκτρονικά Κυκλώματα",
       description: "Εξερεύνηση αυτοματισμών και εφαρμογών στα βιομηχανικά συστήματα.",
       icon: <FaCogs className="text-blue-400 text-4xl mb-4" />
     },
     {
-      title: "Ηλεκτρονικά",
+      title: "Ηλεκτρικά Ισχύος",
       description: "Ανακαλύψτε τις νεότερες τάσεις στην ηλεκτρονική μηχανική.",
       icon: <FaMicrochip className="text-green-400 text-4xl mb-4" />
     },
     {
-      title: "Υπολογιστές",
+      title: "Μικροηλεκτρονική",
       description: "Συζήτηση για την ανάπτυξη λογισμικού και υλικού.",
       icon: <FaLaptop className="text-purple-400 text-4xl mb-4" />
     },
     {
-      title: "Τηλεπικοινωνίες",
+      title: "Συστήματα Αυτομάτου Ελέγχου",
       description: "Οι τελευταίες εξελίξεις σε δίκτυα 5G και πέρα.",
       icon: <FaSatelliteDish className="text-red-400 text-4xl mb-4" />
     },
     {
-      title: "Τεχνολογία Πληροφορίας",
+      title: "Επεξεργασία Σήματος και Εικόνας",
       description: "Τεχνολογίες αιχμής όπως AI και Blockchain.",
       icon: <FaBrain className="text-pink-400 text-4xl mb-4" />
+    },
+    {
+      title: "Μηχανική και Βαθιά Μάθηση",
+      description: "Ανακαλύψτε τις νεότερες τάσεις στην μηχανική μάθηση και βαθιά μάθηση.",
+      icon: <FaBrain className="text-blue-400 text-4xl mb-4" />
+    },
+    {
+      title: "Δίκτυα Τηλεπικοινωνιών",
+      description: "Οι τελευταίες εξελίξεις σε δίκτυα τηλεπικοινωνιών.",
+      icon: <FaNetworkWired className="text-green-400 text-4xl mb-4" />
+    },
+    {
+      title: "Βάσεις Δεδομένων",
+      description: "Συζήτηση για την ανάπτυξη και διαχείριση βάσεων δεδομένων.",
+      icon: <FaDatabase className="text-purple-400 text-4xl mb-4" />
+    },
+    {
+      title: "Έξυπνα Δίκτυα Ενέργειας και Τηλεπικοινωνιών",
+      description: "Οι τελευταίες εξελίξεις σε έξυπνα δίκτυα ενέργειας και τηλεπικοινωνιών.",
+      icon: <FaLightbulb className="text-yellow-400 text-4xl mb-4" />
+    },
+    {
+      title: "Ασύρματη Μετάδοση και Δίκτυα Προηγμένης Γενιάς",
+      description: "Οι τελευταίες εξελίξεις σε ασύρματη μετάδοση και δίκτυα προηγμένης γενιάς.",
+      icon: <FaWifi className="text-blue-400 text-4xl mb-4" />
+    },
+    {
+      title: "Βιοϊατρική Τεχνολογία και Βιοπληροφορική",
+      description: "Ανακαλύψτε τις νεότερες τάσεις στην βιοϊατρική τεχνολογία και βιοπληροφορική.",
+      icon: <FaHeartbeat className="text-red-400 text-4xl mb-4" />
+    },
+    {
+      title: "Επιστημονικοί Υπολογισμοί",
+      description: "Συζήτηση για τις τελευταίες εξελίξεις στους επιστημονικούς υπολογισμούς.",
+      icon: <FaCalculator className="text-green-400 text-4xl mb-4" />
+    },
+    {
+      title: "Διαδίκτυο των Πραγμάτων",
+      description: "Οι τελευταίες εξελίξεις στο διαδίκτυο των πραγμάτων.",
+      icon: <FaCloud className="text-blue-400 text-4xl mb-4" />
     },
   ];
 
