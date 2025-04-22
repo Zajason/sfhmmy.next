@@ -587,7 +587,7 @@ export const eventsData = [
   },
   {
     type: "Workshop",
-    name: "RAS NTUA Workshop",
+    name: "RAS IEEE NTUA Workshop",
     place: "ΚΕΔΕΑ",
     room: "Αμφιθέατρο II",
     time: "05:30 PM - 07:30 PM",
