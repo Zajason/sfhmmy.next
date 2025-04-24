@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { toast } from 'react-toastify'; // Make sure this is imported at the top
+import { useRouter } from 'next/router';
+
+
 
 const API_URL = process.env.NODE_ENV === 'development' 
   ? 'http://127.0.0.1:8000/api'  // Local development server
@@ -509,6 +512,31 @@ export const getUserWaitingList = async () => {
     return response.data;
   } catch (error) {
     console.error('Error fetching user waiting list:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+export const checkIn = async (workshopId) => {
+  try {
+    const response = await api.post(`/workshops/${workshopId}/check-in`);
+    console.log('Checked in to workshop:', response.data);
+    
+    
+    return response.data;
+    //reroute to the workshop page with route push
+
+  } catch (error) {
+    console.error('Error checking in to workshop:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}
+
+export const checkInWaitingList = async (workshopId) => {
+  try {
+    const response = await api.post(`/workshops/${workshopId}/check-in-waiting-list`);
+    console.log('Checked in to waiting list for workshop:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error checking in to waiting list for workshop:', error.response ? error.response.data : error.message);
     throw error;
   }
 }
