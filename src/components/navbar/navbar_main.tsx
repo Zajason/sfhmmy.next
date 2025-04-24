@@ -105,6 +105,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           target: "_blank",
         },
         { href: "/career", label: "Career@ΣΦΗΜΜΥ" },
+        { href: "/parallel", label: "Παράλληλες Δράσεις" },
       ],
     },
     { href: "/past-events", label: "Past Events", target: "_self" },
