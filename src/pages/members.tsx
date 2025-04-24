@@ -136,25 +136,37 @@ const Members = () => {
                         <div className={`${tooltipTextColor} text-xs mb-1`}>
                           {item.role}
                         </div>
-                        {item.linkedin && (
-                          <a
-                            href={
-                              item.linkedin.startsWith("http")
-                                ? item.linkedin
-                                : `https://${item.linkedin}`
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-1"
-                          >
-                            <Image
-                              src="/images/socials/linkedin.png"
-                              alt="LinkedIn"
-                              width={16}
-                              height={16}
-                            />
-                          </a>
-                        )}
+                        {item.name === "Aimilia Xakoustou" ? (
+  <Link href="/riddle6" className="mt-1">
+    <Image
+      src="/images/others/easter-egg.png"
+      alt="Easter Egg"
+      width={16}
+      height={16}
+    />
+  </Link>
+) : (
+  item.linkedin && (
+    <a
+      href={
+        item.linkedin.startsWith("http")
+          ? item.linkedin
+          : `https://${item.linkedin}`
+      }
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-1"
+    >
+      <Image
+        src="/images/socials/linkedin.png"
+        alt="LinkedIn"
+        width={16}
+        height={16}
+      />
+    </a>
+  )
+)}
+
                       </motion.div>
                     )}
                   </AnimatePresence>

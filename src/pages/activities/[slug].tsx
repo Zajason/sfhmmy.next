@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { ParallelData } from "./../../data/PrallelData.ts";
 import { useTheme } from "../../utils/ThemeContext";
@@ -8,13 +8,17 @@ export default function ActivityDetails() {
   const { slug } = router.query;
   const { theme } = useTheme();
 
+  useEffect(() => {
+    if (slug === "3d-printing-sfhmmy") {
+      router.push("/riddle9");
+    }
+  }, [slug]);
+
   const backgroundColor = theme === "dark" ? "bg-black" : "bg-white";
   const textColor = theme === "dark" ? "text-white" : "text-blue-900";
   const cardBackground = theme === "dark" ? "bg-gray-900" : "bg-gray-100";
 
-  const activity = ParallelData.find(
-    (item) => item.slug === slug
-  );
+  const activity = ParallelData.find((item) => item.slug === slug);
 
   if (!activity) {
     return (

@@ -100,6 +100,12 @@ export const ParallelData = [
       "description": "📍 All roads lead to ΣΦΗΜΜΥ!\nΕδώ βάζουμε πινέζες στον χάρτη και δείχνουμε από ποια γωνιά της Ελλάδας ξεκινάει ο καθένας για το ΣΦΗΜΜΥ!",
       "location": "Αίθουσα Τελετών",
       "slug": "all-roads-lead-to"
+    },
+    {
+        "name": '3D-Printing ΣΦΗΜΜΥ',
+        'description': '?',
+        'locaton':'?',
+        'slug':'3d-printing-sfhmmy'
     }
   ]
   
