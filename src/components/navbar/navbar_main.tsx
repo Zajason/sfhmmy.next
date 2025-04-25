@@ -1,13 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; // Make sure React is imported
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "../../utils/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../../context/authContext";
-import { getUserProfile } from "../../apis/services/profileService"; // Import the API function
+import { getUserProfile } from "../../apis/services/profileService";
 
 interface NavbarProps {}
+
+// Define AndroidIcon component OUTSIDE the Navbar component
+const AndroidIcon = () => (
+  <svg
+    className="w-6 h-6 mr-2"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <path d="M17.6 9.48l1.43-2.48a.5.5 0 10-.87-.5l-1.46 2.54A7.97 7.97 0 0012 8c-1.7 0-3.28.53-4.7 1.54L5.84 6.5a.5.5 0 10-.87.5l1.43 2.48C4.2 11.02 3 13.38 3 16v2a2 2 0 002 2h1a2 2 0 002-2v-2h6v2a2 2 0 002 2h1a2 2 0 002-2v-2c0-2.62-1.2-4.98-3.4-6.52zM7 18a1 1 0 01-1-1v-1h2v1a1 1 0 01-1 1zm10 0a1 1 0 01-1-1v-1h2v1a1 1 0 01-1 1zm-5-7a6 6 0 016 6v1H6v-1a6 6 0 016-6zm-2.5 2a.5.5 0 110-1 .5.5 0 010 1zm5 0a.5.5 0 110-1 .5.5 0 010 1z" />
+  </svg>
+);
 
 const Navbar: React.FC<NavbarProps> = () => {
   const { theme } = useTheme();
@@ -18,6 +30,7 @@ const Navbar: React.FC<NavbarProps> = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const { isSignedIn, logout } = useAuth();
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false); // <-- Add this state
 
   // Fetch user data when signed in
   useEffect(() => {
@@ -26,7 +39,7 @@ const Navbar: React.FC<NavbarProps> = () => {
         try {
           const profileData = await getUserProfile();
           console.log("User profile data:", profileData);
-          
+
           // Set the user name from the API response (adjusted for the actual data structure)
           if (profileData?.user?.name) {
             setUserName(profileData.user.name);
@@ -139,9 +152,8 @@ const Navbar: React.FC<NavbarProps> = () => {
   };
 
   const handleLogout = async () => {
-    // Add delay for visual feedback
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    logout(); // Use the logout function from context
+    await new Promise((resolve) => setTimeout(resolve, 100)); // Shorter delay
+    logout();
     router.push("/");
   };
 
@@ -153,7 +165,15 @@ const Navbar: React.FC<NavbarProps> = () => {
     router.push("/register");
   };
 
-  return (
+  const openDownloadModal = () => {
+    setIsDownloadModalOpen(true);
+  };
+
+  const closeDownloadModal = () => {
+    setIsDownloadModalOpen(false);
+  };
+
+  return ( // This should now be correctly parsed
     <div className="fixed top-0 left-0 w-full bg-black bg-opacity-50 text-white shadow-md z-50">
       {/* Navigation content */}
       <div className="container mx-auto px-4">
@@ -262,6 +282,14 @@ const Navbar: React.FC<NavbarProps> = () => {
 
           {/* Auth Buttons on Right */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Download Button */}
+            <button
+              onClick={openDownloadModal} // <-- Change this
+              className="flex items-center justify-center py-1 px-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-green-400"
+            >
+              <AndroidIcon />
+              Download App
+            </button>
             {isSignedIn ? (
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
@@ -455,32 +483,34 @@ const Navbar: React.FC<NavbarProps> = () => {
             </div>
 
             {/* Auth Buttons at the Bottom */}
-            <div className="p-6 w-full bg-gray-900">
+            <div className="pb-16 p-6 w-full bg-gray-900">
               {isSignedIn ? (
-                <div className="flex flex-col items-center space-y-4">
-                  <Link href="/profile">
-                    <div className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
-                      <Image
-                        src={userAvatar}
-                        alt="Profile"
-                        width={50}
-                        height={50}
-                        className="rounded-full border-2 border-blue-400"
-                      />
-                      <span className="text-white text-lg font-medium">
-                        {userName}
-                      </span>
-                    </div>
-                  </Link>
+                <>
+                  <button
+                     onClick={openDownloadModal} 
+                     className="flex items-center justify-center px-4 py-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-green-400 mt-4"
+                   >
+                    <AndroidIcon />
+                    Download App
+                  </button>
                   <button
                     onClick={handleLogout}
                     className="bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-md transition duration-300 w-full font-medium mt-4"
                   >
                     Log Out
                   </button>
-                </div>
+                </>
               ) : (
                 <div className="flex flex-col space-y-4 w-full">
+                  {/* Download Button - Placed above Sign In/Sign Up */}
+                  <button 
+                    onClick={openDownloadModal}
+                    className="flex items-center justify-center px-4 py-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-green-400"
+                  >
+                    <AndroidIcon />
+                    Download App
+                  </button>
+                  {/* Sign In/Sign Up Buttons */}
                   <button
                     onClick={handleLogin}
                     className="bg-transparent hover:bg-blue-500 text-white border-2 border-white hover:border-transparent py-3 px-4 rounded-md transition duration-300 w-full font-medium"
@@ -513,6 +543,95 @@ const Navbar: React.FC<NavbarProps> = () => {
           ></motion.div>
         )}
       </AnimatePresence>
+      {/* Λήψη Εφαρμογής Modal */}
+      <AnimatePresence>
+        {isDownloadModalOpen && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-75"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeDownloadModal} // Κλείσιμο με κλικ στο φόντο
+          >
+            <motion.div
+              className={`relative rounded-lg shadow-xl max-w-lg w-full mx-4 p-6 ${
+                theme === 'dark' ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
+              }`}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()} // Αποτροπή κλεισίματος με κλικ μέσα στο modal
+            >
+              {/* Κεφαλίδα Modal */}
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-semibold flex items-center">
+                  <AndroidIcon /> Λήψη Εφαρμογής Android
+                </h3>
+                <button
+                  onClick={closeDownloadModal}
+                  className={`p-1 rounded-full ${
+                    theme === 'dark' ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-500 hover:bg-gray-200'
+                  }`}
+                  aria-label="Κλείσιμο modal"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Περιεχόμενο Modal */}
+              <div className="space-y-4 text-sm">
+                <p>
+                  Αυτή η εφαρμογή είναι διαθέσιμη μόνο για Android smartphones.
+                </p>
+                <p className="font-semibold text-yellow-500 dark:text-yellow-400">
+                  Σημαντικό: Πριν την εγκατάσταση, ίσως χρειαστεί να ενεργοποιήσετε την εγκατάσταση από «Άγνωστες Πηγές» στις ρυθμίσεις του τηλεφώνου σας. Αυτό σας επιτρέπει να εγκαταστήσετε εφαρμογές εκτός του Google Play Store.
+                </p>
+                <p>
+                  Χρειάζεστε βοήθεια για να ενεργοποιήσετε αυτή τη ρύθμιση; Δείτε αυτούς τους οδηγούς:
+                  <ul className="list-disc list-inside ml-4 mt-1 space-y-1">
+                    <li>
+                      <a href="https://www.wikihow.com/Install-APK-Files-on-Android" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                        Πώς να εγκαταστήσετε εφαρμογές από άγνωστες πηγές (Άρθρο)
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.youtube.com/watch?v=JVEbeeIvQvk&ab_channel=WebProEducation" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                        Πώς να ενεργοποιήσετε τις άγνωστες πηγές (YouTube – Πρώτα 2 λεπτά)
+                      </a>
+                    </li>
+                  </ul>
+                </p>
+              </div>
+
+              {/* Υποσέλιδο Modal */}
+              <div className="mt-6 flex justify-end space-x-3">
+                <button
+                  onClick={closeDownloadModal}
+                  className={`px-4 py-2 rounded-md border ${
+                    theme === 'dark' ? 'border-gray-600 hover:bg-gray-700' : 'border-gray-300 hover:bg-gray-100'
+                  }`}
+                >
+                  Κλείσιμο
+                </button>
+                <a
+                  href="https://drive.google.com/uc?export=download&id=1rZkCp1lHdvjwpsOy2jXwSSibS9YtbqUW"
+                  target="_blank" // Κράτημα target blank για απευθείας λήψη/προβολή
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-md bg-green-500 hover:bg-green-600 text-white font-semibold shadow-md transition-colors"
+                  // προαιρετικά add download attribute αν επιθυμείτε απευθείας λήψη
+                  download="sfhmmy_v5.apk"
+                >
+                  Λήψη Τώρα
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 };
