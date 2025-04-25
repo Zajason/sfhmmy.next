@@ -205,15 +205,9 @@ const WorkshopDetails: React.FC = () => {
 
         <div className="flex justify-center mb-6">
           {registered ? (
-            <button
-              onClick={handleLeave}
-              disabled={unenrolling}
-              className={`inline-block px-6 py-3 rounded-md text-white transition-colors flex items-center space-x-2 ${
-                unenrolling ? "bg-gray-600 cursor-wait" : "bg-red-600 hover:bg-red-700"
-              }`}
-            >
-              <span>{unenrolling ? "Leaving…" : "Leave"}</span>
-            </button>
+            <div className="inline-block px-6 py-3 rounded-md text-white bg-green-600 flex items-center space-x-2">
+              <span>ENROLLED</span>
+            </div>
           ) : (
             <>
               {isFull ? (
