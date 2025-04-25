@@ -500,17 +500,28 @@ const Navbar: React.FC<NavbarProps> = () => {
               {isSignedIn ? (
                 <>
                   <button
-                     onClick={openDownloadModal} 
-                     className="flex items-center w-full justify-center px-4 py-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-green-400"
+                   onClick={openDownloadModal} 
+                   className="flex items-center w-full justify-center px-4 py-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-green-400"
                    >
-                    <AndroidIcon />
-                    Download App
+                  <AndroidIcon />
+                  Download App
                   </button>
+                  <Link href="/profile" className="w-full">
+                  <button className="flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white py-3 px-4 rounded-md transition duration-300 w-full font-medium mt-4">
+                  <Image
+                        src={userAvatar}
+                        alt="Profile"
+                        width={30}
+                        height={30}
+                        className="rounded-full mr-2"
+                      />  <span className="text-white text-sm">{userName}</span>
+                  </button>
+                  </Link>
                   <button
-                    onClick={handleLogout}
-                    className="bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-md transition duration-300 w-full font-medium mt-4"
+                  onClick={handleLogout}
+                  className="bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-md transition duration-300 w-full font-medium mt-4"
                   >
-                    Log Out
+                  Log Out
                   </button>
                 </>
               ) : (
