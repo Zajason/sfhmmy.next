@@ -501,7 +501,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 <>
                   <button
                      onClick={openDownloadModal} 
-                     className="flex items-center justify-center px-4 py-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-green-400 mt-4"
+                     className="flex items-center w-full justify-center px-4 py-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-green-400"
                    >
                     <AndroidIcon />
                     Download App
