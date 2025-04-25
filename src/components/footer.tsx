@@ -99,7 +99,7 @@ const Footer = () => {
         {/* Privacy Policy Link */}
         <div className="mt-6 text-center">
           <a
-            href="https://drive.google.com/file/d/1mHXEyWWt3NIpDnhvcAUwqMR8Xq_eDJv5/view"
+            href="https://drive.google.com/file/d/14a8KE3RrNGiEVHVxi1E-LLvfRTIm9KmV/view"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 underline hover:text-blue-400"

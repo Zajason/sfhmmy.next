@@ -362,7 +362,7 @@ const Register: React.FC = () => {
                   className={`${textColor} text-sm`}
                   htmlFor="privacyPolicy"
                 >
-                  Διάβασα και αποδέχομαι την <a href="https://drive.google.com/file/d/1mHXEyWWt3NIpDnhvcAUwqMR8Xq_eDJv5/view" target="_blank" className="text-blue-500 underline">Πολιτική Απορρήτου</a> του ΣΦΗΜΜΥ 16.
+                  Διάβασα και αποδέχομαι την <a href="https://drive.google.com/file/d/14a8KE3RrNGiEVHVxi1E-LLvfRTIm9KmV/view" target="_blank" className="text-blue-500 underline">Πολιτική Απορρήτου</a> του ΣΦΗΜΜΥ 16.
                 </label>
                 {errors.privacyPolicy && (
                   <p className="text-red-500 text-xs mt-1" id="privacyPolicy-error">
