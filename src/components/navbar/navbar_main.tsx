@@ -641,7 +641,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                   Κλείσιμο
                 </button>
                 <a
-                  href="https://drive.google.com/uc?export=download&id=1rZkCp1lHdvjwpsOy2jXwSSibS9YtbqUW"
+                  href="https://drive.google.com/uc?export=download&id=1rG8YbaIK2KYkmoEt1fM5hZ5f4-8HRkfz"
                   target="_blank" // Κράτημα target blank για απευθείας λήψη/προβολή
                   rel="noopener noreferrer"
                   className="px-4 py-2 rounded-md bg-green-500 hover:bg-green-600 text-white font-semibold shadow-md transition-colors"
