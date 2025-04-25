@@ -71,12 +71,7 @@ export const ParallelData = [
       "location": "ΚΕΔΕΑ και Αίθουσα Τελετών",
       "slug": "coloring-station"
     },
-    {
-      "name": "Disposable Κάμερες",
-      "description": "📸 Disposable Κάμερες\nΆρπαξε μία και αποτύπωσε τις πιο αυθόρμητες στιγμές του συνεδρίου!",
-      "location": "ΠΑΝΤΟΥ",
-      "slug": "disposable"
-    },
+
     {
       "name": "Reach New Tech Flights",
       "description": "🚁 Reach New Tech Flights\nΕδώ μπορείς να γνωρίσεις, να μάθεις και να παίξεις με drones και να συζητήσεις για αυτά με ανθρώπους που έχουν αυτό το χόμπι!\n📍 Άγαλμα Αριστοτέλη 11:00 – 17:00",
@@ -101,11 +96,6 @@ export const ParallelData = [
       "location": "Αίθουσα Τελετών",
       "slug": "all-roads-lead-to"
     },
-    {
-        "name": '3D-Printing ΣΦΗΜΜΥ',
-        'description': '?',
-        'locaton':'?',
-        'slug':'3d-printing-sfhmmy'
-    }
+   
   ]
   
