@@ -11,8 +11,9 @@ export interface UserData {
     registeredWorkshops: string[];
     emailVerified: boolean; 
     presence: number;
-    userID: string;   
-    cv?: string;     
+    userID: string;
+    cv?: string;
+    created_at?: string; // Add created_at field (optional if it might be missing)
 }
 
 export const defaultUserData: UserData = {
@@ -29,7 +30,8 @@ export const defaultUserData: UserData = {
     emailVerified: false,
     presence: 0,
     userID: "",
-    cv: ""
+    cv: "",
+    created_at: "" // Initialize created_at
 };
 
 export interface ThemeColors {

@@ -112,6 +112,7 @@ const ProfileView = () => {
           username: profileData.user.username || profileData.user.email.split('@')[0],
           email: profileData.user.email || '',
           city: profileData.user.city || '',
+          created_at: profileData.user.created_at || '', 
           university: profileData.user.university || '',
           year: profileData.user.year || 0,
           school: profileData.user.school || '',

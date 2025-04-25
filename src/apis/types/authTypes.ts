@@ -22,6 +22,7 @@ export interface LoginResponse {
 }
 
 export interface UserData {
+  created_at?: string; 
   name: string;
   email: string;
   username?: string;

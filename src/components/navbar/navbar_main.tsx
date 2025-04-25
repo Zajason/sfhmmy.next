@@ -9,16 +9,29 @@ import { getUserProfile } from "../../apis/services/profileService";
 
 interface NavbarProps {}
 
-// Define AndroidIcon component OUTSIDE the Navbar component
 const AndroidIcon = () => (
   <svg
-    className="w-6 h-6 mr-2"
-    fill="currentColor"
-    viewBox="0 0 24 24"
-    aria-hidden="true"
+  xmlns="http://www.w3.org/2000/svg"
+  width={20}
+  height={20}
+  viewBox="0 0 256 256"
+  className="mr-2"
+>
+  <g
+    fill="#fff"
+    strokeMiterlimit={10}
+    fontFamily="none"
+    fontSize="none"
+    fontWeight="none"
+    style={{
+      mixBlendMode: "normal",
+    }}
+    textAnchor="none"
   >
-    <path d="M17.6 9.48l1.43-2.48a.5.5 0 10-.87-.5l-1.46 2.54A7.97 7.97 0 0012 8c-1.7 0-3.28.53-4.7 1.54L5.84 6.5a.5.5 0 10-.87.5l1.43 2.48C4.2 11.02 3 13.38 3 16v2a2 2 0 002 2h1a2 2 0 002-2v-2h6v2a2 2 0 002 2h1a2 2 0 002-2v-2c0-2.62-1.2-4.98-3.4-6.52zM7 18a1 1 0 01-1-1v-1h2v1a1 1 0 01-1 1zm10 0a1 1 0 01-1-1v-1h2v1a1 1 0 01-1 1zm-5-7a6 6 0 016 6v1H6v-1a6 6 0 016-6zm-2.5 2a.5.5 0 110-1 .5.5 0 010 1zm5 0a.5.5 0 110-1 .5.5 0 010 1z" />
-  </svg>
+    <path d="M128 75.136C60.944 75.136 5.91 126.486 0 192h256c-5.91-65.515-60.944-116.864-128-116.864zm48.955 69.285c0-5.888 4.773-10.661 10.66-10.661 5.889 0 10.662 4.773 10.662 10.661s-4.773 10.662-10.661 10.662-10.661-4.774-10.661-10.662zM68.384 155.083c-5.888 0-10.661-4.774-10.661-10.662 0-5.888 4.773-10.661 10.661-10.661s10.661 4.773 10.661 10.661-4.773 10.662-10.661 10.662z" />
+    <path d="M181.536 103.003a4.384 4.384 0 0 1-3.792-6.57l27.717-48.044a4.37 4.37 0 0 1 5.984-1.605 4.384 4.384 0 0 1 1.606 5.984l-27.718 48.043a4.372 4.372 0 0 1-3.797 2.192zM74.464 103.003a4.383 4.383 0 0 1-3.797-2.192L42.955 52.768a4.383 4.383 0 0 1 1.6-5.984 4.372 4.372 0 0 1 5.984 1.605l27.717 48.043a4.377 4.377 0 0 1-1.605 5.984 4.33 4.33 0 0 1-2.187.587z" />
+  </g>
+</svg>
 );
 
 const Navbar: React.FC<NavbarProps> = () => {
@@ -38,7 +51,6 @@ const Navbar: React.FC<NavbarProps> = () => {
       if (isSignedIn) {
         try {
           const profileData = await getUserProfile();
-          console.log("User profile data:", profileData);
 
           // Set the user name from the API response (adjusted for the actual data structure)
           if (profileData?.user?.name) {
@@ -288,7 +300,7 @@ const Navbar: React.FC<NavbarProps> = () => {
               onClick={openDownloadModal} // <-- Change this
               className="flex items-center justify-center py-1 px-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-green-400"
             >
-              <AndroidIcon />
+              <AndroidIcon/>
               Download App
             </button>
             {isSignedIn ? (
