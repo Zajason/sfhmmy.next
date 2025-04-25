@@ -1,4 +1,7 @@
 import React from "react";
+import Link from "next/link";
+
+
 
 const Footer = () => {
   // Get the current year
@@ -107,8 +110,11 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="mt-10 text-center text-gray-500 text-sm">
-          Copyright © {currentYear} ΣΦΗΜΜΥ16. All rights reserved.
-        </div>
+  <Link href="/riddle4" className="hover:text-gray-300 transition-colors duration-200">
+    Copyright © {currentYear} ΣΦΗΜΜΥ16. All rights reserved.
+  </Link>
+</div>
+
       </div>
     </footer>
   );
