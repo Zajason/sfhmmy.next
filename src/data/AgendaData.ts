@@ -426,7 +426,7 @@ export const eventsData = [
   {
     type: "Speech",
     name: "Emmanuel Kymakis - 'Emerging Perovskite PV Technologies'",
-    place: "Πανεπιστημιακή Σχολή ΑΠΘ", 
+    place: "Πολυτεχνική Σχολή ΑΠΘ", 
     room: "Παν. Παναγιωτόπουλος Αμφιθέατρο",
     time: "11:30 AM - 12:30 PM",
     day: "Σάββατο"
@@ -434,7 +434,7 @@ export const eventsData = [
   {
     type: "Speech",
     name: "Dimitris Koutsouras 'Organic Bioelectronic interfaces for Bioelectronic Medicine applications'",
-    place: "Πανεπιστημιακή Σχολή ΑΠΘ", 
+    place: "Πολυτεχνική Σχολή ΑΠΘ", 
     room: "Παν. Παναγιωτόπουλος Αμφιθέατρο",
     time: "12:30 PM - 01:30 PM",
     day: "Σάββατο"
@@ -442,7 +442,7 @@ export const eventsData = [
   {
     type: "Speech",
     name: "Konstantinos Gyftakis - 'Modern Aspects and Challenges in Electric Machine Fault Diagnosis and Prediction'",
-    place: "Πανεπιστημιακή Σχολή ΑΠΘ", 
+    place: "Πολυτεχνική Σχολή ΑΠΘ", 
     room: "Παν. Παναγιωτόπουλος Αμφιθέατρο",
     time: "04:00 PM - 05:00 PM",
     day: "Σάββατο"
