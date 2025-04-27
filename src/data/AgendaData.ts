@@ -743,7 +743,7 @@ export const eventsData = [
     name: "ΑΔΜΗΕ",
     place: "Αίθουσα Τελετών ΑΠΘ",
     room: "Ceremony Hall",
-    time: "01:35 PM - 02:00 PM",
+    time: "01:40 PM - 02:00 PM",
     day: "Κυριακή"
   },
   {
